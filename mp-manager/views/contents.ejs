@@ -1,0 +1,35 @@
+<section class="content-list">
+	<h1 class="section-heading">Blogs</h1>
+	<div class="form-group	archive">
+		<a href="<%=	httpReq.url	%>">All</a>
+		&nbsp;&nbsp;|&nbsp;&nbsp;
+		<a href="/mp-manager/contents?type=<%=	locals.type	%>&status=publish">Published</a>
+		&nbsp;&nbsp;|&nbsp;&nbsp;
+		<a href="/mp-manager/contents?type=<%=	locals.type	%>&status=draft">Draft</a>
+		&nbsp;&nbsp;|&nbsp;&nbsp;
+		<a href="/mp-manager/update-content?type=<%=	locals.type	%>">Create New</a>
+	</div>
+	<ul class="entry	row">
+		<%	locals.contents.forEach(function(contentInfo) {	%>
+			<li>
+				<div class="col-md-4">
+					<div class="form-group"><%=	contentInfo.title	%></div>
+					<div class="action">
+						<a href="/mp-manager/update-content?type=<%=	contentInfo.type	%>&cid=<%=	contentInfo._id	%>" title="Edit Content">Edit</a>
+						&nbsp;|&nbsp;
+						<a href="/mp-manager/remove-content?type=<%=	contentInfo.type	%>&cid=<%=	contentInfo._id	%>" title="Edit Content" class="removeItem">Remove</a>
+						&nbsp;|&nbsp;
+						<a href="" title="Edit Content">View</a>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<%=	contentInfo.excerpt	%>
+				</div>
+				<div class="col-md-2">
+					<%=	contentInfo.created	%>
+				</div>
+				<div class="clearfix"></div>
+			</li>
+		<%	});	%>
+	</ul>
+</section>

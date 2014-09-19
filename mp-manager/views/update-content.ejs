@@ -1,0 +1,111 @@
+<section class="update-content">
+	<h1 class="section-heading">Create New</h1>
+	<form class="form-group	row" method="post" action="<%=	httpReq.url	%>"	ng-controller="UpdateContent" name="updateContent" enctype="multipart/form-data">
+		<input type="hidden" name="type" value="<%=	locals.contentInfo.type	%>" />
+		<input type="hidden" name="cid" value="<%=	locals.cid	%>" />
+		<aside class="col-md-12	col-lg-8">
+			<div class="form-group">
+				<label>Title*</label>
+				<input type="text" name="title" placeholder="Enter title here" value="<%=	locals.contentInfo.title	%>" class="form-control" required />
+				<span class="col-md-12	row	slug">Permalink: http://www.techunits.com/asdasd</span>
+				<div class="clearfix"></div>
+			</div>
+			
+			<div class="form-group">
+				<textarea name="description" placeholder="Insert your full post description here..." rows="15" class="form-control	maineditor"><%=	locals.contentInfo.description	%></textarea>
+			</div>
+			
+			<div class="form-group">
+				<label>Excerpt*</label>
+				<textarea name="excerpt" placeholder="Enter Brief info here..." rows="4" class="form-control" required><%=	locals.contentInfo.excerpt	%></textarea>
+			</div>
+			
+			<div class="widget-base">
+				<div class="form-group">
+					<h3 class="section-heading">Publish</h3>
+					<div class="col-md-4">
+						<label>Status</label>
+						<select name="status" class="form-control">
+							<option value="draft" <%=	(0 == locals.contentInfo.status)?'selected':''	%>>Draft</option>
+							<option value="publish" <%=	(1 == locals.contentInfo.status)?'selected':''	%>>Published</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label>Visibility</label>
+						<select name="visibility" class="form-control">
+							<option value="public" <%=	(1 == locals.contentInfo.visibility)?'selected':''	%>>Public</option>
+							<option value="private" <%=	(0 == locals.contentInfo.visibility)?'selected':''	%>>Private</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label>Publish Date</label>
+						<input type="text" name="publishDate" placeholder="DD-MM-YYYY" value="<%=	locals.contentInfo.created.getDate()	%>-<%=	locals.contentInfo.created.getMonth()	%>-<%=	locals.contentInfo.created.getFullYear()	%>" class="form-control icon icon-calendar" required />
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="col-md-12	form-group">
+					<input type="submit" name="submit" value="Update Now" class="btn-info" />
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+			
+		</aside>
+		
+		<aside class="col-lg-4	row">
+			<div class="form-group	widget-base">
+				<h3 class="section-heading">SEO Meta Tags</h3>
+				<div class="col-md-12	form-group">
+					<label>Meta Title</label>
+					<input type="text" name="metaTitle" placeholder="SEO Page Title" value="" class="form-control" />
+				</div>
+				<div class="col-md-12	form-group">
+					<label>Meta Description</label>
+					<textarea name="metaDescription" placeholder="SEO Brief Info" rows="3" class="form-control"></textarea>
+				</div>
+				<div class="col-md-12	form-group">
+					<label>Meta Keywords</label>
+					<input type="text" name="metaKeywords" placeholder="Prefered Keywords" value="" class="form-control" />
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+			<div class="form-group	widget-base">
+				<h3 class="section-heading">Opengraph</h3>
+				<div class="col-md-12	form-group">
+					<label>Opengraph Title</label>
+					<input type="text" name="ogTitle" placeholder="Enter title here" value="" class="form-control" />
+				</div>
+				<div class="col-md-12	form-group">
+					<label>Opengraph Description</label>
+					<textarea name="ogDescription" placeholder="Enter Brief info here..." rows="3" class="form-control"></textarea>
+				</div>
+				<div class="col-md-12">
+					<label>Opengraph Type</label>
+					<select name="ogType" class="form-control">
+						<option value="article">Article</option>
+						<option value="blog">Blog</option>
+					</select>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+			<div class="form-group	widget-base">
+				<h3 class="section-heading">Upload &amp; Attach Media</h3>
+				<div class="col-md-12	form-group">
+					<input type="file" name="attachments" multiple />
+					<div id="mediaAttachments"></div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</aside>
+	</form>
+</section>
+
+<style type="text/css">
+.update-content	.slug	{
+	font-size: 85%;
+	padding-top: 5px;
+	color: #777;
+}
+</style>

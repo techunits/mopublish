@@ -1,0 +1,159 @@
+@charset "utf-8";
+/* CSS Document for MOZ website */
+
+body { font-family: Roboto;	}
+ul, ol, li {
+	padding: 0px; 
+	margin: 0px;
+	list-style-type: none;
+}
+
+.section-heading {
+	font-family: Oswald;
+	font-size: 150%;
+	font-weight: normal;
+	margin-bottom: 25px;
+	color: #75B822;
+}
+.color-green	{
+	color: #75B822	!important;
+}
+
+a:hover { color:#75B822	!important; text-decoration: none;	}
+.btn-info	{
+	border-radius: 4px;
+	padding: 2px 25px;
+	line-height: 28px;
+	border-width: 1px;
+}
+.btn-info:hover{
+	background: #2ea2cc;
+	border-color: #0074a2;
+}
+
+/*	icons	*/
+.icon	{
+	padding-left: 30px;
+	background-position: 8px 7px;
+	background-repeat: no-repeat;
+}
+.icon-calendar	{
+	background-image: url('../images/icon/calendar.png');
+}
+
+/*header section*/
+.top-sec{background:#388FB2; position: ; height:30px; width:100%}
+.top-nav{ list-style: none;  margin: 0; padding: 0;}
+.top-nav li{ float: left; color: #fff; border-bottom: 2px solid #388FB2;
+transition-property: border-color; 
+transition-duration: 1s, 2s, 5s; 
+transition-timing-function:  ease, ease-out, linear;
+}
+.top-nav li:hover{border-bottom: 2px solid #F7B911;}
+.top-nav li a{ color: #fff; text-decoration: none; padding:0 10px; line-height:28px; font-size: 12px; }
+
+
+.installer	.logo	{
+	text-align: center;
+}
+.installer	.installer-form	.field-item	{
+	background: #EFEFEF;
+	margin-bottom: 5px;
+	padding: 15px 0px;
+}
+
+
+.login-base	{
+	float: none;
+	margin: 0 auto;
+	min-height: 400px;
+	padding: 100px 0px;
+}
+.login-base	form	{
+	margin-top: 30px;
+	padding: 20px;
+	border-radius: 4px;
+	box-shadow: 0px 0px 8px #DADADA;
+}
+
+form	label.error	{
+	font-size: 75%;
+	color: red;
+	padding: 5px 10px;
+	background: rgb(255, 223, 223);
+	display: block;
+	margin: 4px 0px;
+	border-radius: 4px;
+}
+
+.menu-section {
+	padding-bottom: 10px;
+	border-bottom: 1px dotted #DFDFDF;
+	padding-top: 10px;
+}
+.menu-section	li	{
+	margin-bottom: 4px;
+	padding-left: 5px;
+}
+.menu-section	li.heading	{
+	padding-left: 0px;
+}
+.menu-section:last-child {
+	border-bottom: 0 none;
+}
+
+.widget-base	{
+	background: #f5f5f5;
+	padding: 10px 10px 25px;
+	border-radius: 4px;
+}
+.widget-base	.section-heading	{
+	margin: 0px;
+	margin-bottom: 15px;
+	color: #777;
+	padding: 6px 10px;
+}
+.widget-base	.content-base	{
+	padding: 0px 8px;
+}
+
+.content-list	.entry	li	{
+	border-bottom: 1px solid #DADADA;
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+.content-list	.entry	li:hover	{
+	background: #F6F6F6;
+}
+.content-list	.entry	li:last-child	{
+	border-bottom: 0 none;
+}
+.content-list	.entry	li	.action	{
+	display: none;
+}
+.content-list	.entry	li:hover	.action	{
+	display: block;
+}
+
+/*footer section*/
+footer {
+    margin: 0 auto;
+    background: none repeat scroll 0 0 #fff;
+    padding: 20px 0;
+    border-top: #ccc 1px solid ;
+}
+
+.copyright{ color: #333}
+
+footer ul {
+    display: inline-block;
+    float: right;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+footer li {
+    display: inline;
+    padding: 0 10px 0 0;
+}
+footer li a{ color: #333;}

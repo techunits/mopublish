@@ -1,0 +1,15 @@
+<section class="container	wrapper">
+	<h1 class="section-heading"><%=	info.title	%></h1>
+	<%	contents.forEach(function(contentInfo) {	%>
+		<article class="post">
+			<h3>
+				<a href="<%=	utilObj.getPermalink(contentInfo)	%>" title="<%=	contentInfo.title	%>">
+					<%=	contentInfo.title	%>
+				</a>
+			</h3>
+			<div class="desc">
+				<%=	contentInfo.experpt	%>
+			</div>
+		</article>
+	<%	});	%>
+</section>
