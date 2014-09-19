@@ -179,31 +179,6 @@ app.get('/mp-manager/logout', function(httpRequest, httpResponse) {
 	httpResponse.redirect('/mp-manager/login');
 });
 
-app.get('/mp-manager/settings', function(httpRequest, httpResponse) {
-	httpResponse.render('settings');
-}).post('/mp-manager/installer', function(httpRequest, httpResponse) {
-	if(	'' != httpRequest.body.sitename &&
-		'' != httpRequest.body.email &&
-		'' != httpRequest.body.password &&
-		'' != httpRequest.body.repassword &&
-		httpRequest.body.password == httpRequest.body.repassword) {
-		var installtedObj = require('./library/installer');
-		installtedObj.saveBasicDetials({
-			sitename: httpRequest.body.sitename,
-			email: httpRequest.body.email,
-			password: httpRequest.body.password,
-		}, function(info) {
-			httpResponse.redirect('/mp-manager/login');
-		}, function(err) {
-			console.log(err);
-			httpResponse.end('Sorry for inconvenience!!! Please check logs on the server.');
-		});
-	}
-	else {
-		httpResponse.redirect('/mp-manager/installer?msgcode=INVALID_FORM_DATA');
-	}
-});
-
 app.get('/mp-manager/contents', function(httpRequest, httpResponse) {
 	if(true === httpRequest.session.loggedin) {
 		app.set('views', __dirname + '/mp-manager/views');
@@ -300,7 +275,36 @@ app.get('/mp-manager/remove-content', function(httpRequest, httpResponse) {
 	});
 });
 
-/*app.post('/mp-manager/upload-media/:cid', function(httpRequest, httpResponse) {
+
+app.get('/mp-manager/settings', function(httpRequest, httpResponse) {
+	app.set('views', __dirname + '/mp-manager/views');
+	app.set('layout', __dirname + '/mp-manager/views/layout.ejs');
+	
+	httpResponse.render('settings');
+});
+
+app.get('/mp-manager/settings/themes', function(httpRequest, httpResponse) {
+	app.set('views', __dirname + '/mp-manager/views');
+	app.set('layout', __dirname + '/mp-manager/views/layout.ejs');
+	
+	httpResponse.render('themes');
+});
+
+app.get('/mp-manager/settings/theme-activate', function(httpRequest, httpResponse) {
+	httpResponse.end('in progress');
+});
+
+/*app.get('/mp-manager/page', function(httpRequest, httpResponse) {
+	switch(httpRequest.query.slug) {
+		case 'content-types':
+			httpResponse.render('page', {
+				html: '<h1 class="">Page Heading</h1>'
+			});
+		break;
+	}
+});
+
+app.post('/mp-manager/upload-media/:cid', function(httpRequest, httpResponse) {
 	console.log(httpRequest.body);
 	console.log(httpRequest.files);
 	httpResponse.end('done');
