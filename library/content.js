@@ -18,6 +18,30 @@ var contentVisibilityListGlobal = {
 exports.visibilityList = contentVisibilityListGlobal;
 
 /**
+ * Model: ContentType
+ */
+var ContentTypeModel = db.mongooseObj.model('contentType', new db.mongooseObj.Schema({
+	slug	: { 
+		type: String, 
+		'default': null
+	},
+	title	: { 
+		type: String, 
+		'default': null
+	},
+	description	: { 
+		type: String, 
+		'default': null,
+		index: true
+	},
+	hierarchical: { 
+		type: Boolean, 
+		'default': false
+	}
+}));
+exports.ContentTypeModel = ContentTypeModel;
+
+/**
  * Model: Content
  */
 var ContentModel = db.mongooseObj.model('contents', new db.mongooseObj.Schema({

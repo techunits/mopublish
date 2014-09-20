@@ -275,14 +275,28 @@ app.get('/mp-manager/remove-content', function(httpRequest, httpResponse) {
 	});
 });
 
-
+/**
+ * Menu Handler: Settings -> General
+ */
 app.get('/mp-manager/settings', function(httpRequest, httpResponse) {
 	app.set('views', __dirname + '/mp-manager/views');
 	app.set('layout', __dirname + '/mp-manager/views/layout.ejs');
 	
-	httpResponse.render('settings');
+	require('./library/settings').loadSettings(function(settingsList) {
+		httpResponse.render('settings', {
+			locals: {
+				settings: settingsList
+			}
+		});
+	});
+}).post('/mp-manager/settings', function(httpRequest, httpResponse) {
+	httpResponse.end('POST Data');
 });
 
+
+/**
+ * Menu Handler: Settings -> Themes
+ */
 app.get('/mp-manager/settings/themes', function(httpRequest, httpResponse) {
 	app.set('views', __dirname + '/mp-manager/views');
 	app.set('layout', __dirname + '/mp-manager/views/layout.ejs');
@@ -292,6 +306,32 @@ app.get('/mp-manager/settings/themes', function(httpRequest, httpResponse) {
 
 app.get('/mp-manager/settings/theme-activate', function(httpRequest, httpResponse) {
 	httpResponse.end('in progress');
+});
+
+/**
+ * Menu Handler: Settings -> Content Types
+ */
+app.get('/mp-manager/settings/content-types', function(httpRequest, httpResponse) {
+	app.set('views', __dirname + '/mp-manager/views');
+	app.set('layout', __dirname + '/mp-manager/views/layout.ejs');
+	
+	httpResponse.render('content-types');
+}).post('/mp-manager/settings/content-types', function(httpRequest, httpResponse) {
+	httpResponse.end('Ok');
+});
+
+/**
+ * Menu Handler: Support
+ */
+app.get('/mp-manager/support', function(httpRequest, httpResponse) {
+	app.set('views', __dirname + '/mp-manager/views');
+	app.set('layout', __dirname + '/mp-manager/views/layout.ejs');
+	
+	httpResponse.render('support', {
+		locals: {
+			type: httpRequest.query.type
+		}
+	});
 });
 
 /*app.get('/mp-manager/page', function(httpRequest, httpResponse) {

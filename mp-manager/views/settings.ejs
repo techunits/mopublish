@@ -1,9 +1,9 @@
 <h1 class="section-heading">Basic Settings</h1>
-<form class="form-group	row" method="post" action="/mp-manager/settings">
+<form class="form-group	row" method="post" action="/mp-manager/settings" name="siteSettings" ng-controller="SiteSettings">
 	<div class="form-group">
 		<label class="col-md-3">Site Title</label>
 		<div class="col-md-6">
-			<input type="text" name="sitename" value="" class="form-control" />
+			<input type="text" name="sitename" value="<%=	locals.settings.sitename	%>" class="form-control" required />
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -11,7 +11,7 @@
 	<div class="form-group">
 		<label class="col-md-3">Tagline</label>
 		<div class="col-md-6">
-			<input type="text" name="tagline" value="" class="form-control" />
+			<input type="text" name="tagline" value="<%=	(locals.settings.tagline)?locals.settings.tagline:''	%>" class="form-control" required />
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -19,7 +19,7 @@
 	<div class="form-group">
 		<label class="col-md-3">Brief Description</label>
 		<div class="col-md-6">
-			<textarea type="text" name="sitename" value=""  class="form-control" rows="5" ></textarea>
+			<textarea type="text" name="sitename" value="<%=	(locals.settings.description)?locals.settings.description:''	%>"  class="form-control" rows="5" ></textarea>
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -27,7 +27,7 @@
 	<div class="form-group">
 		<label class="col-md-3">Webmaster Email</label>
 		<div class="col-md-6">
-			<input type="text" name="email" value="" class="form-control" />
+			<input type="text" name="email" value="<%=	(locals.settings.email)?locals.settings.email:''	%>" class="form-control" required />
 		</div>
 		<div class="clearfix"></div>
 	</div>

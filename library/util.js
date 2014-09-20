@@ -8,18 +8,16 @@ exports.renderAdminTemplate = function(app, httpResponseObj, template) {
 };
 
 exports.isSystemInstalled = function(success, failed) {
-	require('../library/db').connect(function(dbObj) {
-		dbObj.collection('settings').findOne({
-			key		:	'installed',
-			value	:	true
-		}, function(err, itemInfo) {
-			if(null != itemInfo) {
-				success();
-			}
-			else {
-				failed(err);
-			}
-		});
+	require('../library/settings').SettingsModel.findOne({
+		key		:	'installed',
+		value	:	true
+	},  function(err, itemInfo) {
+		if(null != itemInfo) {
+			success();
+		}
+		else {
+			failed(err);
+		}
 	});
 };
 

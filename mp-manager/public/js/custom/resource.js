@@ -15,6 +15,11 @@ $(document).ready(function() {
 	});
 });
 
+mpmgrApp.controller('SiteSettings', function() {
+	//	add form validations
+	$('form[name="siteSettings"]').validate();
+});
+
 mpmgrApp.controller('UpdateContent', function() {
 	//	initialize tinymce for the editor.
 	tinymce.init({
@@ -37,7 +42,7 @@ mpmgrApp.controller('UpdateContent', function() {
 		}
 	});
 	
-//	data auto replication
+	//	data auto replication
 	$('form[name="updateContent"]	textarea[name="excerpt"]').focusout(function() {
 		if('' == $('form[name="updateContent"]	textarea[name="metaDescription"]').val()) {
 			$('form[name="updateContent"]	textarea[name="metaDescription"]').val($(this).val());

@@ -1,50 +1,63 @@
 var helperObj = require('../library/helper');
 var utilObj = require('../library/util');
 var contentObj = require('../library/content');
+var md5 = require('MD5');
 
 var nullCallback = function() {};
 
 exports.saveBasicDetials = function(params, success, failed) {
-	require('../library/db').connect(function(dbObj) {
-		dbObj.collection('settings').insert({
-			key: 'sitename',
-			value: params.sitename,
-			created: Math.floor(Date.now() / 1000)
-		}, nullCallback);
+	//	save site name / title
+	new require('../library/settings').SettingsModel({
+		key: 'sitename',
+		value: params.sitename,
+	}).save(function(err, docInfo) {
+		if(docInfo)
+			console.log(docInfo);
+	});
+	
+	//	save site webmaster email
+	new require('../library/settings').SettingsModel({
+		key: 'email',
+		value: params.email,
+	}).save(function(err, docInfo) {
+		if(docInfo)
+			console.log(docInfo);
+	});
 		
-		dbObj.collection('settings').insert({
-			key: 'email',
-			value: params.email,
-			created: Math.floor(Date.now() / 1000)
-		}, nullCallback);
 		
-		//	signup super admin user
-		var userObj = require('../library/user');
-		userObj.signup({
-			email: params.email,
-			password: params.password
-		}, nullCallback, function(err) {
-			failed(err);
-		});
-		
-		//	load default content types
-		loadDefaultContentTypes();
-		
-		//	load default contents
-		loadDefaultContents();
-		
-		//	load default taxonomies
-		loadDefaultTaxonomies();
-		
-		//	load default taxonomy terms
-		loadDefaultTaxonomyTerms();
-		
-		//	load more default settings
-		loadDefaultSettings();
+	//	signup super admin user
+	var userObj = require('../library/user').UserModel({
+		email: params.email,
+		password: md5(params.password),
+		status: 1
+	});
+	userObj.save(function(err, userInfo) {
+		if(err)
+			console.log(err);
 		
 		//	load api settings
-		loadDefaultRESTAPISettings();
+		if(userInfo)
+			loadDefaultRESTAPISettings(userInfo._id);
+	});
+	
+	//	load default content types
+	loadDefaultContentTypes();
 		
+	//	load default contents
+	loadDefaultContents();
+	
+	//	load default taxonomies
+	loadDefaultTaxonomies();
+	
+	//	load default taxonomy terms
+	loadDefaultTaxonomyTerms();
+
+	
+	
+	//	load more default settings
+	loadDefaultSettings();
+	
+	/*	
 		dbObj.collection('settings').insert({
 			key: 'installed',
 			value: true,
@@ -59,6 +72,17 @@ exports.saveBasicDetials = function(params, success, failed) {
 				success(docs);
 			}
 		});
+	});*/
+
+	//	save status as installed
+	new require('../library/settings').SettingsModel({
+		key: 'installed',
+		value: true
+	}).save(function(err, docInfo) {
+		if(err)
+			failed(docInfo);
+		else 
+			success();
 	});
 };
 
@@ -82,10 +106,9 @@ var loadDefaultContentTypes = function(callback) {
 	                   }
 	                  ];
 	contentTypeList.forEach(function(contentTypeInfo) {
-		require('../library/db').connect(function(dbObj) {
-			dbObj.collection('contentTypes').insert(contentTypeInfo, function() {
-				dbObj.close();
-			});
+		new require('../library/content').ContentTypeModel(contentTypeInfo).save(function(err, docInfo) {
+			if(err)
+				console.log(err);
 		});
 	});
 };
@@ -104,8 +127,7 @@ var loadDefaultContents = function(callback) {
 		           			excerpt: 'Welcome to Mopublish About Us Page.',
 		           			userId: 1,
 		           			parentId: false,
-		           			status: contentObj.statusList.PUBLISH,
-		           			created: Math.floor(Date.now() / 1000) 
+		           			status: contentObj.statusList.PUBLISH
 	                   },
 	                   {
 		                	type: 'page',
@@ -115,8 +137,7 @@ var loadDefaultContents = function(callback) {
 		           			excerpt: 'Welcome to Mopublish Privacy Policy Page.',
 		           			userId: 1,
 		           			parentId: false,
-		           			status: contentObj.statusList.PUBLISH,
-		           			created: Math.floor(Date.now() / 1000) 
+		           			status: contentObj.statusList.PUBLISH
 	                   },
 	                   {
 		                	type: 'page',
@@ -126,8 +147,7 @@ var loadDefaultContents = function(callback) {
 		           			excerpt: 'Welcome to Mopublish Terms of Service Page.',
 		           			userId: 1,
 		           			parentId: false,
-		           			status: contentObj.statusList.PUBLISH,
-		           			created: Math.floor(Date.now() / 1000) 
+		           			status: contentObj.statusList.PUBLISH
 	                   },
 	                   {
 		                	type: 'page',
@@ -137,8 +157,7 @@ var loadDefaultContents = function(callback) {
 		           			excerpt: 'Welcome to Mopublish About Us Page.',
 		           			userId: 1,
 		           			parentId: false,
-		           			status: contentObj.statusList.PUBLISH,
-		           			created: Math.floor(Date.now() / 1000) 
+		           			status: contentObj.statusList.PUBLISH
 	                   },
 	                   {
 		                	type: 'blog',
@@ -148,24 +167,15 @@ var loadDefaultContents = function(callback) {
 		           			excerpt: 'This is first post on Mopublish CMS.',
 		           			userId: 1,
 		           			parentId: false,
-		           			status: contentObj.statusList.PUBLISH,
-		           			created: Math.floor(Date.now() / 1000) 
+		           			status: contentObj.statusList.PUBLISH
 	                   }
 			
 	];
 	
 	contentList.forEach(function(contentInfo) {
-		ContentModelObj = new require('./library/model').ContentModel();
-		ContentModelObj.type = contentInfo.type;
-		ContentModelObj.title = contentInfo.title;
-		ContentModelObj.slug = contentInfo.slug;
-		ContentModelObj.description = contentInfo.description;
-		ContentModelObj.excerpt = contentInfo.excerpt;
-		ContentModelObj.userId = contentInfo.userId;
-		ContentModelObj.parentId = contentInfo.parentId;
-		ContentModelObj.status = contentInfo.status;
-		ContentModelObj.save(function(err, docInfo) {
-			  console.log(err, docInfo);
+		new require('../library/content').ContentModel(contentInfo).save(function(err, docInfo) {
+			if(err)
+				console.log(err);
 		});
 	});
 };
@@ -191,10 +201,9 @@ var loadDefaultTaxonomies = function(callback) {
 	                  ];
 	
 	taxonomyTypeList.forEach(function(taxonomyTypeInfo) {
-		require('../library/db').connect(function(dbObj) {
-			dbObj.collection('taxonomyTypes').insert(taxonomyTypeInfo, function() {
-				dbObj.close();
-			});
+		new require('../library/taxonomy').TaxonomyTypeModel(taxonomyTypeInfo).save(function(err, docInfo) {
+			if(err)
+				console.log(err);
 		});
 	});
 };
@@ -206,10 +215,9 @@ var loadDefaultTaxonomyTerms = function(callback) {
 	//	load default taxonomy types
 	var taxonomyTermList = [
 	                   {
-	                	   slug: 'default',
+	                	   slug: helperObj.sanetizeTitle('default'),
 	                	   title: 'Default',
-	                	   taxonomy: 'category',
-	                	   parentId: false
+	                	   taxonomy: 'category'
 	                   },
 	                   {
 	                	   slug: helperObj.sanetizeTitle('Example Tag'),
@@ -219,10 +227,9 @@ var loadDefaultTaxonomyTerms = function(callback) {
 	                  ];
 	
 	taxonomyTermList.forEach(function(taxonomyTermInfo) {
-		require('../library/db').connect(function(dbObj) {
-			dbObj.collection('taxonomyTerms').insert(taxonomyTermList, function() {
-				dbObj.close();
-			});
+		new require('../library/taxonomy').TaxonomyTermModel(taxonomyTermInfo).save(function(err, docInfo) {
+			if(err)
+				console.log(err);
 		});
 	});
 };
@@ -250,35 +257,38 @@ var loadDefaultSettings = function() {
 	                   },
 	                   {
 	                	   key: 'socialFacebook',
-	                	   value: 'h:i:s'
+	                	   value: '#'
 	                   },
 	                   {
 	                	   key: 'socialTwitter',
-	                	   value: 'h:i:s'
+	                	   value: '#'
 	                   },
 	                   {
 	                	   key: 'socialLinkedin',
-	                	   value: 'h:i:s'
+	                	   value: '#'
 	                   },
 	                   {
 	                	   key: 'socialYoutube',
-	                	   value: 'h:i:s'
+	                	   value: '#'
 	                   },
 	                   {
 	                	   key: 'socialGPlus',
-	                	   value: 'h:i:s'
+	                	   value: '#'
 	                   },
 	                   {
 	                	   key: 'socialPinterest',
-	                	   value: 'h:i:s'
+	                	   value: '#'
+	                   },
+	                   {
+	                	   key: 'createdOn',
+	                	   value: Date.now()
 	                   }
 	                  ];
 	
 	settingList.forEach(function(settingInfo) {
-		require('../library/db').connect(function(dbObj) {
-			dbObj.collection('settings').insert(settingInfo, function() {
-				dbObj.close();
-			});
+		new require('../library/settings').SettingsModel(settingInfo).save(function(err, docInfo) {
+			if(err)
+				console.log(err);
 		});
 	});
 };
@@ -286,21 +296,20 @@ var loadDefaultSettings = function() {
 /**
  * load default REST api settings
  */
-var loadDefaultRESTAPISettings = function() {
+var loadDefaultRESTAPISettings = function(userId) {
 	var md5 = require('MD5');
 	var keyList = [
 	                   {
 	                	   type: 'REST',
 	                	   accessId: md5(Date.now() + utilObj.randomGenerator(15)),
 	                	   secret: utilObj.randomGenerator(50),
-	                	   userId: 1
+	                	   userId: userId
 	                   }
 	                  ];
 	keyList.forEach(function(keyInfo) {
-		require('../library/db').connect(function(dbObj) {
-			dbObj.collection('apiAccess').insert(keyInfo, function() {
-				dbObj.close();
-			});
+		new require('../library/settings').RESTSettingsModel(keyInfo).save(function(err, docInfo) {
+			if(err)
+				console.log(err);
 		});
 	});
 };
