@@ -1,3 +1,5 @@
+global.ROOT_PATH = __dirname;
+
 var appConfigObj = require('./library/config').loadConfig();
 var utilObj = require('./library/util');
 var helperObj = require('./library/helper');
@@ -209,11 +211,14 @@ app.get('/mp-manager/update-content', function(httpRequest, httpResponse) {
 			require('./library/content').ContentModel.findOne({
 				'_id': httpRequest.query.cid
 			}, function (err, docInfo) {
-				httpResponse.render('update-content', {
-					locals: {
-						cid:  httpRequest.query.cid,
-						contentInfo: docInfo
-					}
+				require('./library/content').getMetaInfoList(httpRequest.query.cid, function(metaInfoList) {
+					httpResponse.render('update-content', {
+						locals: {
+							cid:  httpRequest.query.cid,
+							contentInfo: docInfo,
+							metaInfo: metaInfoList
+						}
+					});
 				});
 			});
 		}
@@ -300,8 +305,14 @@ app.get('/mp-manager/settings', function(httpRequest, httpResponse) {
 app.get('/mp-manager/settings/themes', function(httpRequest, httpResponse) {
 	app.set('views', __dirname + '/mp-manager/views');
 	app.set('layout', __dirname + '/mp-manager/views/layout.ejs');
+	require('./library/settings').loadThemes(function(themeList) {
+		httpResponse.render('themes', {
+			locals: {
+				themes: themeList
+			}
+		});
+	});
 	
-	httpResponse.render('themes');
 });
 
 app.get('/mp-manager/settings/theme-activate', function(httpRequest, httpResponse) {
@@ -314,10 +325,41 @@ app.get('/mp-manager/settings/theme-activate', function(httpRequest, httpRespons
 app.get('/mp-manager/settings/content-types', function(httpRequest, httpResponse) {
 	app.set('views', __dirname + '/mp-manager/views');
 	app.set('layout', __dirname + '/mp-manager/views/layout.ejs');
-	
-	httpResponse.render('content-types');
+	require('./library/content').ContentTypeModel.find(function(err, itemList) {
+		httpResponse.render('content-types', {
+			locals: {
+				contentTypes: itemList
+			}
+		});
+	});
 }).post('/mp-manager/settings/content-types', function(httpRequest, httpResponse) {
-	httpResponse.end('Ok');
+	if(httpRequest.body.title && httpRequest.body.slug) {
+		new require('./library/content').ContentTypeModel({
+			slug: httpRequest.body.slug,
+			title: httpRequest.body.title,
+			description: httpRequest.body.description,
+			hierarchical: (0 == httpRequest.body.hierarchical)?false:true
+		}).save(function(err, docInfo) {
+			httpResponse.redirect(httpRequest.url);
+		});
+	}
+});
+
+/**
+ * Menu Handler: Settings -> REST API
+ */
+app.get('/mp-manager/settings/api/rest', function(httpRequest, httpResponse) {
+	app.set('views', __dirname + '/mp-manager/views');
+	app.set('layout', __dirname + '/mp-manager/views/layout.ejs');
+	require('./library/settings').RESTSettingsModel.find(function(err, apiList) {
+		console.log(err, apiList);
+		//	httpResponse.end('asd');
+		httpResponse.render('api', {
+			locals: {
+				apiList: apiList
+			}
+		});
+	});
 });
 
 /**

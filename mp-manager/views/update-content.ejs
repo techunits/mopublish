@@ -1,23 +1,29 @@
 <section class="update-content">
-	<h1 class="section-heading">Create New</h1>
+	<h1 class="section-heading">Create New <%=	locals.contentInfo.type	%></h1>
 	<form class="form-group	row" method="post" action="<%=	httpReq.url	%>"	ng-controller="UpdateContent" name="updateContent" enctype="multipart/form-data">
 		<input type="hidden" name="type" value="<%=	locals.contentInfo.type	%>" />
 		<input type="hidden" name="cid" value="<%=	locals.cid	%>" />
 		<aside class="col-md-12	col-lg-8">
 			<div class="form-group">
 				<label>Title*</label>
-				<input type="text" name="title" placeholder="Enter title here" value="<%=	locals.contentInfo.title	%>" class="form-control" required />
-				<span class="col-md-12	row	slug">Permalink: http://www.techunits.com/asdasd</span>
+				<input type="text" name="title" placeholder="Enter title here" value="<%=	(locals.contentInfo.title)?locals.contentInfo.title:''	%>" class="form-control" required />
+				<%	if(locals.contentInfo.slug)	{	%>
+					<span class="col-md-12	row	slug">Permalink: <%=	locals.contentInfo.slug	%></span>
+					&nbsp;&nbsp;
+					<a href="" title="Visit Content">
+						<i class="glyphicon glyphicon-share-alt"></i>
+					</a>
+				<%	}	%>
 				<div class="clearfix"></div>
 			</div>
 			
 			<div class="form-group">
-				<textarea name="description" placeholder="Insert your full post description here..." rows="15" class="form-control	maineditor"><%=	locals.contentInfo.description	%></textarea>
+				<textarea name="description" placeholder="Insert your full post description here..." rows="15" class="form-control	maineditor"><%=	(locals.contentInfo.description)?locals.contentInfo.description:''	%></textarea>
 			</div>
 			
 			<div class="form-group">
 				<label>Excerpt*</label>
-				<textarea name="excerpt" placeholder="Enter Brief info here..." rows="4" class="form-control" required><%=	locals.contentInfo.excerpt	%></textarea>
+				<textarea name="excerpt" placeholder="Enter Brief info here..." rows="4" class="form-control" required><%=	(locals.contentInfo.excerpt)?locals.contentInfo.excerpt:''	%></textarea>
 			</div>
 			
 			<div class="widget-base">
@@ -26,8 +32,8 @@
 					<div class="col-md-4">
 						<label>Status</label>
 						<select name="status" class="form-control">
-							<option value="draft" <%=	(0 == locals.contentInfo.status)?'selected':''	%>>Draft</option>
 							<option value="publish" <%=	(1 == locals.contentInfo.status)?'selected':''	%>>Published</option>
+							<option value="draft" <%=	(0 == locals.contentInfo.status)?'selected':''	%>>Draft</option>
 						</select>
 					</div>
 					<div class="col-md-4">
@@ -57,15 +63,15 @@
 				<h3 class="section-heading">SEO Meta Tags</h3>
 				<div class="col-md-12	form-group">
 					<label>Meta Title</label>
-					<input type="text" name="metaTitle" placeholder="SEO Page Title" value="" class="form-control" />
+					<input type="text" name="metaTitle" placeholder="SEO Page Title" value="<%=	(locals.metaInfo.metaTitle)?locals.metaInfo.metaTitle:''	%>" class="form-control" />
 				</div>
 				<div class="col-md-12	form-group">
 					<label>Meta Description</label>
-					<textarea name="metaDescription" placeholder="SEO Brief Info" rows="3" class="form-control"></textarea>
+					<textarea name="metaDescription" placeholder="SEO Brief Info" rows="3" class="form-control"><%=	(locals.metaInfo.metaDescription)?locals.metaInfo.metaDescription:''	%></textarea>
 				</div>
 				<div class="col-md-12	form-group">
 					<label>Meta Keywords</label>
-					<input type="text" name="metaKeywords" placeholder="Prefered Keywords" value="" class="form-control" />
+					<input type="text" name="metaKeywords" placeholder="Prefered Keywords" value="<%=	(locals.metaInfo.metaKeywords)?locals.metaInfo.metaKeywords:''	%>" class="form-control" />
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -91,6 +97,19 @@
 			</div>
 			
 			<div class="form-group	widget-base">
+				<h3 class="section-heading">GeoLocation</h3>
+				<div class="col-md-12	form-group">
+					<label>Latitude</label>
+					<input type="text" name="lat" placeholder="0.0" value="<%=	(locals.contentInfo.coordinates)?locals.contentInfo.coordinates[0]:''	%>" class="form-control" />
+				</div>
+				<div class="col-md-12	form-group">
+					<label>Longitude</label>
+					<input type="text" name="lng" placeholder="0.0" value="<%=	(locals.contentInfo.coordinates)?locals.contentInfo.coordinates[1]:''	%>" class="form-control" />
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+			<div class="form-group	widget-base">
 				<h3 class="section-heading">Upload &amp; Attach Media</h3>
 				<div class="col-md-12	form-group">
 					<input type="file" name="attachments" multiple />
@@ -101,11 +120,3 @@
 		</aside>
 	</form>
 </section>
-
-<style type="text/css">
-.update-content	.slug	{
-	font-size: 85%;
-	padding-top: 5px;
-	color: #777;
-}
-</style>

@@ -1,3 +1,4 @@
+var appConfigObj = require('../library/config').loadConfig();
 var db = require('../library/db');
 
 /**
@@ -58,3 +59,23 @@ var loadSettings = function(callback) {
 	});
 };
 exports.loadSettings = loadSettings;
+
+/**
+ * load themes from file system
+ */
+var loadThemes = function(callback) {
+	var fs = require('fs');
+	var finalThemeList = [];
+	fs.readdirSync(ROOT_PATH + '/themes/').forEach(function(directory) {
+		if(fs.existsSync(ROOT_PATH + '/themes/' + directory + '/info.json')) {
+			var infoObj = require(ROOT_PATH + '/themes/' + directory + '/info.json');
+			finalThemeList.push({
+				screenshot: '/media/' + directory + '/screenshot.png',
+				info: infoObj
+			});
+		}
+	});
+	//	console.log(finalThemeList);
+	callback(finalThemeList);
+};
+exports.loadThemes = loadThemes;

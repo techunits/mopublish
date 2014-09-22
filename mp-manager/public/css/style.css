@@ -144,6 +144,39 @@ form	label.error	{
 	display: block;
 }
 
+/*	update content	*/
+.update-content	.slug	{
+	font-size: 85%;
+	padding-top: 5px;
+	color: #777;
+}
+
+/*	theme list	*/
+.theme-item	.inner	{
+	border: 1px solid #DADADA;
+	padding: 2px;
+	border-radius: 4px;
+}
+.theme-item	.inner:hover	{
+	box-shadow: 0px 0px 10px #DADADA;
+	cursor: pointer;
+}
+.theme-item	h4	{
+	font-size: 90%;
+	padding: 0px 6px;
+}
+.theme-item	h4.desc	{
+	height: 20px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.theme-item	.image-base	img	{
+	width: 100%;
+	max-height: 140px;
+}
+
+
 /*footer section*/
 footer {
     margin: 0 auto;

@@ -1,4 +1,4 @@
-<section class="content-list">
+<section class="content-list	row">
 	<h1 class="section-heading">Blogs</h1>
 	<div class="form-group	archive">
 		<a href="<%=	httpReq.url	%>">All</a>
@@ -9,7 +9,13 @@
 		&nbsp;&nbsp;|&nbsp;&nbsp;
 		<a href="/mp-manager/update-content?type=<%=	locals.type	%>">Create New</a>
 	</div>
-	<ul class="entry	row">
+	<ul class="entry">
+		<li class="heading">
+			<div class="col-md-4">Title</div>
+			<div class="col-md-6">Brief Description</div>
+			<div class="col-md-2">Created On</div>
+			<div class="clearfix"></div>
+		</li>
 		<%	locals.contents.forEach(function(contentInfo) {	%>
 			<li>
 				<div class="col-md-4">

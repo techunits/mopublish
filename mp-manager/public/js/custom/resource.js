@@ -53,3 +53,23 @@ mpmgrApp.controller('UpdateContent', function() {
 		}
 	});
 });
+
+mpmgrApp.controller('ContentTypeSettings', function() {
+	//	add form validations
+	$('form[name="contentTypeSettings"]').validate();
+});
+
+mpmgrApp.controller('RegisterAccount', function() {
+	//	add form validations
+	$('form[name="registerAccount"]').validate();
+});
+
+mpmgrApp.controller('AccountLogin', function() {
+	//	add form validations
+	$('form[name="accountLogin"]').validate();
+});
+
+mpmgrApp.controller('ForgotPassword', function() {
+	//	add form validations
+	$('form[name="forgotPassword"]').validate();
+});

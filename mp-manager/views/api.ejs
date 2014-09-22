@@ -1,0 +1,21 @@
+<section class="content-list">
+	<h1 class="section-heading">REST API Details</h1>
+	<ul class="entry	form-group">
+		<li class="heading">
+			<div class="col-md-1">Type</div>
+			<div class="col-md-3">AccessId</div>
+			<div class="col-md-4">Secret</div>
+			<div class="col-md-3">Created On</div>
+			<div class="clearfix"></div>
+		</li>
+		<%	locals.apiList.forEach(function(apiInfo)	{	%>
+			<li>
+				<div class="col-md-1"><%=	apiInfo.type	%></div>
+				<div class="col-md-3"><pre><%=	apiInfo.accessId	%></pre></div>
+				<div class="col-md-4"><pre><%=	apiInfo.secret	%></pre></div>
+				<div class="col-md-3"><%=	apiInfo.created	%></div>
+				<div class="clearfix"></div>
+			</li>
+		<%	});	%>
+	</ul>
+</section>

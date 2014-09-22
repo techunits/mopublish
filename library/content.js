@@ -23,7 +23,8 @@ exports.visibilityList = contentVisibilityListGlobal;
 var ContentTypeModel = db.mongooseObj.model('contentType', new db.mongooseObj.Schema({
 	slug	: { 
 		type: String, 
-		'default': null
+		'default': null,
+		index: true
 	},
 	title	: { 
 		type: String, 
@@ -31,8 +32,7 @@ var ContentTypeModel = db.mongooseObj.model('contentType', new db.mongooseObj.Sc
 	},
 	description	: { 
 		type: String, 
-		'default': null,
-		index: true
+		'default': null
 	},
 	hierarchical: { 
 		type: Boolean, 
@@ -85,8 +85,13 @@ var ContentModel = db.mongooseObj.model('contents', new db.mongooseObj.Schema({
 		max: 1,
 		index: true
 	},
+	coordinates: {
+		type: [],
+		index: '2d',
+		'default': [0,0]
+	},
     status		: { 
-		type: Number, 
+		type: Number,
 		'default': 0,
 		min: 0,
 		max: 4,
@@ -157,26 +162,23 @@ var getContentBy = function(field, value, contentType, success, failed) {
 		type: contentType,
 	};
 	query[field] = value;
-	require('../library/db').connect(function(dbObj) {
-		dbObj.collection('contents').findOne(query, function(err, itemInfo) {
-			dbObj.close();
-			
-			if(err) {
-				console.log(err);
-			}
-			else if(itemInfo) {
-				success(itemInfo);
-			}
-			else {
-				failed();
-			}
-		});
+	ContentModel.findOne(query, function(err, docInfo) {
+		if(err) {
+			console.log(err);
+			failed();
+		}
+		else if(docInfo) {
+			success(docInfo);
+		}
+		else {
+			failed();
+		}
 	});
 };
 exports.getContentBy = getContentBy;
 
 /**
- * 
+ * get meta value w.r.t contentId & Key
  */
 var getMetaInfo = function(field, cid, callback) {
 	ContentMetaModel.findOne({
@@ -190,6 +192,26 @@ var getMetaInfo = function(field, cid, callback) {
 	});
 };
 exports.getMetaInfo = getMetaInfo;
+
+/**
+ * get meta value list w.r.t contentId
+ */
+var getMetaInfoList = function(cid, callback) {
+	ContentMetaModel.find({
+		cid: cid
+	}, function(err, docList) {
+		if(err)
+			console.log(err);
+		
+		var finalMetaList = [];
+		docList.forEach(function(docInfo) {
+			finalMetaList[docInfo.key]= docInfo.value;
+		});
+		
+		callback(finalMetaList);
+	});
+};
+exports.getMetaInfoList = getMetaInfoList;
 
 /**
  * update content informations
@@ -214,7 +236,8 @@ var updateContent = function(params, userId, success, failed) {
 		excerpt: params.excerpt,
 		userId: userId,
 		status: contentStatusListGlobal[params.status.toUpperCase()],
-		visibility: contentVisibilityListGlobal[params.visibility.toUpperCase()]
+		visibility: contentVisibilityListGlobal[params.visibility.toUpperCase()],
+		coordinates: [(params.lat)?parseFloat(params.lat):0.0, (params.lng)?parseFloat(params.lng):0.0]
 	}, function(err, docInfo) {
 		console.log(err, docInfo);
 		if(err) {

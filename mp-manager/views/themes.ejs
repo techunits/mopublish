@@ -1,82 +1,26 @@
 <h1 class="section-heading">Theme Settings</h1>
 <section class="row">
-	<article class="col-sm-4	col-md-3	form-group	theme-item">
-		<div class="inner">
-			<div class="image-base">
-				<img src="https://scontent-a-hkg.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10417505_1467344830206099_2132258130428698862_n.png?oh=2e5ad6c925f70494fabb08481d7b9790&oe=5485E7BB" alt="theme" />
+	<%	locals.themes.forEach(function(themeInfo)	{	%>
+		<article class="col-sm-4	col-md-3	form-group	theme-item">
+			<div class="inner">
+				<div class="image-base">
+					<img src="https://scontent-a-hkg.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10417505_1467344830206099_2132258130428698862_n.png?oh=2e5ad6c925f70494fabb08481d7b9790&oe=5485E7BB" alt="theme" />
+				</div>
+				<h4><%=	themeInfo.info.name	%></h4>
+				<h4>Author: <a href="<%=	themeInfo.info.author.url	%>" title="<%=	themeInfo.info.author.name	%>"><%=	themeInfo.info.author.name	%></a></h4>
+				<h4 class="desc"><%=	themeInfo.info.description	%></h4>
+				<%	if('Mopublish Official' == themeInfo.info.name)	{	%>
+					<h4 class="color-green">
+						<i class="glyphicon glyphicon-ok"></i> Active
+					</h4>
+				<%	}	else	{	%>
+					<h4>
+						<a href="#" title="Activate theme: <%=	themeInfo.info.author.name	%>">
+							<i class="glyphicon glyphicon-ok"></i> Activate Theme
+						</a>
+					</h4>
+				<%	}	%>
 			</div>
-			<h4>First Theme</h4>
-			<h4>Author: <a href="http://www.techunits.com" title="Team Techunits">Team Techunits</a></h4>
-			<h4>This is a nice theme, please use it.</h4>
-			<h4><a href="#" title="Activate theme: Second Theme"><i class="glyphicon glyphicon-ok"></i> Activate Theme</a></h4>
-		</div>
-	</article>
-	
-	<article class="col-sm-4	col-md-3	form-group	theme-item">
-		<div class="inner">
-			<div class="image-base">
-				<img src="https://scontent-a-hkg.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10417505_1467344830206099_2132258130428698862_n.png?oh=2e5ad6c925f70494fabb08481d7b9790&oe=5485E7BB" alt="theme" />
-			</div>
-			<h4>Second Theme</h4>
-			<h4>Author: <a href="http://www.techunits.com" title="Team Techunits">Team Techunits</a></h4>
-			<h4>This is a nice theme, please use it.</h4>
-			<h4><a href="#" title="Activate theme: Second Theme"><i class="glyphicon glyphicon-ok"></i> Activate Theme</a></h4>
-		</div>
-	</article>
-	
-	<article class="col-sm-4	col-md-3	form-group	theme-item">
-		<div class="inner">
-			<div class="image-base">
-				<img src="https://scontent-a-hkg.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10417505_1467344830206099_2132258130428698862_n.png?oh=2e5ad6c925f70494fabb08481d7b9790&oe=5485E7BB" alt="theme" />
-			</div>
-			<h4>Second Theme</h4>
-			<h4>Author: <a href="http://www.techunits.com" title="Team Techunits">Team Techunits</a></h4>
-			<h4>This is a nice theme, please use it.</h4>
-			<h4><a href="#" title="Activate theme: Second Theme"><i class="glyphicon glyphicon-ok"></i> Activate Theme</a></h4>
-		</div>
-	</article>
-	
-	<article class="col-sm-4	col-md-3	form-group	theme-item">
-		<div class="inner">
-			<div class="image-base">
-				<img src="https://scontent-a-hkg.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10417505_1467344830206099_2132258130428698862_n.png?oh=2e5ad6c925f70494fabb08481d7b9790&oe=5485E7BB" alt="theme" />
-			</div>
-			<h4>Second Theme</h4>
-			<h4>Author: <a href="http://www.techunits.com" title="Team Techunits">Team Techunits</a></h4>
-			<h4>This is a nice theme, please use it.</h4>
-			<h4><a href="#" title="Activate theme: Second Theme"><i class="glyphicon glyphicon-ok"></i> Activate Theme</a></h4>
-		</div>
-	</article>
-	
-	<article class="col-sm-4	col-md-3	form-group	theme-item">
-		<div class="inner">
-			<div class="image-base">
-				<img src="https://scontent-a-hkg.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10417505_1467344830206099_2132258130428698862_n.png?oh=2e5ad6c925f70494fabb08481d7b9790&oe=5485E7BB" alt="theme" />
-			</div>
-			<h4>Second Theme</h4>
-			<h4>Author: <a href="http://www.techunits.com" title="Team Techunits">Team Techunits</a></h4>
-			<h4>This is a nice theme, please use it.</h4>
-			<h4><a href="#" title="Activate theme: Second Theme"><i class="glyphicon glyphicon-ok"></i> Activate Theme</a></h4>
-		</div>
-	</article>
+		</article>
+	<%	});	%>
 </section>
-
-<style type="text/css">
-.theme-item	.inner	{
-	border: 1px solid #DADADA;
-	padding: 2px;
-	border-radius: 4px;
-}
-.theme-item	.inner:hover	{
-	box-shadow: 0px 0px 10px #DADADA;
-	cursor: pointer;
-}
-.theme-item	h4	{
-	font-size: 90%;
-	padding: 0px 6px;
-}
-.theme-item	.image-base	img	{
-	width: 100%;
-}
-
-</style>

@@ -8,20 +8,15 @@
 			<div class="col-md-3">Hierarchical</div>
 			<div class="clearfix"></div>
 		</li>
-		<li>
-			<div class="col-md-3">Page</div>
-			<div class="col-md-3">page</div>
-			<div class="col-md-3">Content type page with hierarchy support.</div>
-			<div class="col-md-3">Yes</div>
-			<div class="clearfix"></div>
-		</li>
-		<li>
-			<div class="col-md-3">Blog</div>
-			<div class="col-md-3">blog</div>
-			<div class="col-md-3">Content type blog with no hierarchy support.</div>
-			<div class="col-md-3">No</div>
-			<div class="clearfix"></div>
-		</li>
+		<%	locals.contentTypes.forEach(function(typeInfo)	{	%>
+			<li>
+				<div class="col-md-3"><%=	typeInfo.title	%></div>
+				<div class="col-md-3"><%=	typeInfo.slug	%></div>
+				<div class="col-md-3"><%=	typeInfo.description	%></div>
+				<div class="col-md-3"><%=	(true === typeInfo.hierarchical)?'Yes':'No'	%></div>
+				<div class="clearfix"></div>
+			</li>
+		<%	});	%>
 	</ul>
 </section>
 
@@ -30,7 +25,7 @@
 	<div class="form-group">
 		<label class="col-md-3">Title / Content Type</label>
 		<div class="col-md-6">
-			<input type="text" name="sitename" value="" class="form-control" required />
+			<input type="text" name="title" value="" class="form-control" required />
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -38,7 +33,7 @@
 	<div class="form-group">
 		<label class="col-md-3">Slug</label>
 		<div class="col-md-6">
-			<input type="text" name="tagline" value="" class="form-control" required />
+			<input type="text" name="slug" value="" class="form-control" required />
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -46,7 +41,7 @@
 	<div class="form-group">
 		<label class="col-md-3">Brief Description</label>
 		<div class="col-md-6">
-			<textarea type="text" name="sitename" value=""  class="form-control" rows="5" ></textarea>
+			<textarea type="text" name="description" value=""  class="form-control" rows="5" ></textarea>
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -55,8 +50,8 @@
 		<label class="col-md-3">Is hierarchical?</label>
 		<div class="col-md-6">
 			<select name="hierarchical" class="form-control">
-				<option name="1">No</option>
-				<option name="1">Yes</option>
+				<option value="0">No</option>
+				<option value="1">Yes</option>
 			</select>
 		</div>
 		<div class="clearfix"></div>

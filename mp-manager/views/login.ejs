@@ -3,15 +3,15 @@
 		<div class="form-group" style="text-align: center;">
 			<img src="/mp-manager/images/logo.png" alt="" height="45" />
 		</div>
-		<form action="/mp-manager/login" method="post" class="form-group">
+		<form action="/mp-manager/login" method="post" class="form-group" name="accountLogin" ng-controller="AccountLogin">
 			<div class="form-group">
 				<label>Email</label>
-				<input type="email" name="email" placeholder="Your email... e.g. admin@example.com" class="form-control" />
+				<input type="email" name="email" placeholder="Your email... e.g. admin@example.com" class="form-control" required />
 			</div>
 			
 			<div class="form-group">
 				<label>Password</label>
-				<input type="password" name="password" placeholder="Password" class="form-control" />
+				<input type="password" name="password" placeholder="Password" class="form-control" required />
 			</div>
 			
 			<div class="form-group">
