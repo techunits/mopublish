@@ -19,7 +19,8 @@
 	"MD5": "^1.2.x",
 	"morgan": "^1.3.x",
 	"nodemailer": "1.0.x",
-	"nodemailer-smtp-transport": "0.1.x"
+	"nodemailer-smtp-transport": "0.1.x",
+	"cluster": "0.x"
   },
   "engines": {
     "node": "0.11.x"
