@@ -9,6 +9,7 @@
   "dependencies": {
 	"express": "^4.0.0",
 	"body-parser": "^1.6.3",
+	"stylus": "0.x",
 	"string": "^1.9.1",
 	"express-session": "^1.8.0",
 	"express-ejs-layouts": "^0.1.0",
