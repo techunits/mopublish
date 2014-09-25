@@ -18,9 +18,7 @@ else {
 	//	required express configurations
 	var express = require('express'),
 		bodyParser = require('body-parser'),
-		expressLayouts = require('express-ejs-layouts'),
-		session = require('express-session');
-	var MongoStore = require('connect-mongo')(session);
+		expressLayouts = require('express-ejs-layouts');
 	
 	var app = express();
 	
@@ -32,21 +30,6 @@ else {
 	app.use(bodyParser.json());
 	app.use(expressLayouts);
 	
-	/**
-	 * Initialize Session
-	 */
-	app.use(session({
-		secret: appConfigObj.session.secret,
-		saveUninitialized: true,
-		resave: true,
-		store: new MongoStore({
-			host: appConfigObj.database.host,
-			port: appConfigObj.database.port,
-			db: appConfigObj.database.db,
-			collection: 'sessions'
-		})
-	}));
-
 	/**
 	 * dynamically load all required routes
 	 */
