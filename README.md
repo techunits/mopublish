@@ -20,3 +20,9 @@ Please note, Monpublish is in active testing be our developers to provide a extr
 * http://www.techunits.com
 * http://www.mopublish.com
 
+
+## License
+
+**Mopublish** is licensed under [MIT license](https://github.com/techunits/mopublish/blob/master/LICENSE), so you are free to use it as you like.
+
+
