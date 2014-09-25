@@ -1,0 +1,26 @@
+<h1 class="section-heading">Theme Settings</h1>
+<section class="row">
+	<%	locals.themes.forEach(function(themeInfo)	{	%>
+		<article class="col-sm-4	col-md-3	form-group	theme-item">
+			<div class="inner">
+				<div class="image-base">
+					<img src="/assets/<%=	themeInfo.info.basepath	%>/screenshot.png" alt="theme" />
+				</div>
+				<h4><%=	themeInfo.info.name	%></h4>
+				<h4>Author: <a href="<%=	themeInfo.info.author.url	%>" title="<%=	themeInfo.info.author.name	%>"><%=	themeInfo.info.author.name	%></a></h4>
+				<h4 class="desc"><%=	themeInfo.info.description	%></h4>
+				<%	if(locals.activated == themeInfo.info.basepath)	{	%>
+					<h4 class="color-green">
+						<i class="glyphicon glyphicon-ok"></i> Active
+					</h4>
+				<%	}	else	{	%>
+					<h4>
+						<a href="/mp-manager/settings/theme-activate?t=<%=	themeInfo.info.basepath	%>" title="Activate theme: <%=	themeInfo.info.author.name	%>">
+							<i class="glyphicon glyphicon-ok"></i> Activate Theme
+						</a>
+					</h4>
+				<%	}	%>
+			</div>
+		</article>
+	<%	});	%>
+</section>

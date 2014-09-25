@@ -1,0 +1,135 @@
+<section class="update-content">
+	<h1 class="section-heading">Create New <%=	locals.content.info.type	%></h1>
+	<form class="form-group	row" method="post" action="<%=	httpReq.url	%>"	ng-controller="UpdateContent" name="updateContent" enctype="multipart/form-data">
+		<input type="hidden" name="type" value="<%=	locals.content.info.type	%>" />
+		<input type="hidden" name="cid" value="<%=	locals.cid	%>" />
+		<aside class="col-md-12	col-lg-8">
+			<div class="form-group">
+				<label>Title*</label>
+				<input type="text" name="title" placeholder="Enter title here" value="<%=	(locals.content.info.title)?locals.content.info.title:''	%>" class="form-control" required />
+				<%	if(locals.content.info.slug)	{	%>
+					<span class="col-md-12	row	slug">Permalink: <%=	locals.content.info.slug	%></span>
+					&nbsp;&nbsp;
+					<a href="" title="Visit Content">
+						<i class="glyphicon glyphicon-share-alt"></i>
+					</a>
+				<%	}	%>
+				<div class="clearfix"></div>
+			</div>
+			
+			<div class="form-group">
+				<textarea name="description" placeholder="Insert your full post description here..." rows="15" class="form-control	maineditor"><%=	(locals.content.info.description)?locals.content.info.description:''	%></textarea>
+			</div>
+			
+			<div class="form-group">
+				<label>Excerpt*</label>
+				<textarea name="excerpt" placeholder="Enter Brief info here..." rows="4" class="form-control" required><%=	(locals.content.info.excerpt)?locals.content.info.excerpt:''	%></textarea>
+			</div>
+			
+			<div class="form-group	widget-base">
+				<h3 class="section-heading">Upload &amp; Attach Media</h3>
+				<div class="col-md-12	form-group">
+					<input type="file" name="attachments" multiple />
+					<br />
+					<div id="mediaAttachments">
+						<%	locals.content.attachments.forEach(function(attachmentInfo)	{	%>
+							<div class="col-md-4	form-group">
+								<img src="/media<%=	attachmentInfo.path	%>" alt="<%=	attachmentInfo.title	%>" width="100%" />
+								<div class="img-actions">
+									<h4><%=	attachmentInfo.title	%></h4>
+									<a href="/mp-manager/remove-attachment/<%=	attachmentInfo.title	%>">
+										<i class="glyphicon glyphicon-remove-sign"></i> Remove
+									</a>
+								</div>
+							</div>
+						<%	});	%>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+			<div class="widget-base">
+				<div class="form-group">
+					<h3 class="section-heading">Publish</h3>
+					<div class="col-md-4">
+						<label>Status</label>
+						<select name="status" class="form-control">
+							<option value="publish" <%=	(1 == locals.content.info.status)?'selected':''	%>>Published</option>
+							<option value="draft" <%=	(0 == locals.content.info.status)?'selected':''	%>>Draft</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label>Visibility</label>
+						<select name="visibility" class="form-control">
+							<option value="public" <%=	(1 == locals.content.info.visibility)?'selected':''	%>>Public</option>
+							<option value="private" <%=	(0 == locals.content.info.visibility)?'selected':''	%>>Private</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label>Publish Date</label>
+						<input type="text" name="publishDate" placeholder="DD-MM-YYYY" value="<%=	locals.content.info.created.getDate()	%>-<%=	locals.content.info.created.getMonth()	%>-<%=	locals.content.info.created.getFullYear()	%>" class="form-control icon icon-calendar" required />
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="col-md-12	form-group">
+					<input type="submit" name="submit" value="Update Now" class="btn-info" />
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+			
+		</aside>
+		
+		<aside class="col-lg-4	row">
+			<div class="form-group	widget-base">
+				<h3 class="section-heading">SEO Meta Tags</h3>
+				<div class="col-md-12	form-group">
+					<label>Meta Title</label>
+					<input type="text" name="metaTitle" placeholder="SEO Page Title" value="<%=	(locals.content.meta.metaTitle)?locals.content.meta.metaTitle:''	%>" class="form-control" />
+				</div>
+				<div class="col-md-12	form-group">
+					<label>Meta Description</label>
+					<textarea name="metaDescription" placeholder="SEO Brief Info" rows="3" class="form-control"><%=	(locals.content.meta.metaDescription)?locals.content.meta.metaDescription:''	%></textarea>
+				</div>
+				<div class="col-md-12	form-group">
+					<label>Meta Keywords</label>
+					<input type="text" name="metaKeywords" placeholder="Prefered Keywords" value="<%=	(locals.content.meta.metaKeywords)?locals.content.meta.metaKeywords:''	%>" class="form-control" />
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+			<div class="form-group	widget-base">
+				<h3 class="section-heading">Opengraph</h3>
+				<div class="col-md-12	form-group">
+					<label>Opengraph Title</label>
+					<input type="text" name="ogTitle" placeholder="Enter title here" value="<%=	(locals.content.meta.ogTitle)?locals.content.meta.ogTitle:''	%>" class="form-control" />
+				</div>
+				<div class="col-md-12	form-group">
+					<label>Opengraph Description</label>
+					<textarea name="ogDescription" placeholder="Enter Brief info here..." rows="3" class="form-control"><%=	(locals.content.meta.ogDescription)?locals.content.meta.ogDescription:''	%></textarea>
+				</div>
+				<div class="col-md-12">
+					<label>Opengraph Type</label>
+					<select name="ogType" class="form-control">
+						<option value="article">Article</option>
+						<option value="blog">Blog</option>
+					</select>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+			<div class="form-group	widget-base">
+				<h3 class="section-heading">GeoLocation</h3>
+				<div class="col-md-12	form-group">
+					<label>Latitude</label>
+					<input type="text" name="lat" placeholder="0.0" value="<%=	(locals.content.info.coordinates)?locals.content.info.coordinates[0]:''	%>" class="form-control" />
+				</div>
+				<div class="col-md-12	form-group">
+					<label>Longitude</label>
+					<input type="text" name="lng" placeholder="0.0" value="<%=	(locals.content.info.coordinates)?locals.content.info.coordinates[1]:''	%>" class="form-control" />
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</aside>
+	</form>
+</section>

@@ -1,0 +1,33 @@
+<section class="container">
+	<aside class="col-md-4	login-base">
+		<div class="form-group" style="text-align: center;">
+			<img src="/mp-manager/images/logo.png" alt="" height="45" />
+		</div>
+		<form action="/mp-manager/register" method="post" class="form-group" name="registerAccount" ng-controller="RegisterAccount">
+			<div class="form-group">
+				<label>Email</label>
+				<input type="email" name="email" placeholder="Your email... e.g. admin@example.com" class="form-control" required />
+			</div>
+			
+			<div class="form-group">
+				<label>Password</label>
+				<input type="password" name="password" placeholder="Password" class="form-control" required />
+			</div>
+			
+			<div class="form-group">
+				<label>Confirm Password</label>
+				<input type="password" name="repassword" placeholder="Password" class="form-control" required />
+			</div>
+			
+			<div class="form-group">
+				<input type="submit" name="submit" value="Register" class="btn-info" />
+			</div>
+		</form>
+		<div class="">
+			<div class="col-md-6">
+				<a href="/mp-manager/login" title="Forgot Password.">Already have a account!</a>
+			</div>
+		</div>
+	</aside>
+</section>
+

@@ -1,0 +1,63 @@
+<section class="content-list">
+	<h1 class="section-heading">Content Types</h1>
+	<ul class="entry	form-group">
+		<li class="heading">
+			<div class="col-md-3">Content Type</div>
+			<div class="col-md-3">Slug</div>
+			<div class="col-md-3">Description</div>
+			<div class="col-md-3">Hierarchical</div>
+			<div class="clearfix"></div>
+		</li>
+		<%	locals.contentTypes.forEach(function(typeInfo)	{	%>
+			<li>
+				<div class="col-md-3"><%=	typeInfo.title	%></div>
+				<div class="col-md-3"><%=	typeInfo.slug	%></div>
+				<div class="col-md-3"><%=	typeInfo.description	%></div>
+				<div class="col-md-3"><%=	(true === typeInfo.hierarchical)?'Yes':'No'	%></div>
+				<div class="clearfix"></div>
+			</li>
+		<%	});	%>
+	</ul>
+</section>
+
+<h2 class="section-heading">Add New Content Type</h2>
+<form class="form-group	row" method="post" action="/mp-manager/settings/content-types" name="contentTypeSettings" ng-controller="ContentTypeSettings">
+	<div class="form-group">
+		<label class="col-md-3">Title / Content Type</label>
+		<div class="col-md-6">
+			<input type="text" name="title" value="" class="form-control" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Slug</label>
+		<div class="col-md-6">
+			<input type="text" name="slug" value="" class="form-control" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Brief Description</label>
+		<div class="col-md-6">
+			<textarea type="text" name="description" value=""  class="form-control" rows="5" ></textarea>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Is hierarchical?</label>
+		<div class="col-md-6">
+			<select name="hierarchical" class="form-control">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</select>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group	col-md-12">
+		<input type="submit" name="tagline" value="Save" class="btn-info" />
+	</div>
+</form>
