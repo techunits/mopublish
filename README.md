@@ -14,3 +14,9 @@ Our goal is to create an NodeJS & MongoDB based CMS which can be compared with p
 * Built-in custom Taxonomy & Content types
 * Built-in Localisation Support
 
+
+Please note, Monpublish is in active testing be our developers to provide a extremely stable version. Few of our live usecases as follows:
+
+* http://www.techunits.com
+* http://www.mopublish.com
+
