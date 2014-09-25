@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><%=	globalLocals.siteTitle	%></title>
+    <title><%=	globalLocals.sitename	%></title>
 
     <link href="http://fonts.googleapis.com/css?family=Oswald:400,300" rel="stylesheet" type="text/css" />
 	<link href="http://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet" type="text/css" />
@@ -31,7 +31,7 @@
                 <ul class=" top-nav pull-left">
                   <li class="active"><a href="/"><i class="glyphicon glyphicon-chevron-left"></i> Back to Website</a></li>
                 </ul>
-                <%	if(true === globalLocals.isLoggedin)	{	%>
+                <%	if(true === isLoggedin)	{	%>
 	                <ul class=" top-nav pull-right">
 	                  <li class="active"><a href="/manager/profile"><i class="glyphicon glyphicon-cog"></i> admin@techunits.com</a></li>
 	                  <li class="active"><a href="/mp-manager/logout"><i class="glyphicon glyphicon-share-alt"></i> Logout</a></li>
@@ -41,7 +41,7 @@
         </div>
     </header>
     <section class="container">
-    	<%	if(true === globalLocals.isLoggedin)	{	%>
+    	<%	if(true === isLoggedin)	{	%>
 		    <aside class="col-md-2">
 				<ul class="menu-section">
 					<li class="heading"><i class="glyphicon glyphicon-th"></i> Blog</li>
@@ -100,7 +100,9 @@
 				
 				
 				<ul class="menu-section">
-					<li class="heading"><i class="glyphicon glyphicon-cog"></i> Settings</li>
+					<li class="heading">
+						<i class="glyphicon glyphicon-cog"></i> Settings
+					</li>
 					<li>
 						<a href="/mp-manager/settings" title="General Informations">General</a>
 					</li>
@@ -112,6 +114,9 @@
 					</li>
 					<li>
 						<a href="/mp-manager/settings/content-types" title="General Informations">Content Types</a>
+					</li>
+					<li>
+						<a href="/mp-manager/settings/social-media" title="Social Media Links & Informations">Social Media</a>
 					</li>
 				</ul>
 				

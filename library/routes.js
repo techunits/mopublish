@@ -1,40 +1,66 @@
 var fs = require('fs');
-var appConfigObj = require(ROOT_PATH + '/library/config').loadConfig();
+var url = require('url');
 var utilObj = require(ROOT_PATH + '/library/util');
 var helperObj = require(ROOT_PATH + '/library/helper');
+var multer  = require('multer');
+
+/**
+ * load global settings from config file
+ */
+global.appConfigObj = require(ROOT_PATH + '/library/config').loadConfig();
+
+/**
+ * load site based settings from Database
+ */
+require(ROOT_PATH + '/library/config').loadSiteSettings(function(siteSettings) {
+	global.siteConfigObj = siteSettings;
+});
 
 module.exports = function(app, express) {
-	//	define static paths
+	/**
+	 * define static file & media paths
+	 */
 	app.use('/favicon.ico', express.static(ROOT_PATH + '/public'));
-	app.use('/assets', express.static(ROOT_PATH + appConfigObj.theme.path + '/public'));
-	app.use('/mp-manager', express.static(ROOT_PATH + '/mp-manager/assets'));
 	app.use('/media', express.static(ROOT_PATH + '/' + appConfigObj.uploads.path));
+	app.use('/mp-manager', express.static(ROOT_PATH + '/themes/mp-manager/assets'));
+	app.use('/assets', express.static(ROOT_PATH + '/themes'));
+	
+	/**
+	 * add file upload global handler
+	 */
+	app.use(multer({
+		dest: ROOT_PATH + '/media/' + new Date().getFullYear() + '/' + new Date().getMonth() + '/' + new Date().getDate() + '/'
+	}));
+	
 	
 	/**
 	 * load global values & configurations
 	 */
-	app.use(function (httpRequest, httpResponse, next) {
+	app.use(function (httpRequest, httpResponse, next) {		
+		//	if url is /mp-manager then use default Admin theme
 		if(-1 != httpRequest.url.indexOf('/mp-manager')) {
-			app.set('views', ROOT_PATH + '/mp-manager/views');
-			app.set('layout', ROOT_PATH + '/mp-manager/views/layout.ejs');
+			app.set('views', ROOT_PATH + '/themes/mp-manager/views');
+			app.set('layout', ROOT_PATH + '/themes/mp-manager/layout/default.ejs');
+		}
+		else {
+			app.set('views', ROOT_PATH + '/themes/' + siteConfigObj.theme + '/views');
+			app.set('layout', ROOT_PATH + '/themes/' + siteConfigObj.theme + '/layout/default.ejs');
 		}
 		
 		//	check whether system is installed and set the global parameter.
 		if('/mp-manager/installer' != httpRequest.url) {
 			utilObj.isSystemInstalled(function() {
-				app.set('installed', true);
+				//	app.set('installed', true);
 				httpResponse.locals = {
 					httpReq: httpRequest,
+					isLoggedin: httpRequest.session.loggedin,
 					mpObj: {
 						util: utilObj,
 						helper: helperObj
 					},
-					globalLocals: {
-						siteTitle: 'Mopublish - Innovative & Flexible NodeJS CMS',
-						welcomeMessage: 'Welcome back!!!',
-						isLoggedin: httpRequest.session.loggedin
-					}
+					globalLocals: siteConfigObj
 			    };
+				
 			    next();
 			},
 			function() {
@@ -45,9 +71,9 @@ module.exports = function(app, express) {
 		}
 		else {
 			httpResponse.locals = {
+				isLoggedin: httpRequest.session.loggedin,
 				globalLocals: {
-					siteTitle: 'Welcome to Mopublish - Innovative & Flexible NodeJS CMS',
-					isLoggedin: httpRequest.session.loggedin
+					sitename: 'Welcome to Mopublish - Innovative & Flexible NodeJS CMS',
 				}
 		    };
 			next();

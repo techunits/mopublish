@@ -10,7 +10,7 @@ var SettingsModel = db.mongooseObj.model('settings', new db.mongooseObj.Schema({
 		'default': null
 	},
 	value	: { 
-		type: String, 
+		type: db.mongooseObj.Schema.Types.Mixed,
 		'default': null
 	}
 }));
@@ -61,6 +61,30 @@ var loadSettings = function(callback) {
 exports.loadSettings = loadSettings;
 
 /**
+ * update settings w.r.t. KEY
+ */
+var updateSettings = function(key, value, callback) {
+	SettingsModel.findOne({
+		key: key
+	}, function(err, itemInfo) {
+		if(err)
+			console.log(err);
+		
+		if(itemInfo) {
+			itemInfo.value = value;
+			itemInfo.save(function(err, docInfo){
+				callback();
+			});
+		} 
+		else {
+			//	need to save data
+			console.log('need to save data');
+		}			
+	});
+};
+exports.updateSettings = updateSettings;
+
+/**
  * load themes from file system
  */
 var loadThemes = function(callback) {
@@ -69,13 +93,14 @@ var loadThemes = function(callback) {
 	fs.readdirSync(ROOT_PATH + '/themes/').forEach(function(directory) {
 		if(fs.existsSync(ROOT_PATH + '/themes/' + directory + '/info.json')) {
 			var infoObj = require(ROOT_PATH + '/themes/' + directory + '/info.json');
+			infoObj.basepath = directory;
 			finalThemeList.push({
 				screenshot: '/media/' + directory + '/screenshot.png',
 				info: infoObj
 			});
 		}
 	});
-	//	console.log(finalThemeList);
+	
 	callback(finalThemeList);
 };
 exports.loadThemes = loadThemes;

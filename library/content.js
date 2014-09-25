@@ -110,16 +110,17 @@ exports.ContentModel = ContentModel;
 var ContentMetaModel = db.mongooseObj.model('contentMeta', new db.mongooseObj.Schema({
 	cid		: { 
 		type: String, 
-		'default': null
+		'default': null,
+		index: true
 	},
     key		: { 
 		type: String, 
-		'default': null
-	},
-    value	: { 
-		type: String, 
 		'default': null,
 		index: true
+	},
+    value	: { 
+		type: db.mongooseObj.Schema.Types.Mixed, 
+		'default': null
 	}
 }));
 exports.ContentMetaModel = ContentMetaModel;
@@ -141,7 +142,10 @@ exports.getMediaTypeFromMimetype = getMediaTypeFromMimetype;*/
  */
 var getContentList = function(params, callback) {
 	ContentModel.find({
-		type: params.type
+		type: params.type,
+		status: {
+			'$ne': contentStatusListGlobal.INITIATE
+		}
 	}, function(err, docs) {
 		if(err) {
 			console.log(err);
@@ -168,7 +172,18 @@ var getContentBy = function(field, value, contentType, success, failed) {
 			failed();
 		}
 		else if(docInfo) {
-			success(docInfo);
+			//	fetch content meta info
+			getMetaInfoList(docInfo._id, function(metaInfo) {
+				
+				//	fetch content attachments
+				getAttachmentList(docInfo._id, function(attachmentInfo) {
+					success({
+						info: docInfo,
+						meta: metaInfo,
+						attachments: attachmentInfo
+					});
+				});
+			});
 		}
 		else {
 			failed();
@@ -203,7 +218,7 @@ var getMetaInfoList = function(cid, callback) {
 		if(err)
 			console.log(err);
 		
-		var finalMetaList = [];
+		var finalMetaList = {};
 		docList.forEach(function(docInfo) {
 			finalMetaList[docInfo.key]= docInfo.value;
 		});
@@ -214,19 +229,45 @@ var getMetaInfoList = function(cid, callback) {
 exports.getMetaInfoList = getMetaInfoList;
 
 /**
+ * get content attachment list
+ */
+var getAttachmentList = function(parentCID, callback) {
+	ContentModel.find({
+		parentId: parentCID,
+		type: 'attachment',
+		status: contentStatusListGlobal.INHERIT
+	}, function(err, docList) {
+		if(err)
+			console.log(err);
+	
+		var finalAttachmentList = [];
+		var attachmentCounter = 0;
+		docList.forEach(function(docInfo) {
+			ContentMetaModel.findOne({
+				cid: docInfo._id,
+				key: '_path'
+			}, function(err, metaInfo) {
+				finalAttachmentList.push({
+					title: docInfo.title,
+					mimetype: docInfo.mimetype,
+					created: docInfo.created,
+					path: metaInfo.value
+				});
+				
+				attachmentCounter++;
+				if(attachmentCounter == docList.length) {
+					callback(finalAttachmentList);
+				}
+			});
+		});
+	});
+};
+exports.getAttachmentList = getAttachmentList;
+
+/**
  * update content informations
  */
 var updateContent = function(params, userId, success, failed) {
-	/*var contentInfo = new ContentModel();
-	contentInfo._id = params.cid;
-	contentInfo.type = params.type;
-	contentInfo.title = params.title;
-	contentInfo.slug = helperObj.sanetizeTitle(params.title);
-	contentInfo.description = params.description;
-	contentInfo.excerpt = params.excerpt;
-	contentInfo.userId = params.userId;
-	contentInfo.status = contentStatusListGlobal[params.status.toUpperCase()];
-	contentInfo.visibility = contentVisibilityListGlobal[params.visibility.toUpperCase()];*/
 	ContentModel.update({
 		_id: params.cid
 	}, {
@@ -239,7 +280,6 @@ var updateContent = function(params, userId, success, failed) {
 		visibility: contentVisibilityListGlobal[params.visibility.toUpperCase()],
 		coordinates: [(params.lat)?parseFloat(params.lat):0.0, (params.lng)?parseFloat(params.lng):0.0]
 	}, function(err, docInfo) {
-		console.log(err, docInfo);
 		if(err) {
 			console.log(err);
 			failed(err);
@@ -258,7 +298,6 @@ var saveMetaInfo = function(cid, key, value, callback) {
 		cid: cid,
 		key: key
 	}, function(err, metaInfo) {
-		console.log(err, metaInfo);
 		if(metaInfo) {
 			metaInfo.key = key;
 			metaInfo.cid = cid;
@@ -304,7 +343,8 @@ var saveAttachmentInfo = function(cid, userId, attachmentList, callback) {
 				console.log(err, docInfo);
 			else {
 				//	save attachment paths to meta info
-				saveMetaInfo(docInfo._id, '_path', fileInfo.path);
+				var relativePath = fileInfo.path.replace(ROOT_PATH + '/' + appConfigObj.uploads.path, '');
+				saveMetaInfo(docInfo._id, '_path', relativePath);
 				
 				//	run the callback if and only if all attachments has been processed.
 				if(attachmentsCount == counter) {
@@ -359,3 +399,10 @@ var remove = function(params, callback) {
 	});
 };
 exports.remove = remove;
+
+/**
+ * periodic content cleanup
+ */
+var periodicContentCleanup = function() {
+	console.log('Cleaning up...');
+};

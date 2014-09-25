@@ -4,18 +4,18 @@
 		<article class="col-sm-4	col-md-3	form-group	theme-item">
 			<div class="inner">
 				<div class="image-base">
-					<img src="https://scontent-a-hkg.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10417505_1467344830206099_2132258130428698862_n.png?oh=2e5ad6c925f70494fabb08481d7b9790&oe=5485E7BB" alt="theme" />
+					<img src="/assets/<%=	themeInfo.info.basepath	%>/screenshot.png" alt="theme" />
 				</div>
 				<h4><%=	themeInfo.info.name	%></h4>
 				<h4>Author: <a href="<%=	themeInfo.info.author.url	%>" title="<%=	themeInfo.info.author.name	%>"><%=	themeInfo.info.author.name	%></a></h4>
 				<h4 class="desc"><%=	themeInfo.info.description	%></h4>
-				<%	if('Mopublish Official' == themeInfo.info.name)	{	%>
+				<%	if(locals.activated == themeInfo.info.basepath)	{	%>
 					<h4 class="color-green">
 						<i class="glyphicon glyphicon-ok"></i> Active
 					</h4>
 				<%	}	else	{	%>
 					<h4>
-						<a href="#" title="Activate theme: <%=	themeInfo.info.author.name	%>">
+						<a href="/mp-manager/settings/theme-activate?t=<%=	themeInfo.info.basepath	%>" title="Activate theme: <%=	themeInfo.info.author.name	%>">
 							<i class="glyphicon glyphicon-ok"></i> Activate Theme
 						</a>
 					</h4>

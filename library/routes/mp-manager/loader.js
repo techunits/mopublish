@@ -4,9 +4,6 @@ var helperObj = require(ROOT_PATH + '/library/helper');
 module.exports = function(app) {
 	app.get('/mp-manager', function(httpRequest, httpResponse) {
 		if(true === httpRequest.session.loggedin) {
-			app.set('views', ROOT_PATH + '/mp-manager/views');
-			app.set('layout', ROOT_PATH + '/mp-manager/views/layout.ejs');
-			
 			httpResponse.render('dashboard');
 		}
 		else {
@@ -107,19 +104,14 @@ module.exports = function(app) {
 	app.get('/mp-manager/update-content', function(httpRequest, httpResponse) {
 		if(true === httpRequest.session.loggedin) {
 			if(httpRequest.query.cid) {
-				require(ROOT_PATH + '/library/content').ContentModel.findOne({
-					'_id': httpRequest.query.cid
-				}, function (err, docInfo) {
-					require(ROOT_PATH + '/library/content').getMetaInfoList(httpRequest.query.cid, function(metaInfoList) {
-						httpResponse.render('update-content', {
-							locals: {
-								cid:  httpRequest.query.cid,
-								contentInfo: docInfo,
-								metaInfo: metaInfoList
-							}
-						});
+				require(ROOT_PATH + '/library/content').getContentBy('_id', httpRequest.query.cid, httpRequest.query.type, function (docInfo) {
+					httpResponse.render('update-content', {
+						locals: {
+							cid:  httpRequest.query.cid,
+							content: docInfo
+						}
 					});
-				});
+				}, function() {});
 			}
 			else {
 				var contentObj = new require(ROOT_PATH + '/library/content');
@@ -186,12 +178,19 @@ module.exports = function(app) {
 		require(ROOT_PATH + '/library/settings').loadSettings(function(settingsList) {
 			httpResponse.render('settings', {
 				locals: {
-					settings: settingsList
+					settings: settingsList,
+					timezoneList: require(ROOT_PATH + '/library/config').loadData('timezone')
 				}
 			});
 		});
 	}).post('/mp-manager/settings', function(httpRequest, httpResponse) {
-		httpResponse.end('POST Data');
+		/*require(ROOT_PATH + '/library/settings').saveSettings(function(settingsList) {
+			
+		});*/
+		console.log(httpRequest.body);
+		
+		//	reload page
+		httpResponse.redirect(httpRequest.url);
 	});
 	
 	
@@ -202,15 +201,23 @@ module.exports = function(app) {
 		require(ROOT_PATH + '/library/settings').loadThemes(function(themeList) {
 			httpResponse.render('themes', {
 				locals: {
-					themes: themeList
+					themes: themeList,
+					activated: siteConfigObj.theme
 				}
 			});
 		});
 		
 	});
 	
+	/**
+	 * Activate New theme
+	 * Menu Handler: Settings -> Themes -> Activate Theme
+	 */
 	app.get('/mp-manager/settings/theme-activate', function(httpRequest, httpResponse) {
-		httpResponse.end('in progress');
+		require(ROOT_PATH + '/library/settings').updateSettings('theme', httpRequest.query.t, function() {
+			httpResponse.redirect(httpRequest.get('referer'));
+			process.reload();
+		});
 	});
 	
 	/**
@@ -250,6 +257,15 @@ module.exports = function(app) {
 				}
 			});
 		});
+	});
+	
+	/**
+	 * Menu Handler: Settings -> Social Media
+	 */
+	app.get('/mp-manager/settings/social-media', function(httpRequest, httpResponse) {
+		httpResponse.render('social-media');
+	}).post('/mp-manager/settings/social-media', function(httpRequest, httpResponse) {
+		httpResponse.render('social-media');
 	});
 	
 	/**

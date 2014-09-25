@@ -240,6 +240,18 @@ var loadDefaultTaxonomyTerms = function(callback) {
 var loadDefaultSettings = function() {
 	var settingList = [
 	                   {
+	                	   key: 'smtp',
+	                	   value: {
+	                		   host: 'localhost',
+	                		   port: 25,
+	                		   mode: '',
+	                		   auth: {
+	                			   username: '',
+	                			   password: ''
+	                		   }
+	                	   }
+	                   },
+	                   {
 	                	   key: 'timzeone',
 	                	   value: 'UTC'
 	                   },
@@ -256,28 +268,37 @@ var loadDefaultSettings = function() {
 	                	   value: ''
 	                   },
 	                   {
-	                	   key: 'socialFacebook',
-	                	   value: '#'
+	                	   key: 'socialMedia',
+	                	   value: [
+	                		   {
+	                			   name: 'facebook',
+	                			   url: '#'
+	                		   },
+	                		   {
+	                			   name: 'twitter',
+	                			   url: '#'
+	                		   },
+	                		   {
+	                			   name: 'linkedin',
+	                			   url: '#'
+	                		   },
+	                		   {
+	                			   name: 'youtube',
+	                			   url: '#'
+	                		   },
+	                		   {
+	                			   name: 'google plus',
+	                			   url: '#'
+	                		   },
+	                		   {
+	                			   name: 'pinterest',
+	                			   url: '#'
+	                		   }
+	                	   ]
 	                   },
 	                   {
-	                	   key: 'socialTwitter',
-	                	   value: '#'
-	                   },
-	                   {
-	                	   key: 'socialLinkedin',
-	                	   value: '#'
-	                   },
-	                   {
-	                	   key: 'socialYoutube',
-	                	   value: '#'
-	                   },
-	                   {
-	                	   key: 'socialGPlus',
-	                	   value: '#'
-	                   },
-	                   {
-	                	   key: 'socialPinterest',
-	                	   value: '#'
+	                	   key: 'theme',
+	                	   value: 'mpofficial'
 	                   },
 	                   {
 	                	   key: 'createdOn',

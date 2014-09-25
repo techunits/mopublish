@@ -1,0 +1,95 @@
+<h1 class="section-heading">Basic Settings</h1>
+<form class="form-group	row" method="post" action="/mp-manager/settings" name="siteSettings" ng-controller="SiteSettings">
+	<div class="form-group">
+		<label class="col-md-3">Site Title</label>
+		<div class="col-md-6">
+			<input type="text" name="sitename" value="<%=	locals.settings.sitename	%>" class="form-control" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Tagline</label>
+		<div class="col-md-6">
+			<input type="text" name="tagline" value="<%=	(locals.settings.tagline)?locals.settings.tagline:''	%>" class="form-control" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Brief Description</label>
+		<div class="col-md-6">
+			<textarea type="text" name="description" value="<%=	(locals.settings.description)?locals.settings.description:''	%>"  class="form-control" rows="5" ></textarea>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Webmaster Email</label>
+		<div class="col-md-6">
+			<input type="text" name="email" value="<%=	(locals.settings.email)?locals.settings.email:''	%>" class="form-control" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Timezone</label>
+		<div class="col-md-6">
+			<select name="timezone" class="form-control">
+				<%	locals.timezoneList.forEach(function(zoneInfo)	{	%>
+					<option value="<%=	zoneInfo.abbr	%>"><%=	zoneInfo.text	%></option>
+				<%	});	%>
+			</select>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<h4 class="section-heading	col-md-12">SMTP Settings</h4>
+	<div class="form-group">
+		<label class="col-md-3">Host</label>
+		<div class="col-md-6">
+			<input type="text" name="smtpHost" value="<%=	(locals.settings.smtp)?locals.settings.smtp.host:''	%>" class="form-control" placeholder="smtp.example.com" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Port</label>
+		<div class="col-md-6">
+			<input type="text" name="smtpPort" value="<%=	(locals.settings.smtp)?locals.settings.smtp.port:''	%>" class="form-control" placeholder="25" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Security Mode</label>
+		<div class="col-md-6">
+			<select name="smtpMode" class="form-control">
+				<option value="none">None</option>
+				<option value="ssl">SSL</option>
+				<option value="tls">TLS</option>
+			</select>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Username</label>
+		<div class="col-md-6">
+			<input type="text" name="smtpUsername" value="<%=	(locals.settings.smtp)?locals.settings.smtp.auth.username:''	%>" placeholder="notification@example.com" class="form-control" />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Password</label>
+		<div class="col-md-6">
+			<input type="password" name="smtpPassword" value="<%=	(locals.settings.smtp)?locals.settings.smtp.auth.username:''	%>" placeholder="**********" class="form-control" />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group	col-md-12">
+		<input type="submit" name="submit" value="Save" class="btn-info" />
+	</div>
+</form>
