@@ -52,10 +52,15 @@ var loadSettings = function(callback) {
 			console.log(err);
 		
 		var finalSettingsList = {};
-		settingsList.forEach(function(settingsItem) {
-			finalSettingsList[settingsItem.key] = settingsItem.value;
-		});
-		callback(finalSettingsList);
+		if(settingsList) {
+			settingsList.forEach(function(settingsItem) {
+				finalSettingsList[settingsItem.key] = settingsItem.value;
+			});
+			callback(finalSettingsList);
+		}
+		else {
+			callback(finalSettingsList);
+		}
 	});
 };
 exports.loadSettings = loadSettings;

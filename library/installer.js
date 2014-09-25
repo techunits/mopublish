@@ -11,8 +11,8 @@ exports.saveBasicDetials = function(params, success, failed) {
 		key: 'sitename',
 		value: params.sitename,
 	}).save(function(err, docInfo) {
-		if(docInfo)
-			console.log(docInfo);
+		if(err)
+			console.log(err);
 	});
 	
 	//	save site webmaster email
@@ -20,8 +20,8 @@ exports.saveBasicDetials = function(params, success, failed) {
 		key: 'email',
 		value: params.email,
 	}).save(function(err, docInfo) {
-		if(docInfo)
-			console.log(docInfo);
+		if(err)
+			console.log(err);
 	});
 		
 		
@@ -52,28 +52,9 @@ exports.saveBasicDetials = function(params, success, failed) {
 	//	load default taxonomy terms
 	loadDefaultTaxonomyTerms();
 
-	
-	
 	//	load more default settings
 	loadDefaultSettings();
 	
-	/*	
-		dbObj.collection('settings').insert({
-			key: 'installed',
-			value: true,
-			created: Math.floor(Date.now() / 1000)
-		}, function(err, docs) {
-			dbObj.close();
-			
-			if(err) {
-				failed(err);
-			}
-			else {
-				success(docs);
-			}
-		});
-	});*/
-
 	//	save status as installed
 	new require('../library/settings').SettingsModel({
 		key: 'installed',
@@ -298,7 +279,7 @@ var loadDefaultSettings = function() {
 	                   },
 	                   {
 	                	   key: 'theme',
-	                	   value: 'mpofficial'
+	                	   value: 'mplite'
 	                   },
 	                   {
 	                	   key: 'createdOn',

@@ -18,9 +18,28 @@ require(ROOT_PATH + '/library/config').loadSiteSettings(function(siteSettings) {
 
 module.exports = function(app, express) {
 	/**
+	 * Initialize Session
+	 */
+	var session = require('express-session');
+	var MongoStore = require('connect-mongo')(session);
+	app.use(session({
+		secret: appConfigObj.session.secret,
+		saveUninitialized: true,
+		resave: true,
+		store: new MongoStore({
+			host: appConfigObj.database.host,
+			port: appConfigObj.database.port,
+			db: appConfigObj.database.db,
+			username: appConfigObj.database.username,
+			password: appConfigObj.database.password,
+			collection: 'sessions'
+		})
+	}));
+	
+	/**
 	 * define static file & media paths
 	 */
-	app.use('/favicon.ico', express.static(ROOT_PATH + '/public'));
+	app.use('/', express.static(ROOT_PATH + '/public'));
 	app.use('/media', express.static(ROOT_PATH + '/' + appConfigObj.uploads.path));
 	app.use('/mp-manager', express.static(ROOT_PATH + '/themes/mp-manager/assets'));
 	app.use('/assets', express.static(ROOT_PATH + '/themes'));

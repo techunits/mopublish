@@ -12,5 +12,10 @@ var appConfigObj = require('../library/config').loadConfig();
 exports.connect = connect;*/
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://'+appConfigObj.database.host+':'+appConfigObj.database.port+'/'+appConfigObj.database.db);
+if('' != appConfigObj.database.username && '' != appConfigObj.database.password) {
+	mongoose.connect('mongodb://' + appConfigObj.database.username + ':' + appConfigObj.database.password + '@' + appConfigObj.database.host+':'+appConfigObj.database.port+'/'+appConfigObj.database.db);
+}
+else {
+	mongoose.connect('mongodb://'+appConfigObj.database.host+':'+appConfigObj.database.port+'/'+appConfigObj.database.db);
+}
 exports.mongooseObj = mongoose;
