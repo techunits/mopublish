@@ -41,7 +41,6 @@ module.exports = function(app, express) {
 	 */
 	app.use('/', express.static(ROOT_PATH + '/public'));
 	app.use('/media', express.static(ROOT_PATH + '/' + appConfigObj.uploads.path));
-	app.use('/mp-manager', express.static(ROOT_PATH + '/themes/mp-manager/assets'));
 	app.use('/assets', express.static(ROOT_PATH + '/themes'));
 	
 	/**
