@@ -8,17 +8,29 @@
 	},
 	"stylesheets": [
 		{
+			"id": "Oswald",
+			"file": "http://fonts.googleapis.com/css?family=Oswald:400,300"
+		},
+		{
+			"id": "Roboto",
+			"file": "http://fonts.googleapis.com/css?family=Roboto:300"
+		},
+		{
+			"id": "bootstrap",
 			"file": "http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
 		},
 		{
-			"file": "css/style.css"
+			"id": "style",
+			"file": "/assets/mplite/css/style.css"
 		}
 	],
 	"scripts": [
 		{
+			"id": "jQuery",
 			"file": "http://code.jquery.com/jquery-1.11.0.min.js"
 		},
 		{
+			"id": "bootstrap",
 			"file": "http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"
 		}	
 	]

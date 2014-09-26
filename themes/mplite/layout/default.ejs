@@ -4,29 +4,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%=	globalLocals.sitename	%></title>
-
-    <link href="http://fonts.googleapis.com/css?family=Oswald:400,300" rel="stylesheet" type="text/css" />
-	<link href="http://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet" type="text/css" />
-	
+    
 	<%-	stylesheets	%>
 	
 	<%- scripts %>
   </head>
   <body>
-    <header>
-        
-    </header>
-    <section class="container">		
+    <%	include	./header	%>
+    
+    <section class="wrapper">		
 		<%- body %>
 	</section>
 	
-	<footer>
-		<div class="container">
-            <div class="col-sm-6 col-md-6	text-right">
-            	Powered by: <a href="http://www.mopublish.com" title="<%=	globalLocals.sitename	%>"><%=	globalLocals.sitename	%></a>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-	</footer>
+	<%	include	./footer	%>
 </body>
 </html>

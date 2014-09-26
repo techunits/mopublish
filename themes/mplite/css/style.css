@@ -1,0 +1,79 @@
+@charset "utf-8";
+/* CSS Document */
+ul,ol,li {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+body{background: #fff;font-family: Roboto;}
+a:hover {
+	text-decoration: none;
+}
+.colorGreen	{
+	color: green;
+}
+
+.section-heading	{
+	font-family: Oswald;
+	font-weight: 300;
+	font-size: 200%;
+	margin: 0px 0px 20px;	
+}
+.meta	{
+	font-size: 85%;
+	color: grey;
+	margin-bottom: 20px;
+}
+.wrapper	{
+	padding-top: 75px;
+	min-height: 650px;
+}
+
+.btn-search{ background: #00A9E0; color:#fff;}
+
+/*header section*/
+.navbar-default{ background:#00A9E0; border-bottom:0}
+.navbar-default .navbar-brand { color: #fff; font-size: 32px; line-height:40px; min-height: 75px; text-transform: uppercase; }
+.navbar-default .navbar-nav > li > a{color:#fff; line-height:45px;}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    background-color:#45D4FF;
+    color: #333;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    background-color: #45D4FF;
+    color: #555;
+}
+
+/*banner section*/
+.carousel-caption {
+	left: -19%;
+	top: 20%;
+	font-size: 190%;
+	font-family: Oswald;
+	text-align: center;
+	font-weight: 300;
+}
+
+/*footer section*/
+footer {
+    margin: 0 auto;
+    background: none repeat scroll 0 0 #333;
+    padding: 20px 0;
+}
+
+.copyright{ color: #fff}
+
+footer ul {
+    display: inline-block;
+    float: right;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+footer li {
+    display: inline;
+    padding: 0 10px 0 0;
+}
+footer li a{ color: #fff;}
