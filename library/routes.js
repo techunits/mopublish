@@ -77,15 +77,19 @@ module.exports = function(app, express) {
 					
 					//	stylesheets html
 					var stylesheets = '';
-					themeConfigObj.stylesheets.forEach(function(fileInfo) {
-						stylesheets += '<link rel="stylesheet" type="text/css" href="'+fileInfo.file+'" />';
-					});
+					if(themeConfigObj.stylesheets) {
+						themeConfigObj.stylesheets.forEach(function(fileInfo) {
+							stylesheets += '<link rel="stylesheet" type="text/css" href="'+fileInfo.file+'" />';
+						});
+					}
 					
 					//	scripts html
 					var scripts = '';
-					themeConfigObj.scripts.forEach(function(fileInfo) {
-						scripts += '<script type="text/javascript" src="'+fileInfo.file+'"></script>';
-					});
+					if(themeConfigObj.scripts) {
+						themeConfigObj.scripts.forEach(function(fileInfo) {
+							scripts += '<script type="text/javascript" src="'+fileInfo.file+'"></script>';
+						});
+					}
 					
 					httpResponse.locals = {
 						httpReq: httpRequest,
