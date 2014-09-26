@@ -7,24 +7,24 @@
     "start": "node index.js"
   },
   "dependencies": {
-	"express": "^4.0.0",
-	"body-parser": "^1.6.3",
-	"stylus": "0.x",
-	"string": "^1.9.1",
-	"express-session": "^1.8.0",
-	"express-ejs-layouts": "^0.1.0",
-	"ejs": "^1.0.0",
+	"express": "4.9.5",
+	"body-parser": "1.9.0",
+	"stylus": "0.49.1",
+	"string": "1.9.1",
+	"express-session": "1.8.2",
+	"express-ejs-layouts": "0.1.0",
+	"ejs": "1.0.0",
 	"multer": "0.1.4",
-	"mongoose": "3.8.x",
-	"connect-mongo": "0.4.x",
-	"MD5": "^1.2.x",
-	"morgan": "^1.3.x",
-	"nodemailer": "1.0.x",
-	"nodemailer-smtp-transport": "0.1.x",
-	"cluster": "0.x"
+	"mongoose": "3.8.16",
+	"connect-mongo": "0.4.1",
+	"MD5": "1.2.1",
+	"morgan": "1.3.1",
+	"nodemailer": "1.0.4",
+	"nodemailer-smtp-transport": "0.1.13",
+	"cluster": "0.7.7"
   },
   "engines": {
-    "node": "0.11.x"
+    "node": "0.11.10"
   },
   "repository": {
     "type": "git",
