@@ -44,6 +44,18 @@
 		<div class="clearfix"></div>
 	</div>
 	
+	<h4 class="section-heading	col-md-12">Account &amp; Registration</h4>
+	<div class="form-group">
+		<label class="col-md-3">Allow New User Registration</label>
+		<div class="col-md-6">
+			<select name="allowUserRegistration" class="form-control">
+				<option value="1" <%=	(1 == locals.settings.allowUserRegistration)?'selected':''	%>>Yes</option>
+				<option value="0" <%=	(0 == locals.settings.allowUserRegistration)?'selected':''	%>>No</option>
+			</select>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
 	<h4 class="section-heading	col-md-12">SMTP Settings</h4>
 	<div class="form-group">
 		<label class="col-md-3">Host</label>

@@ -19,20 +19,29 @@ module.exports = function(app) {
 	 * Account Register
 	 */
 	app.get('/mp-manager/register', function(httpRequest, httpResponse) {
-		httpResponse.render('register');
+		if(1 == siteConfigObj.allowUserRegistration) {
+			httpResponse.render('register');
+		} 
+		else {
+			httpResponse.redirect('/404?msgcode=REGISTRATION_NOT_ALLOWED');
+		}
 	}).post('/mp-manager/register', function(httpRequest, httpResponse) {
-		var userObj = require(ROOT_PATH + '/library/user');
-		userObj.signin({
-			email: httpRequest.body.email,
-			password: httpRequest.body.password
-		}, function(userInfo) {
-			httpRequest.session.loggedin = true;
-			httpRequest.session.userId = userInfo._id;
-			httpResponse.redirect('/mp-manager');
-		}, function(err) {
-			httpResponse.redirect('/mp-manager/login?msgcode=INVALID_CREDENTIAL');
-		});
-		
+		if(1 == siteConfigObj.allowUserRegistration) {
+			var userObj = require(ROOT_PATH + '/library/user');
+			userObj.signin({
+				email: httpRequest.body.email,
+				password: httpRequest.body.password
+			}, function(userInfo) {
+				httpRequest.session.loggedin = true;
+				httpRequest.session.userId = userInfo._id;
+				httpResponse.redirect('/mp-manager');
+			}, function(err) {
+				httpResponse.redirect('/mp-manager/login?msgcode=INVALID_CREDENTIAL');
+			});
+		}
+		else {
+			httpResponse.redirect('/404?msgcode=REGISTRATION_NOT_ALLOWED');
+		}
 	});
 	
 	
@@ -243,6 +252,10 @@ module.exports = function(app) {
 		    {
 		    	key: 'timezone',
 		    	value: httpRequest.body.timezone
+		    },
+		    {
+		    	key: 'allowUserRegistration',
+		    	value: httpRequest.body.allowUserRegistration
 		    },
 		    {
 		    	key: 'smtp',

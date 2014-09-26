@@ -27,7 +27,10 @@ a:hover {
 }
 .wrapper	{
 	padding-top: 75px;
-	min-height: 650px;
+	min-height: 900px;
+}
+.content-wrap	{
+	padding-top: 25px;
 }
 
 .btn-search{ background: #00A9E0; color:#fff;}
@@ -46,7 +49,7 @@ a:hover {
     color: #555;
 }
 
-/*banner section*/
+/*	banner section	*/
 .carousel-caption {
 	left: -19%;
 	top: 20%;
@@ -56,11 +59,51 @@ a:hover {
 	font-weight: 300;
 }
 
+/*	posts section	*/
+.posts	{
+	padding: 15px 0px;
+}
+.posts	.entry	{
+	border: 1px solid #DADADA;
+	padding: 3px;
+	border-radius: 4px;
+}
+.posts	.entry	.section-heading	{
+	font-size: 120%;
+	margin-bottom: 10px;
+}
+.posts	.entry	.image-base	{
+	margin-bottom: 10px;
+	border-radius: 4px;
+}
+.posts	.entry	.image-base	img	{
+	border-radius: 4px;
+	height: 130px;
+}
+.posts	.entry	.info-base	{
+	padding: 0px 5px;
+}
+
+.bg-blue-bottom {
+	background: #00A9E0;
+	padding: 20px 0 0px;
+	color: #FFF;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-o-border-radius: 4px;
+	border-radius: 4px;
+}
+.bg-blue-bottom	form	{
+	margin-bottom: 0;
+}
+
 /*footer section*/
 footer {
     margin: 0 auto;
     background: none repeat scroll 0 0 #333;
     padding: 20px 0;
+    margin-top: 15px;
 }
 
 .copyright{ color: #fff}
