@@ -55,48 +55,69 @@ module.exports = function(app, express) {
 	/**
 	 * load global values & configurations
 	 */
-	app.use(function (httpRequest, httpResponse, next) {		
-		//	if url is /mp-manager then use default Admin theme
-		if(-1 != httpRequest.url.indexOf('/mp-manager')) {
-			app.set('views', ROOT_PATH + '/themes/mp-manager/views');
-			app.set('layout', ROOT_PATH + '/themes/mp-manager/layout/default.ejs');
-		}
-		else {
-			app.set('views', ROOT_PATH + '/themes/' + siteConfigObj.theme + '/views');
-			app.set('layout', ROOT_PATH + '/themes/' + siteConfigObj.theme + '/layout/default.ejs');
-		}
-		
-		//	check whether system is installed and set the global parameter.
-		if('/mp-manager/installer' != httpRequest.url) {
-			utilObj.isSystemInstalled(function() {
-				//	app.set('installed', true);
+	app.use(function (httpRequest, httpResponse, next) {
+		require(ROOT_PATH + '/library/config').loadSiteSettings(function(siteSettings) {
+			global.siteConfigObj = siteSettings;
+			
+			//	if url is /mp-manager then use default Admin theme
+			if(-1 != httpRequest.url.indexOf('/mp-manager')) {
+				app.set('views', ROOT_PATH + '/themes/mp-manager/views');
+				app.set('layout', ROOT_PATH + '/themes/mp-manager/layout/default.ejs');
+			}
+			else {
+				app.set('views', ROOT_PATH + '/themes/' + siteConfigObj.theme + '/views');
+				app.set('layout', ROOT_PATH + '/themes/' + siteConfigObj.theme + '/layout/default.ejs');
+			}
+			
+			//	check whether system is installed and set the global parameter.
+			if('/mp-manager/installer' != httpRequest.url) {
+				utilObj.isSystemInstalled(function() {
+					//	app.set('installed', true);
+					
+					var themeConfigObj = require(ROOT_PATH + '/library/config').loadThemeSettings(siteSettings.theme);
+					
+					//	stylesheets html
+					var stylesheets = '';
+					themeConfigObj.stylesheets.forEach(function(fileInfo) {
+						stylesheets += '<link rel="stylesheet" type="text/css" href="'+fileInfo.file+'" />';
+					});
+					
+					//	scripts html
+					var scripts = '';
+					themeConfigObj.scripts.forEach(function(fileInfo) {
+						scripts += '<script type="text/javascript" src="'+fileInfo.file+'"></script>';
+					});
+					
+					httpResponse.locals = {
+						httpReq: httpRequest,
+						stylesheets: stylesheets,
+						scripts: scripts,
+						isLoggedin: httpRequest.session.loggedin,
+						mpObj: {
+							util: utilObj,
+							helper: helperObj
+						},
+						globalLocals: siteConfigObj
+				    };
+					
+				    next();
+				},
+				function() {
+						app.set('installed', false);
+						console.log('Sorry! No valid installation found...');
+						httpResponse.redirect('/mp-manager/installer');
+				});
+			}
+			else {
 				httpResponse.locals = {
-					httpReq: httpRequest,
 					isLoggedin: httpRequest.session.loggedin,
-					mpObj: {
-						util: utilObj,
-						helper: helperObj
-					},
-					globalLocals: siteConfigObj
+					globalLocals: {
+						sitename: 'Welcome to Mopublish - Innovative & Flexible NodeJS CMS',
+					}
 			    };
-				
-			    next();
-			},
-			function() {
-					app.set('installed', false);
-					console.log('Sorry! No valid installation found...');
-					httpResponse.redirect('/mp-manager/installer');
-			});
-		}
-		else {
-			httpResponse.locals = {
-				isLoggedin: httpRequest.session.loggedin,
-				globalLocals: {
-					sitename: 'Welcome to Mopublish - Innovative & Flexible NodeJS CMS',
-				}
-		    };
-			next();
-		}
+				next();
+			}
+		});
 	});
 	
 	/**

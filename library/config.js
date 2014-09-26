@@ -14,6 +14,11 @@ exports.loadSiteSettings = function(callback) {
 	});
 };
 
+exports.loadThemeSettings = function(themeDir) {
+	var dataset = require(ROOT_PATH + '/themes/' + themeDir + '/info.json');
+	return dataset;
+};
+
 exports.loadData = function(type) {
 	var dataset = require(ROOT_PATH + '/library/data/'+type+'.json');
 	return dataset;
