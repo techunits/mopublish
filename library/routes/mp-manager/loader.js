@@ -184,13 +184,44 @@ module.exports = function(app) {
 			});
 		});
 	}).post('/mp-manager/settings', function(httpRequest, httpResponse) {
-		/*require(ROOT_PATH + '/library/settings').saveSettings(function(settingsList) {
-			
-		});*/
-		console.log(httpRequest.body);
+		require(ROOT_PATH + '/library/settings').saveSettingsList([
+		    {
+		    	key: 'sitename',
+		    	value: httpRequest.body.sitename
+		    },
+		    {
+		    	key: 'tagline',
+		    	value: httpRequest.body.tagline
+		    },
+		    {
+		    	key: 'description',
+		    	value: httpRequest.body.description
+		    },
+		    {
+		    	key: 'email',
+		    	value: httpRequest.body.email
+		    },
+		    {
+		    	key: 'timezone',
+		    	value: httpRequest.body.timezone
+		    },
+		    {
+		    	key: 'smtp',
+		    	value: {
+		    		host: httpRequest.body.smtpHost,
+		    		port: httpRequest.body.smtpPort,
+		    		mode: httpRequest.body.smtpMode,
+		    		auth: {
+		    			username: httpRequest.body.smtpUsername,
+		    			password: httpRequest.body.smtpPassword
+		    		}
+		    	}
+		    }
+		], function(settingsList) {
+			//	reload page
+			httpResponse.redirect(httpRequest.url);
+		});
 		
-		//	reload page
-		httpResponse.redirect(httpRequest.url);
 	});
 	
 	
@@ -249,8 +280,6 @@ module.exports = function(app) {
 	 */
 	app.get('/mp-manager/settings/api/rest', function(httpRequest, httpResponse) {
 		require(ROOT_PATH + '/library/settings').RESTSettingsModel.find(function(err, apiList) {
-			console.log(err, apiList);
-			//	httpResponse.end('asd');
 			httpResponse.render('api', {
 				locals: {
 					apiList: apiList

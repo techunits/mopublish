@@ -19,7 +19,7 @@
 	<div class="form-group">
 		<label class="col-md-3">Brief Description</label>
 		<div class="col-md-6">
-			<textarea type="text" name="description" value="<%=	(locals.settings.description)?locals.settings.description:''	%>"  class="form-control" rows="5" ></textarea>
+			<textarea type="text" name="description" class="form-control" rows="5" ><%=	(locals.settings.description)?locals.settings.description:''	%></textarea>
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -37,7 +37,7 @@
 		<div class="col-md-6">
 			<select name="timezone" class="form-control">
 				<%	locals.timezoneList.forEach(function(zoneInfo)	{	%>
-					<option value="<%=	zoneInfo.abbr	%>"><%=	zoneInfo.text	%></option>
+					<option value="<%=	zoneInfo.abbr	%>" <%=	(locals.settings.timezone == zoneInfo.abbr)?'selected':''	%> ><%=	zoneInfo.text	%></option>
 				<%	});	%>
 			</select>
 		</div>
@@ -66,8 +66,8 @@
 		<div class="col-md-6">
 			<select name="smtpMode" class="form-control">
 				<option value="none">None</option>
-				<option value="ssl">SSL</option>
-				<option value="tls">TLS</option>
+				<option value="ssl" <%=	(locals.settings.smtp.mode == 'ssl')?'selected':''	%> >SSL</option>
+				<option value="tls" <%=	(locals.settings.smtp.mode == 'tls')?'selected':''	%> >TLS</option>
 			</select>
 		</div>
 		<div class="clearfix"></div>

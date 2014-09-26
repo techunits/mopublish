@@ -66,6 +66,21 @@ var loadSettings = function(callback) {
 exports.loadSettings = loadSettings;
 
 /**
+ * save an list of settings together
+ */
+var saveSettingsList = function(params, callback) {
+	var sCounter = 0;
+	params.forEach(function(keyValuePair) {
+		updateSettings(keyValuePair.key, keyValuePair.value, function() {
+			sCounter++;
+			if(sCounter == params.length)
+				callback();
+		});
+	});
+};
+exports.saveSettingsList = saveSettingsList;
+
+/**
  * update settings w.r.t. KEY
  */
 var updateSettings = function(key, value, callback) {
@@ -77,13 +92,23 @@ var updateSettings = function(key, value, callback) {
 		
 		if(itemInfo) {
 			itemInfo.value = value;
-			itemInfo.save(function(err, docInfo){
+			itemInfo.save(function(err, docInfo) {
+				if(err)
+					console.log(err);
+				
 				callback();
 			});
 		} 
 		else {
-			//	need to save data
-			console.log('need to save data');
+			new SettingsModel({
+				key: key,
+				value: value
+			}).save(function(err, itemInfo) {
+				if(err)
+					console.log(err);
+				
+				callback();
+			});
 		}			
 	});
 };
