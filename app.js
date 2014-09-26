@@ -12,7 +12,7 @@ if (cluster.isMaster) {
 }
 else {
 	var appConfigObj = require('./library/config').loadConfig();
-	var logger = require('morgan');
+	
 	
 	//	required express configurations
 	var express = require('express'),
@@ -24,7 +24,11 @@ else {
 	app.set('port', (process.env.PORT || appConfigObj.port));
 	app.set('view engine', 'ejs');
 	
-	//	app.use(logger());
+	if(true === appConfigObj.debug) {
+		var logger = require('morgan');
+		app.use(logger());
+	}
+	
 	app.use(bodyParser.urlencoded());
 	app.use(bodyParser.json());
 	app.use(expressLayouts);
