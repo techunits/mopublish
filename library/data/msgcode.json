@@ -1,0 +1,19 @@
+{
+	"MISSING_DATA": {
+		Code: "1001",
+		Message: "Missing required data"
+	},
+	"MISSING_EMAIL": {
+		Code: "1002",
+		Message: "Email is required."
+	},
+	
+	"SESSION_EXPIRED": {
+		Code: "1101",
+		Message: "Oops! Session has been expired. Please login again..."
+	},
+	"TOKEN_EXPIRED": {
+		Code: "1102",
+		Message: "Sorry! Your token has been expired."
+	}
+}

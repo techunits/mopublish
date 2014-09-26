@@ -7,7 +7,7 @@ module.exports = function(app) {
 			httpResponse.render('dashboard');
 		}
 		else {
-			httpResponse.redirect('/mp-manager/login?msgcode=SESSION_TIMEOUT');
+			httpResponse.redirect('/mp-manager/login?msgcode=SESSION_EXPIRED');
 		}
 	});
 	
@@ -42,8 +42,7 @@ module.exports = function(app) {
 	app.get('/mp-manager/login', function(httpRequest, httpResponse) {
 		httpResponse.render('login');
 	}).post('/mp-manager/login', function(httpRequest, httpResponse) {
-		var userObj = require(ROOT_PATH + '/library/user');
-		userObj.signin({
+		require(ROOT_PATH + '/library/user').signin({
 			email: httpRequest.body.email,
 			password: httpRequest.body.password
 		}, function(userInfo) {
@@ -62,17 +61,57 @@ module.exports = function(app) {
 	app.get('/mp-manager/login/lost-password', function(httpRequest, httpResponse) {
 		httpResponse.render('lost-password');
 	}).post('/mp-manager/login/lost-password', function(httpRequest, httpResponse) {
-		var userObj = require(ROOT_PATH + '/library/user');
-		userObj.signin({
-			email: httpRequest.body.email,
-			password: httpRequest.body.password
-		}, function(userInfo) {
-			httpRequest.session.loggedin = true;
-			httpRequest.session.userId = userInfo._id;
-			httpResponse.redirect('/mp-manager');
-		}, function(err) {
-			httpResponse.redirect('/mp-manager/login?msgcode=INVALID_EMAIL');
-		});
+		if('' != httpRequest.body.email) {
+			require(ROOT_PATH + '/library/user').generatePasswordToken(httpRequest.body.email, function(userInfo) {
+				console.log(userInfo);
+				httpResponse.redirect('/mp-manager/login/lost-password?msgcode=SUCCESS');
+			}, function() {
+				httpResponse.redirect('/mp-manager/login/lost-password?msgcode=NO_EMAIL');
+			});	
+		}
+		else {
+			httpResponse.redirect('/mp-manager/login/lost-password?msgcode=MISSING_EMAIL');
+		}
+	});
+	
+	/**
+	 * Reset password
+	 */
+	app.get('/mp-manager/login/reset-password', function(httpRequest, httpResponse) {
+		if(httpRequest.query.token && '' != httpRequest.query.token && httpRequest.query.id && '' != httpRequest.query.id) {
+			httpResponse.render('reset-password', {
+				locals: {
+					token: httpRequest.query.token,
+					userId: httpRequest.query.id
+				}
+			});
+		}
+		else {
+			httpResponse.redirect('/mp-manager/login/lost-password?msgcode=MISSING_DATA');
+		}
+	}).post('/mp-manager/login/reset-password', function(httpRequest, httpResponse) {
+		if(httpRequest.body.token && 
+				'' != httpRequest.body.token && 
+				httpRequest.body.id && 
+				'' != httpRequest.body.id && 
+				httpRequest.body.email && 
+				'' != httpRequest.body.email &&
+				httpRequest.body.password && 
+				'' != httpRequest.body.password) {
+			require(ROOT_PATH + '/library/user').resetPassword({
+				userId: httpRequest.body.id,
+				email: httpRequest.body.email,
+				token: httpRequest.body.token,
+				password: httpRequest.body.password
+			}, function(userInfo) {
+				httpResponse.redirect('/mp-manager/login');
+			}, function() {
+				httpResponse.redirect('/mp-manager/login/lost-password?msgcode=TOKEN_EXPIRED');
+			});
+		}
+		else {
+			httpResponse.redirect('/mp-manager/login/lost-password?msgcode=TOKEN_EXPIRED');
+		}
 	});
 	
 	/**
@@ -97,7 +136,7 @@ module.exports = function(app) {
 			});
 		}
 		else {
-			httpResponse.redirect('/mp-manager/login?msgcode=SESSION_TIMEOUT');
+			httpResponse.redirect('/mp-manager/login?msgcode=SESSION_EXPIRED');
 		}
 	});
 	
@@ -127,7 +166,7 @@ module.exports = function(app) {
 			}
 		}
 		else {
-			httpResponse.redirect('/mp-manager/login?msgcode=SESSION_TIMEOUT');
+			httpResponse.redirect('/mp-manager/login?msgcode=SESSION_EXPIRED');
 		}
 	}).post('/mp-manager/update-content', function(httpRequest, httpResponse) {
 		if(httpRequest.query.cid == httpRequest.body.cid && httpRequest.body.title) {
