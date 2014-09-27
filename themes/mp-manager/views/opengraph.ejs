@@ -1,0 +1,54 @@
+<h1 class="section-heading">Opengraph Default Settings</h1>
+<form class="form-group	row" method="post" action="/mp-manager/settings/opengraph" name="siteSettings" ng-controller="SiteSettings">
+	<div class="form-group">
+		<label class="col-md-3">Title*</label>
+		<div class="col-md-6">
+			<input type="text" name="ogTitle" placeholder="Example title" value="<%=	(locals.settings.opengraph && locals.settings.opengraph.title)?locals.settings.opengraph.title:''	%>" class="form-control" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">URL*</label>
+		<div class="col-md-6">
+			<input type="text" name="ogUrl" placeholder="http://www.example.com" value="<%=	(locals.settings.opengraph && locals.settings.opengraph.url)?locals.settings.opengraph.url:''	%>" class="form-control" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Type*</label>
+		<div class="col-md-6">
+			<input type="text" name="ogType" placeholder="website" value="<%=	(locals.settings.opengraph && locals.settings.opengraph.type)?locals.settings.opengraph.type:''	%>" class="form-control" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Image URL*</label>
+		<div class="col-md-6">
+			<input type="text" name="ogImage" placeholder="http://www.example.com/logo-og.png" value="<%=	(locals.settings.opengraph && locals.settings.opengraph.image)?locals.settings.opengraph.image:''	%>" class="form-control" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Video URL</label>
+		<div class="col-md-6">
+			<input type="text" name="ogVideo" placeholder="http://www.example.com/video.swf" value="<%=	(locals.settings.opengraph && locals.settings.opengraph.video)?locals.settings.opengraph.video:''	%>" class="form-control" />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Description</label>
+		<div class="col-md-6">
+			<textarea type="text" name="ogDescription" class="form-control" rows="5" ><%=	(locals.settings.opengraph && locals.settings.opengraph.description)?locals.settings.opengraph.description:''	%></textarea>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group	col-md-12">
+		<input type="submit" name="submit" value="Save" class="btn-info" />
+	</div>
+</form>

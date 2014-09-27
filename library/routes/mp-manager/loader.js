@@ -273,7 +273,64 @@ module.exports = function(app) {
 			//	reload page
 			httpResponse.redirect(httpRequest.url);
 		});
-		
+	});
+	
+	
+	/**
+	 * Menu Handler: Settings -> Opengraph
+	 */
+	app.get('/mp-manager/settings/opengraph', function(httpRequest, httpResponse) {
+		require(ROOT_PATH + '/library/settings').loadSettings(function(settingsList) {
+			httpResponse.render('opengraph', {
+				locals: {
+					settings: settingsList
+				}
+			});
+		});
+	}).post('/mp-manager/settings/opengraph', function(httpRequest, httpResponse) {
+		require(ROOT_PATH + '/library/settings').saveSettingsList([
+		    {
+		    	key: 'opengraph',
+		    	value: {
+		    		title: httpRequest.body.ogTitle,
+		    		url: httpRequest.body.ogUrl,
+		    		type: httpRequest.body.ogType,
+		    		image: httpRequest.body.ogImage,
+		    		video: httpRequest.body.ogVideo,
+		    		description: httpRequest.body.ogDescription
+		    	}
+		    }
+		], function(settingsList) {
+			//	reload page
+			httpResponse.redirect(httpRequest.url);
+		});
+	});
+	
+	/**
+	 * Menu Handler: Settings -> Opengraph
+	 */
+	app.get('/mp-manager/settings/seo-meta', function(httpRequest, httpResponse) {
+		require(ROOT_PATH + '/library/settings').loadSettings(function(settingsList) {
+			httpResponse.render('seo-meta', {
+				locals: {
+					settings: settingsList
+				}
+			});
+		});
+	}).post('/mp-manager/settings/seo-meta', function(httpRequest, httpResponse) {
+		require(ROOT_PATH + '/library/settings').saveSettingsList([
+		    {
+		    	key: 'seometa',
+		    	value: {
+		    		title: httpRequest.body.seoTitle,
+		    		description: httpRequest.body.seoDescription,
+		    		keywords: httpRequest.body.seoKeywords
+		    	}
+		    }
+		], function(settingsList) {
+			//	reload page
+			httpResponse.redirect(httpRequest.url);
+		});
 	});
 	
 	

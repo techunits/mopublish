@@ -1,5 +1,5 @@
 @charset "utf-8";
-/* CSS Document for MOZ website */
+/* CSS Document for Moz website */
 
 body { font-family: Roboto;	}
 ul, ol, li {
@@ -19,7 +19,10 @@ ul, ol, li {
 	color: #75B822	!important;
 }
 
-a:hover { color:#75B822	!important; text-decoration: none;	}
+a:hover {	
+	color:#75B822	!important;
+	text-decoration: none;
+}
 .btn-info	{
 	border-radius: 4px;
 	padding: 2px 25px;
@@ -30,6 +33,20 @@ a:hover { color:#75B822	!important; text-decoration: none;	}
 	background: #2ea2cc;
 	border-color: #0074a2;
 }
+
+::-webkit-input-placeholder { 
+    color: #DADADA !important; 
+}
+:-moz-placeholder { 
+    color: #DADADA !important;
+}
+::-moz-placeholder { 
+    color: #DADADA !important;
+}
+:-ms-input-placeholder { 
+    color: #DADADA !important;
+}
+
 
 /*	icons	*/
 .icon	{

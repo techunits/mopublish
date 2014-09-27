@@ -1,0 +1,30 @@
+<h1 class="section-heading">SEO Meta Tags Default Settings</h1>
+<form class="form-group	row" method="post" action="/mp-manager/settings/seo-meta" name="siteSettings" ng-controller="SiteSettings">
+	<div class="form-group">
+		<label class="col-md-3">Title*</label>
+		<div class="col-md-6">
+			<input type="text" name="seoTitle" placeholder="Example title" value="<%=	(locals.settings.seometa && locals.settings.seometa.title)?locals.settings.seometa.title:''	%>" class="form-control" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Description*</label>
+		<div class="col-md-6">
+			<textarea type="text" name="seoDescription" class="form-control" rows="5" required ><%=	(locals.settings.seometa && locals.settings.seometa.description)?locals.settings.seometa.description:''	%></textarea>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-md-3">Keywords*</label>
+		<div class="col-md-6">
+			<input type="text" name="seoKeywords" placeholder="keyword, development, jobs" value="<%=	(locals.settings.seometa && locals.settings.seometa.keywords)?locals.settings.seometa.keywords:''	%>" class="form-control" required />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+	<div class="form-group	col-md-12">
+		<input type="submit" name="submit" value="Save" class="btn-info" />
+	</div>
+</form>
