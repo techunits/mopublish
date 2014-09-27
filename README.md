@@ -21,6 +21,17 @@ Please note, Monpublish is in active testing be our developers to provide a extr
 * http://www.mopublish.com
 
 
+### Mopublish Tests
+
+Mopublish has been tested successfully on the following PaaS platforms (using free/trial accounts):
+
+  * [Heroku](http://www.heroku.com/)
+  * [OpenShift](https://openshift.redhat.com/app/)
+  * [Modulus](https://modulus.io/)
+  * [AppFog](http://www.appfog.com/)
+  * [Nodejitsu](http://nodejitsu.com/)
+  * [Windows Azure](http://www.windowsazure.com/)
+
 ## License
 
 **Mopublish** is licensed under [MIT license](https://github.com/techunits/mopublish/blob/master/LICENSE), so you are free to use it as you like.
