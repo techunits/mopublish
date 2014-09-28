@@ -1,21 +1,26 @@
 <html lang="en" ng-app="MPLite">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><%=	globalLocals.sitename	%> - <%=	globalLocals.tagline	%></title>
-    
-	<%-	stylesheets	%>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title><%=	globalLocals.sitename	%> - <%=	globalLocals.tagline	%></title>
+		
+		<%-	seometa	%>
+		
+		<%-	opengraph	%>
+		   
+		<%-	stylesheets	%>
+		
+		<%- scripts %>
+	</head>
 	
-	<%- scripts %>
-  </head>
-  <body>
-    <%	include	./header	%>
-    
-    <section class="wrapper">		
-		<%- body %>
-	</section>
-	
-	<%	include	./footer	%>
-</body>
+	<body>
+		<%	include	./header	%>
+		  
+		<section class="wrapper">		
+			<%- body %>
+		</section>
+		
+		<%	include	./footer	%>
+	</body>
 </html>

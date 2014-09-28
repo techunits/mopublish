@@ -4,6 +4,10 @@ var utilObj = require(ROOT_PATH + '/library/util');
 var helperObj = require(ROOT_PATH + '/library/helper');
 var multer  = require('multer');
 
+//define action queue globa;;
+global.actionQueue = [];
+
+
 /**
  * load global settings from config file
  */
@@ -100,7 +104,9 @@ module.exports = function(app, express) {
 							util: utilObj,
 							helper: helperObj
 						},
-						globalLocals: siteConfigObj
+						globalLocals: siteConfigObj,
+						opengraph: require(ROOT_PATH + '/library/template').getOpengraphHTML(siteConfigObj.opengraph),
+						seometa: require(ROOT_PATH + '/library/template').getSeoMetaHTML(siteConfigObj.seometa)
 				    };
 					
 				    next();
