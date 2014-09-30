@@ -184,12 +184,17 @@ module.exports = function(app) {
 				/**
 				 * save post meta
 				 */
-				contentObj.saveMetaInfo(httpRequest.body.cid, 'metaTitle', httpRequest.body.metaTitle);
-				contentObj.saveMetaInfo(httpRequest.body.cid, 'metaDescription', httpRequest.body.metaDescription);
-				contentObj.saveMetaInfo(httpRequest.body.cid, 'metaKeywords', httpRequest.body.metaKeywords);
-				contentObj.saveMetaInfo(httpRequest.body.cid, 'ogTitle', httpRequest.body.ogTitle);
-				contentObj.saveMetaInfo(httpRequest.body.cid, 'ogDescription', httpRequest.body.ogDescription);
-				contentObj.saveMetaInfo(httpRequest.body.cid, 'ogType', httpRequest.body.ogType);
+				contentObj.saveMetaInfo(httpRequest.body.cid, 'seometa', {
+					title: httpRequest.body.title,
+					description: httpRequest.body.description,
+					keywords: httpRequest.body.keywords
+				});
+				
+				contentObj.saveMetaInfo(httpRequest.body.cid, 'opengraph', {
+					title: httpRequest.body.ogTitle,
+					description: httpRequest.body.ogDescription,
+					type: httpRequest.body.ogType
+				});
 				
 				/**
 				 * link attachment files to the current post

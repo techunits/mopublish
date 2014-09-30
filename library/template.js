@@ -1,3 +1,34 @@
+var getPageTitle = function(pagename) {
+	var titlePattern = '{{PAGENAME}} - {{SITENAME}} - {{TAGLINE}}';
+	if(appConfigObj.pagetitlePattern) {
+		titlePattern = appConfigObj.pagetitlePattern;
+	}
+	
+	var toReplace = ['{{PAGENAME}}', '{{SITENAME}}', '{{TAGLINE}}'];
+	toReplace.forEach(function(exp) {
+		switch(exp) {
+			case '{{PAGENAME}}':
+				console.log(pagename);
+				if(pagename)
+					titlePattern = titlePattern.replace(exp, pagename);
+				else
+					titlePattern = titlePattern.replace(exp, '');
+			break;
+			
+			case '{{SITENAME}}':
+				titlePattern = titlePattern.replace(exp, siteConfigObj.sitename);
+			break;
+			
+			case '{{TAGLINE}}':
+				titlePattern = titlePattern.replace(exp, siteConfigObj.tagline);
+			break;
+		}
+	});
+	
+	return titlePattern;
+};
+exports.getPageTitle = getPageTitle;
+
 /**
  * get opengraph HTML strings w.r.t. input
  */
@@ -27,7 +58,7 @@ exports.getSeoMetaHTML = getSeoMetaHTML;
  * execute actions for Footer
  * Default Action Hook: "mpHeader"
  */
-exports.mpHeader = function() {
+exports.getHeader = function() {
 	var htmlStr = '';
 	
 	/**
@@ -52,7 +83,7 @@ exports.mpHeader = function() {
  * execute actions for Footer
  * Default Action Hook: "mpFooter"
  */
-exports.mpFooter = function() {
+exports.getFooter = function() {
 	var htmlStr = '';
 	
 	/**

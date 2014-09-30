@@ -240,6 +240,10 @@ var getAttachmentList = function(parentCID, callback) {
 		if(err)
 			console.log(err);
 	
+		if(0 == docList.length) {
+			callback([]);
+		}
+		
 		var finalAttachmentList = [];
 		var attachmentCounter = 0;
 		docList.forEach(function(docInfo) {

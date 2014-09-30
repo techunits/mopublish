@@ -1,12 +1,7 @@
 var fs = require('fs');
 var url = require('url');
-var utilObj = require(ROOT_PATH + '/library/util');
-var helperObj = require(ROOT_PATH + '/library/helper');
+mpObj = new require(ROOT_PATH + '/library/mopublish');
 var multer  = require('multer');
-
-//define action queue globa;;
-global.actionQueue = [];
-
 
 /**
  * load global settings from config file
@@ -74,7 +69,7 @@ module.exports = function(app, express) {
 			
 			//	check whether system is installed and set the global parameter.
 			if('/mp-manager/installer' != httpRequest.url) {
-				utilObj.isSystemInstalled(function() {
+				mpObj.util.isSystemInstalled(function() {
 					//	app.set('installed', true);
 					
 					var themeConfigObj = require(ROOT_PATH + '/library/config').loadThemeSettings(siteSettings.theme);
@@ -100,14 +95,78 @@ module.exports = function(app, express) {
 						stylesheets: stylesheets,
 						scripts: scripts,
 						isLoggedin: httpRequest.session.loggedin,
-						mpObj: {
-							util: utilObj,
-							helper: helperObj
-						},
+						mp: mpObj,
 						globalLocals: siteConfigObj,
 						opengraph: require(ROOT_PATH + '/library/template').getOpengraphHTML(siteConfigObj.opengraph),
-						seometa: require(ROOT_PATH + '/library/template').getSeoMetaHTML(siteConfigObj.seometa)
+						seometa: require(ROOT_PATH + '/library/template').getSeoMetaHTML(siteConfigObj.seometa),
+						pagetitle: require(ROOT_PATH + '/library/template').getPageTitle()
 				    };
+					
+					/**
+					 * add conditional stylesheets
+					 */
+					mpObj.EventEmitter.on("mp:stylesheet", function(stylesheetList) {
+						var stylesheets = httpResponse.locals.stylesheets;
+						stylesheetList.forEach(function(fileInfo) {
+							stylesheets += '<link rel="stylesheet" type="text/css" href="'+fileInfo.file+'" />';
+						});
+						
+						httpResponse.locals.stylesheets = stylesheets;
+					});
+					
+					/**
+					 * add conditional javascripts
+					 */
+					mpObj.EventEmitter.on("mp:script", function(scriptList) {
+						var scripts = httpResponse.locals.scripts;
+						scriptList.forEach(function(fileInfo) {
+							scripts += '<script type="text/javascript" src="'+fileInfo.file+'"></script>';
+						});
+						
+						httpResponse.locals.stylesheets = scripts;
+					});
+					
+					/**
+					 * add opengraph data to template vars
+					 */
+					mpObj.EventEmitter.on("mp:opengraph", function(ogData) {
+						console.log(httpRequest.url + '=> great...');
+						if(ogData) {
+							httpResponse.locals.opengraph = require(ROOT_PATH + '/library/template').getOpengraphHTML(ogData);
+						}
+					});
+					
+					/**
+					 * add opengraph data to template vars
+					 */
+					mpObj.EventEmitter.on("mp:seometa", function(seometaData) {
+						if(seometaData) {
+							httpResponse.locals.seometa = require(ROOT_PATH + '/library/template').getSeoMetaHTML(seometaData);
+						}
+					});
+					
+					/**
+					 * update pagetitle as per requirements
+					 */
+					mpObj.EventEmitter.on("mp:pagetitle", function(titleStr) {
+						if(titleStr) {
+							httpResponse.locals.pagetitle = titleStr;
+						}
+					});
+					
+					/**
+					 * add mpHeader data to template vars
+					 */
+					mpObj.EventEmitter.on("mp:header", function(seometaData) {
+						//	in process
+					});
+					
+					/**
+					 * add mpFooter data to template vars
+					 */
+					mpObj.EventEmitter.on("mp:footer", function(seometaData) {
+						//	in process
+					});
 					
 				    next();
 				},
@@ -146,7 +205,9 @@ module.exports = function(app, express) {
     fs.readdirSync(ROOT_PATH + '/plugins').forEach(function(pluginDir) {
         var route = ROOT_PATH + '/plugins/' + pluginDir + '/loader.js';
         if(fs.existsSync(route)) {
-        	console.log('Loading Routes: ' + route);
+        	if(true === appConfigObj.debug) {
+        		console.log('Loading Routes: ' + route);
+        	}
         	require(route)(app);
         }
     });
@@ -179,6 +240,9 @@ module.exports = function(app, express) {
 			 */
 			contentValidator.isPage(urlParts[0], 
 				function(itemInfo) {
+					//	update page title
+		    		mpObj.EventEmitter.emit("mp:pagetitle", require(ROOT_PATH + '/library/template').getPageTitle(itemInfo.title));
+				
 					httpResponse.render('page', {
 						info: itemInfo
 					});
@@ -201,12 +265,7 @@ module.exports = function(app, express) {
 											title: typeInfo.title,
 											description: typeInfo.description
 										},
-										contents: contentList,
-										utilObj: utilObj
-									}, function(err, html) {
-										if(err)
-											console.log(err);
-										httpResponse.end(html);
+										contents: contentList
 									});
 								});
 							}
@@ -214,8 +273,28 @@ module.exports = function(app, express) {
 							//	check whether single content requested
 							else {
 								contentObj.getContentBy('slug', urlParts[1], urlParts[0], function(itemInfo) {
+									/**
+									 * event runs 
+									 */
+									mpObj.EventEmitter.emit("mp:single", itemInfo);
+									
+									//	update page title
+							    	mpObj.EventEmitter.emit("mp:pagetitle", require(ROOT_PATH + '/library/template').getPageTitle(itemInfo.info.title));
+									
+							    	//	update opengraph if exists
+							    	if(itemInfo.opengraph)
+							    		mpObj.EventEmitter.emit("mp:opengraph", itemInfo.opengraph);
+									
+							    	//	update SEO meta tags if exists
+							    	if(itemInfo.seometa)
+							    		mpObj.EventEmitter.emit("mp:seometa", itemInfo.seometa);
+							    	
 									httpResponse.render(urlParts[0], {
 										info: itemInfo
+									}, function(err, html) {
+										if(err)
+											console.log(err);
+										httpResponse.end(html);
 									});
 								}, function() {
 									httpResponse.redirect('/404');

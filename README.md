@@ -31,8 +31,23 @@ Mopublish has been tested successfully on the following PaaS platforms (using fr
   * [AppFog](http://www.appfog.com/)
   * [Nodejitsu](http://nodejitsu.com/)
   * [Windows Azure](http://www.windowsazure.com/)
+  * [Amazon Web Services - AWS](https://aws.amazon.com/)
 
-## License
+
+###	Action & Events
+
+Mopublish has been equipped with many Events and Actions into it's core, which provides developers a greater advantage to write plugins on top of it. List as follows:
+
+	* *mp:header* 
+
+
+#### Note from Auhtor
+
+**Mopublish** is a Content Management System inspired by Drupal & Wordpress, so we have tried our best to match it's features and usubility to those php based CMS as much as possible.
+We will always keep up the work to add more advanced features to enrich the product. Hope you will like it!!!
+
+
+#### License
 
 **Mopublish** is licensed under [MIT license](https://github.com/techunits/mopublish/blob/master/LICENSE), so you are free to use it as you like.
 

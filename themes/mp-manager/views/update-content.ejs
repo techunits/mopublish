@@ -85,15 +85,15 @@
 				<h3 class="section-heading">SEO Meta Tags</h3>
 				<div class="col-md-12	form-group">
 					<label>Meta Title</label>
-					<input type="text" name="metaTitle" placeholder="SEO Page Title" value="<%=	(locals.content.meta.metaTitle)?locals.content.meta.metaTitle:''	%>" class="form-control" />
+					<input type="text" name="metaTitle" placeholder="SEO Page Title" value="<%=	(locals.content.seometa && locals.content.seometa.title)?locals.content.seometa.title:''	%>" class="form-control" />
 				</div>
 				<div class="col-md-12	form-group">
 					<label>Meta Description</label>
-					<textarea name="metaDescription" placeholder="SEO Brief Info" rows="3" class="form-control"><%=	(locals.content.meta.metaDescription)?locals.content.meta.metaDescription:''	%></textarea>
+					<textarea name="metaDescription" placeholder="SEO Brief Info" rows="3" class="form-control"><%=	(locals.content.seometa && locals.content.seometa.description)?locals.content.seometa.description:''	%></textarea>
 				</div>
 				<div class="col-md-12	form-group">
 					<label>Meta Keywords</label>
-					<input type="text" name="metaKeywords" placeholder="Prefered Keywords" value="<%=	(locals.content.meta.metaKeywords)?locals.content.meta.metaKeywords:''	%>" class="form-control" />
+					<input type="text" name="metaKeywords" placeholder="Prefered Keywords" value="<%=	(locals.content.seometa && locals.content.seometa.keywords)?locals.content.seometa.keywords''	%>" class="form-control" />
 				</div>
 				<div class="clearfix"></div>
 			</div>

@@ -12,7 +12,11 @@ module.exports = function(app) {
 	 * 404 page handler
 	 */
 	app.get('/404', function(httpRequest, httpResponse) {
-		httpResponse.end('404 Page...');
-		//	httpResponse.render('index');
+		httpResponse.render('404', function(err, html) {
+			if(err)
+				console.log(err);
+			
+			httpResponse.end(html);
+		});
 	});
 };
