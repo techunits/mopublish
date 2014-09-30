@@ -38,8 +38,9 @@ Mopublish has been tested successfully on the following PaaS platforms (using fr
 
 Mopublish has been equipped with many Events and Actions into it's core, which provides developers a greater advantage to write plugins on top of it. List as follows:
 
-	* *mp:header* 
-
+	*mp:header* To add extra tags & texts to the header section, used by getHeader() method.
+	*mp:seometa* To update SEO meta title, keywords & description, as per requirement.
+	*mp:opengraph* To update Opengraph tags as per requirement. Supports opengraph tags: (http://ogp.me/)
 
 #### Note from Auhtor
 
