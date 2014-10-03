@@ -85,15 +85,15 @@
 				<h3 class="section-heading">SEO Meta Tags</h3>
 				<div class="col-md-12	form-group">
 					<label>Meta Title</label>
-					<input type="text" name="metaTitle" placeholder="SEO Page Title" value="<%=	(locals.content.seometa && locals.content.seometa.title)?locals.content.seometa.title:''	%>" class="form-control" />
+					<input type="text" name="metaTitle" placeholder="SEO Page Title" value="<%=	(locals.content.meta.seometa && locals.content.meta.seometa.title)?locals.content.meta.seometa.title:''	%>" class="form-control" />
 				</div>
 				<div class="col-md-12	form-group">
 					<label>Meta Description</label>
-					<textarea name="metaDescription" placeholder="SEO Brief Info" rows="3" class="form-control"><%=	(locals.content.seometa && locals.content.seometa.description)?locals.content.seometa.description:''	%></textarea>
+					<textarea name="metaDescription" placeholder="SEO Brief Info" rows="3" class="form-control"><%=	(locals.content.meta.seometa && locals.content.meta.seometa.description)?locals.content.meta.seometa.description:''	%></textarea>
 				</div>
 				<div class="col-md-12	form-group">
 					<label>Meta Keywords</label>
-					<input type="text" name="metaKeywords" placeholder="Prefered Keywords" value="<%=	(locals.content.seometa && locals.content.seometa.keywords)?locals.content.seometa.keywords''	%>" class="form-control" />
+					<input type="text" name="metaKeywords" placeholder="Prefered Keywords" value="<%=	(locals.content.meta.seometa && locals.content.meta.seometa.keywords)?locals.content.meta.seometa.keywords:''	%>" class="form-control" />
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -102,11 +102,11 @@
 				<h3 class="section-heading">Opengraph</h3>
 				<div class="col-md-12	form-group">
 					<label>Opengraph Title</label>
-					<input type="text" name="ogTitle" placeholder="Enter title here" value="<%=	(locals.content.meta.ogTitle)?locals.content.meta.ogTitle:''	%>" class="form-control" />
+					<input type="text" name="ogTitle" placeholder="Enter title here" value="<%=	(locals.content.meta.opengraph && locals.content.meta.opengraph.title)?locals.content.meta.opengraph.title:''	%>" class="form-control" />
 				</div>
 				<div class="col-md-12	form-group">
 					<label>Opengraph Description</label>
-					<textarea name="ogDescription" placeholder="Enter Brief info here..." rows="3" class="form-control"><%=	(locals.content.meta.ogDescription)?locals.content.meta.ogDescription:''	%></textarea>
+					<textarea name="ogDescription" placeholder="Enter Brief info here..." rows="3" class="form-control"><%=	(locals.content.meta.opengraph && locals.content.meta.opengraph.description)?locals.content.meta.opengraph.description:''	%></textarea>
 				</div>
 				<div class="col-md-12">
 					<label>Opengraph Type</label>

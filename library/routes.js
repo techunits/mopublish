@@ -240,12 +240,26 @@ module.exports = function(app, express) {
 			 */
 			contentValidator.isPage(urlParts[0], 
 				function(itemInfo) {
-					//	update page title
-		    		mpObj.EventEmitter.emit("mp:pagetitle", require(ROOT_PATH + '/library/template').getPageTitle(itemInfo.title));
-				
-					httpResponse.render('page', {
-						info: itemInfo
-					});
+					require(ROOT_PATH + '/library/content').getContentBy('slug', urlParts[0], 'page', function(itemInfo) {
+			    		/**
+						 * event runs 
+						 */
+						mpObj.EventEmitter.emit("mp:single", itemInfo);
+						
+						//	update page title
+				    	mpObj.EventEmitter.emit("mp:pagetitle", require(ROOT_PATH + '/library/template').getPageTitle(itemInfo.info.title));
+						
+				    	//	update opengraph if exists
+				    	if(itemInfo.meta.opengraph)
+				    		mpObj.EventEmitter.emit("mp:opengraph", itemInfo.meta.opengraph);
+						
+				    	//	update SEO meta tags if exists
+				    	if(itemInfo.meta.seometa)
+				    		mpObj.EventEmitter.emit("mp:seometa", itemInfo.meta.seometa);
+				    	
+			    		
+						httpResponse.render('page', itemInfo);
+					}, function() {});
 				}, 
 				function() {
 					/**
@@ -273,6 +287,7 @@ module.exports = function(app, express) {
 							//	check whether single content requested
 							else {
 								contentObj.getContentBy('slug', urlParts[1], urlParts[0], function(itemInfo) {
+									console.log(itemInfo);
 									/**
 									 * event runs 
 									 */
@@ -282,12 +297,12 @@ module.exports = function(app, express) {
 							    	mpObj.EventEmitter.emit("mp:pagetitle", require(ROOT_PATH + '/library/template').getPageTitle(itemInfo.info.title));
 									
 							    	//	update opengraph if exists
-							    	if(itemInfo.opengraph)
-							    		mpObj.EventEmitter.emit("mp:opengraph", itemInfo.opengraph);
+							    	if(itemInfo.meta.opengraph)
+							    		mpObj.EventEmitter.emit("mp:opengraph", itemInfo.meta.opengraph);
 									
 							    	//	update SEO meta tags if exists
-							    	if(itemInfo.seometa)
-							    		mpObj.EventEmitter.emit("mp:seometa", itemInfo.seometa);
+							    	if(itemInfo.meta.seometa)
+							    		mpObj.EventEmitter.emit("mp:seometa", itemInfo.meta.seometa);
 							    	
 									httpResponse.render(urlParts[0], {
 										info: itemInfo

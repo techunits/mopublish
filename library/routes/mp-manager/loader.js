@@ -153,6 +153,7 @@ module.exports = function(app) {
 		if(true === httpRequest.session.loggedin) {
 			if(httpRequest.query.cid) {
 				require(ROOT_PATH + '/library/content').getContentBy('_id', httpRequest.query.cid, httpRequest.query.type, function (docInfo) {
+					console.log(docInfo);
 					httpResponse.render('update-content', {
 						locals: {
 							cid:  httpRequest.query.cid,
@@ -185,9 +186,9 @@ module.exports = function(app) {
 				 * save post meta
 				 */
 				contentObj.saveMetaInfo(httpRequest.body.cid, 'seometa', {
-					title: httpRequest.body.title,
-					description: httpRequest.body.description,
-					keywords: httpRequest.body.keywords
+					title: httpRequest.body.metaTitle,
+					description: httpRequest.body.metaDescription,
+					keywords: httpRequest.body.metaKeywords
 				});
 				
 				contentObj.saveMetaInfo(httpRequest.body.cid, 'opengraph', {
