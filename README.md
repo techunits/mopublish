@@ -12,7 +12,7 @@ Our goal is to create an NodeJS & MongoDB based CMS which can be compared with p
 * Email Support (Local SMTP & 3rd Party SMTP)
 * Built-in Contact Form Support
 * Built-in custom Taxonomy & Content types
-* Built-in Localisation Support
+* Built-in Localization Support
 
 
 Please note, Monpublish is in active testing be our developers to provide a extremely stable version. Few of our live usecases as follows:
@@ -34,7 +34,7 @@ Mopublish has been tested successfully on the following PaaS platforms (using fr
   * [Amazon Web Services - AWS](https://aws.amazon.com/)
 
 
-###	Action & Events
+###	Action & Evenlts
 
 Mopublish has been equipped with many Events and Actions into it's core, which provides developers a greater advantage to write plugins on top of it. List as follows:
 
