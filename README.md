@@ -19,6 +19,7 @@ Please note, Monpublish is in active testing be our developers to provide a extr
 
 * http://www.techunits.com
 * http://www.mopublish.com
+* http://rate-exchange.herokuapp.com
 
 
 ### Mopublish Tests
