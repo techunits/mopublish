@@ -34,7 +34,7 @@ Mopublish has been tested successfully on the following PaaS platforms (using fr
   * [Amazon Web Services - AWS](https://aws.amazon.com/)
 
 
-###	Action & Evenlts
+###	Action & Events
 
 Mopublish has been equipped with many Events and Actions into it's core, which provides developers a greater advantage to write plugins on top of it. List as follows:
 
