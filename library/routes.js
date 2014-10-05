@@ -108,7 +108,7 @@ module.exports = function(app, express) {
 					/**
 					 * add conditional stylesheets
 					 */
-					mpObj.EventEmitter.on("MP:stylesheet", function(stylesheetList) {
+					mpObj.EventEmitter.on("mp:stylesheet", function(stylesheetList) {
 						var stylesheets = httpResponse.locals.stylesheets;
 						stylesheetList.forEach(function(fileInfo) {
 							stylesheets += '<link rel="stylesheet" type="text/css" href="'+fileInfo.file+'" />';
@@ -120,7 +120,7 @@ module.exports = function(app, express) {
 					/**
 					 * add conditional javascripts
 					 */
-					mpObj.EventEmitter.on("MP:script", function(scriptList) {
+					mpObj.EventEmitter.on("mp:script", function(scriptList) {
 						var scripts = httpResponse.locals.scripts;
 						scriptList.forEach(function(fileInfo) {
 							scripts += '<script type="text/javascript" src="'+fileInfo.file+'"></script>';
@@ -132,8 +132,8 @@ module.exports = function(app, express) {
 					/**
 					 * add opengraph data to template vars
 					 */
-					mpObj.EventEmitter.on("MP:opengraph", function(ogData) {
-						console.log(httpRequest.url + '=> great...');
+					mpObj.EventEmitter.on("mp:opengraph", function(ogData) {
+						//	console.log(httpRequest.url + '=> great...');
 						if(ogData) {
 							httpResponse.locals.opengraph = require(ROOT_PATH + '/library/template').getOpengraphHTML(ogData);
 						}
@@ -142,7 +142,7 @@ module.exports = function(app, express) {
 					/**
 					 * add opengraph data to template vars
 					 */
-					mpObj.EventEmitter.on("MP:seometa", function(seometaData) {
+					mpObj.EventEmitter.on("mp:seometa", function(seometaData) {
 						if(seometaData) {
 							httpResponse.locals.seometa = require(ROOT_PATH + '/library/template').getSeoMetaHTML(seometaData);
 						}
@@ -151,7 +151,7 @@ module.exports = function(app, express) {
 					/**
 					 * update pagetitle as per requirements
 					 */
-					mpObj.EventEmitter.on("MP:pagetitle", function(titleStr) {
+					mpObj.EventEmitter.on("mp:pagetitle", function(titleStr) {
 						if(titleStr) {
 							httpResponse.locals.pagetitle = titleStr;
 						}
@@ -160,14 +160,14 @@ module.exports = function(app, express) {
 					/**
 					 * add mpHeader data to template vars
 					 */
-					mpObj.EventEmitter.on("MP:header", function(seometaData) {
+					mpObj.EventEmitter.on("mp:header", function(seometaData) {
 						//	in process
 					});
 					
 					/**
 					 * add mpFooter data to template vars
 					 */
-					mpObj.EventEmitter.on("MP:footer", function(seometaData) {
+					mpObj.EventEmitter.on("mp:footer", function(seometaData) {
 						//	in process
 					});
 					
@@ -317,7 +317,7 @@ module.exports = function(app, express) {
 							//	check whether single content requested
 							else {
 								contentObj.getContentBy('slug', urlParts[1], urlParts[0], function(itemInfo) {
-									console.log(itemInfo);
+									//	console.log(itemInfo);
 									/**
 									 * event runs 
 									 */
