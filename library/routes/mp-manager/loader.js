@@ -442,6 +442,13 @@ module.exports = function(app) {
 	/**
 	 * installer configurations
 	 */
+	app.get('/mp-manager/unauthorized', function(httpRequest, httpResponse) {
+		httpResponse.end('Sorry!!! You are not authorized to access this page.');
+	});
+	
+	/**
+	 * installer configurations
+	 */
 	app.get('/mp-manager/installer', function(httpRequest, httpResponse) {
 		utilObj.isSystemInstalled(function() {
 			httpResponse.end('Sorry!!! Can\'t re-run installer. System is already installed.');

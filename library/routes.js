@@ -90,6 +90,9 @@ module.exports = function(app, express) {
 						});
 					}
 					
+					/**
+					 * append required varriables to the template.
+					 */
 					httpResponse.locals = {
 						httpReq: httpRequest,
 						stylesheets: stylesheets,
@@ -105,7 +108,7 @@ module.exports = function(app, express) {
 					/**
 					 * add conditional stylesheets
 					 */
-					mpObj.EventEmitter.on("mp:stylesheet", function(stylesheetList) {
+					mpObj.EventEmitter.on("MP:stylesheet", function(stylesheetList) {
 						var stylesheets = httpResponse.locals.stylesheets;
 						stylesheetList.forEach(function(fileInfo) {
 							stylesheets += '<link rel="stylesheet" type="text/css" href="'+fileInfo.file+'" />';
@@ -117,7 +120,7 @@ module.exports = function(app, express) {
 					/**
 					 * add conditional javascripts
 					 */
-					mpObj.EventEmitter.on("mp:script", function(scriptList) {
+					mpObj.EventEmitter.on("MP:script", function(scriptList) {
 						var scripts = httpResponse.locals.scripts;
 						scriptList.forEach(function(fileInfo) {
 							scripts += '<script type="text/javascript" src="'+fileInfo.file+'"></script>';
@@ -129,7 +132,7 @@ module.exports = function(app, express) {
 					/**
 					 * add opengraph data to template vars
 					 */
-					mpObj.EventEmitter.on("mp:opengraph", function(ogData) {
+					mpObj.EventEmitter.on("MP:opengraph", function(ogData) {
 						console.log(httpRequest.url + '=> great...');
 						if(ogData) {
 							httpResponse.locals.opengraph = require(ROOT_PATH + '/library/template').getOpengraphHTML(ogData);
@@ -139,7 +142,7 @@ module.exports = function(app, express) {
 					/**
 					 * add opengraph data to template vars
 					 */
-					mpObj.EventEmitter.on("mp:seometa", function(seometaData) {
+					mpObj.EventEmitter.on("MP:seometa", function(seometaData) {
 						if(seometaData) {
 							httpResponse.locals.seometa = require(ROOT_PATH + '/library/template').getSeoMetaHTML(seometaData);
 						}
@@ -148,7 +151,7 @@ module.exports = function(app, express) {
 					/**
 					 * update pagetitle as per requirements
 					 */
-					mpObj.EventEmitter.on("mp:pagetitle", function(titleStr) {
+					mpObj.EventEmitter.on("MP:pagetitle", function(titleStr) {
 						if(titleStr) {
 							httpResponse.locals.pagetitle = titleStr;
 						}
@@ -157,18 +160,45 @@ module.exports = function(app, express) {
 					/**
 					 * add mpHeader data to template vars
 					 */
-					mpObj.EventEmitter.on("mp:header", function(seometaData) {
+					mpObj.EventEmitter.on("MP:header", function(seometaData) {
 						//	in process
 					});
 					
 					/**
 					 * add mpFooter data to template vars
 					 */
-					mpObj.EventEmitter.on("mp:footer", function(seometaData) {
+					mpObj.EventEmitter.on("MP:footer", function(seometaData) {
 						//	in process
 					});
 					
-				    next();
+					/**
+					 * if request URL is admin then append Admin Sidebar menu.
+					 */
+					if(-1 != httpRequest.url.indexOf('mp-manager')) {						
+						var menuHtmlStr = '';
+						//	prepare content type menus
+						require(ROOT_PATH + '/library/content').ContentTypeModel.find(function(err, docs) {
+							
+							docs.forEach(function(docInfo) {
+								menuHtmlStr += '<ul class="menu-section">'+
+													'<li class="heading"><i class="glyphicon glyphicon-th"></i> '+docInfo.title+'</li>'+
+													'<li>'+
+														'<a href="/mp-manager/contents?type='+docInfo.slug+'" title="All Posts">All '+docInfo.title+'</a>'+
+													'</li>'+
+													'<li>'+
+														'<a href="/mp-manager/update-content?type='+docInfo.slug+'" title="Add New Blog Post">Add New</a>'+
+													'</li>'+
+												'</ul>';
+							});
+							
+							httpResponse.locals.adminmenu = menuHtmlStr;
+							
+							next();
+						});
+					}
+					else {
+						next();
+					}
 				},
 				function() {
 						app.set('installed', false);
