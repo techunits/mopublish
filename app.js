@@ -5,15 +5,15 @@ if (cluster.isMaster) {
 	if(process.argv.indexOf('--nocluster') == -1) {
 		// Count the machine's CPUs
 		var cpuCount = require('os').cpus().length;
+		
+		// Create a worker for each CPU
+	    for (var i = 0; i < cpuCount; i += 1) {
+	    	cluster.fork();
+	    }
 	}
 	else {
-		cpuCount = 1;
+		cluster.fork();
 	}
-	
-    // Create a worker for each CPU
-    for (var i = 0; i < cpuCount; i += 1) {
-        cluster.fork();
-    }
 }
 else {
 	var appConfigObj = require('./library/config').loadConfig();
