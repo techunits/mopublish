@@ -34,9 +34,11 @@ exports.getPageTitle = getPageTitle;
  */
 var getOpengraphHTML = function(ogList) {
 	var html = '';
-	Object.keys(ogList).forEach(function(key) {
-		html += '<meta property="og:'+key+'" content="'+ogList[key]+'" />';
-	});	
+	if(ogList) {
+		Object.keys(ogList).forEach(function(key) {
+			html += '<meta property="og:'+key+'" content="'+ogList[key]+'" />';
+		});
+	}
 	return html;
 };
 exports.getOpengraphHTML = getOpengraphHTML;
@@ -46,9 +48,11 @@ exports.getOpengraphHTML = getOpengraphHTML;
  */
 var getSeoMetaHTML = function(seometaList) {
 	var html = '';
-	Object.keys(seometaList).forEach(function(key) {
-		html += '<meta name="'+key+'" content="'+seometaList[key]+'">';
-	});	
+	if(seometaList) {
+		Object.keys(seometaList).forEach(function(key) {
+			html += '<meta name="'+key+'" content="'+seometaList[key]+'">';
+		});	
+	}
 	return html;
 };
 exports.getSeoMetaHTML = getSeoMetaHTML;

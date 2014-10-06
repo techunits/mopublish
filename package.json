@@ -2,9 +2,9 @@
   "name": "MopublishJS",
   "version": "0.0.1",
   "description": "MEAN Stack CMS",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node app.js"
   },
   "dependencies": {
 	"express": "4.9.5",
@@ -21,7 +21,8 @@
 	"morgan": "1.3.1",
 	"nodemailer": "1.0.4",
 	"nodemailer-smtp-transport": "0.1.13",
-	"cluster": "0.7.7"
+	"cluster": "0.7.7",
+	"sitemap": "0.7.4"
   },
   "engines": {
     "node": "0.10.30"
@@ -31,7 +32,7 @@
     "url": "git@heroku.com:mopublish.git"
   },
   "keywords": [
-    "keyword parser"
+    "content management system"
   ],
   "author": "Team Techunits",
   "license": "MIT"
