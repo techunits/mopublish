@@ -2,10 +2,14 @@ global.ROOT_PATH = __dirname;
 
 var cluster = require('cluster');
 if (cluster.isMaster) {
-	// Count the machine's CPUs
-    var cpuCount = require('os').cpus().length;
-    cpuCount = 1;
-    
+	if(process.argv.indexOf('--nocluster') == -1) {
+		// Count the machine's CPUs
+		var cpuCount = require('os').cpus().length;
+	}
+	else {
+		cpuCount = 1;
+	}
+	
     // Create a worker for each CPU
     for (var i = 0; i < cpuCount; i += 1) {
         cluster.fork();
