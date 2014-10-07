@@ -407,9 +407,28 @@ module.exports = function(app) {
 	 * Menu Handler: Settings -> Social Media
 	 */
 	app.get('/mp-manager/settings/social-media', function(httpRequest, httpResponse) {
-		httpResponse.render('social-media');
+		require(ROOT_PATH + '/library/settings').SettingsModel.findOne({
+			key: 'socialMedia'
+		}, function(err, docInfo) {
+			httpResponse.render('social-media', {
+				locals: {
+					socialMediaList: docInfo.value
+				}
+			});
+		});
 	}).post('/mp-manager/settings/social-media', function(httpRequest, httpResponse) {
-		httpResponse.render('social-media');
+		if(httpRequest.body.link) {
+			mediaList = [];
+			Object.keys(httpRequest.body.link).forEach(function(key) {
+				mediaList.push({
+					name: key,
+					url: httpRequest.body.link[key]
+				});
+			});
+			require(ROOT_PATH + '/library/settings').updateSettings('socialMedia', mediaList, function() {
+				httpResponse.redirect(httpRequest.url);
+			});
+		}
 	});
 	
 	/**

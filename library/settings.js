@@ -6,8 +6,8 @@ var db = require('../library/db');
  */
 var SettingsModel = db.mongooseObj.model('settings', new db.mongooseObj.Schema({
 	key	: { 
-		type: String, 
-		'default': null
+		type: String,
+		index: true
 	},
 	value	: { 
 		type: db.mongooseObj.Schema.Types.Mixed,
@@ -96,7 +96,7 @@ var updateSettings = function(key, value, callback) {
 				if(err)
 					console.log(err);
 				
-				callback();
+				callback(docInfo);
 			});
 		} 
 		else {
@@ -107,7 +107,7 @@ var updateSettings = function(key, value, callback) {
 				if(err)
 					console.log(err);
 				
-				callback();
+				callback(itemInfo);
 			});
 		}			
 	});
