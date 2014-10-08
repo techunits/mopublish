@@ -65,12 +65,3 @@ exports.extend = function(target) {
     });
     return target;
 };
-
-exports.addAction = function(actionName, params, func) {
-	var actionInfo = {};
-	actionInfo[actionName] = params;
-};
-
-exports.doAction = function(actionName, callback) {
-	console.log(actionName);
-};
