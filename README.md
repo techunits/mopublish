@@ -37,13 +37,23 @@ Mopublish has been tested successfully on the following PaaS platforms (using fr
   * [Amazon Web Services - AWS](https://aws.amazon.com/)
 
 
-###	Action & Events
+###	Events & Hooks
 
-Mopublish has been equipped with many Events and Actions into it's core, which provides developers a greater advantage to write plugins on top of it. List as follows:
+Mopublish has been equipped with many Events and Actions into it's core, which provides developers a greater advantage to write plugins on top of it.
 
-	*mp:header* To add extra tags & texts to the header section, used by getHeader() method.
-	*mp:seometa* To update SEO meta title, keywords & description, as per requirement.
-	*mp:opengraph* To update Opengraph tags as per requirement. Supports opengraph tags: (http://ogp.me/)
+**You can emit following events to update respective functions:**
+
+*MP:HEADER* To add extra tags & texts to the header section.
+*MP:STYLESHEET* Load stylesheets.
+*MP:SCRIPT* Load scripts.
+*MP:PAGETITLE* Update page title based on page & pluigns.
+*MP:SEOMETA* To update SEO meta title, keywords & description, as per requirement.
+*MP:OPENGRAPH* To update Opengraph tags as per requirement. Supports opengraph tags: (http://ogp.me/)
+*MP:FOOTER* To add extra tags & texts to the footer section.
+
+**Also you can bind to following events to modify the default flow of the system**
+
+*MP:LOGIN* To add extra functionality or special redirection once user is loggedin.
 
 #### Note from Auhtor
 
