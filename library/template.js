@@ -8,7 +8,7 @@ var getPageTitle = function(pagename) {
 	toReplace.forEach(function(exp) {
 		switch(exp) {
 			case '{{PAGENAME}}':
-				console.log(pagename);
+				//	console.log(pagename);
 				if(pagename)
 					titlePattern = titlePattern.replace(exp, pagename);
 				else
@@ -64,21 +64,6 @@ exports.getSeoMetaHTML = getSeoMetaHTML;
  */
 exports.getHeader = function() {
 	var htmlStr = '';
-	
-	/**
-	 * Perform Action "seometa"
-	 */
-	require(ROOT_PATH + '/library/util').doAction('seometa', function(htmlStr) {
-		htmlStr += getOpengraphHTML(siteConfigObj.seometa);
-	});
-	
-	/**
-	 * Perform Action "opengraph"
-	 */
-	require(ROOT_PATH + '/library/util').doAction('opengraph', function(htmlStr) {
-		htmlStr += getOpengraphHTML(siteConfigObj.opengraph);
-	});
-	
 	return htmlStr;
 };
 
@@ -89,12 +74,5 @@ exports.getHeader = function() {
  */
 exports.getFooter = function() {
 	var htmlStr = '';
-	
-	/**
-	 * Perform Action "seometa"
-	 */
-	require(ROOT_PATH + '/library/util').doAction('mpFooter', function(htmlStr) {
-		httpResponse.locals.seometa = htmlStr;
-		//	httpResponse.locals.seometa = require(ROOT_PATH + '/library/template').getSeoMetaHTML(siteConfigObj.seometa);
-	});
+	return htmlStr;
 };

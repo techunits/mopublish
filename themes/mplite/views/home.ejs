@@ -50,81 +50,26 @@
 <section class="container	content-wrap">
 	<h1 class="section-heading">Most Recent Posts</h1>
 	<section class="posts	row">
-		<article class="col-md-3	form-group">
-			<div class="entry">
-				<div class="image-base">
-					<img src="http://hyphen-ated.com/images/portfolio/logo_10gen_mongodb1.png" alt="" width="100%" class="thumb" />
-				</div>
-				<div class="info-base">
-					<h3 class="section-heading">
-						<a href="#" title="My First Blog Post">
-							MongoDB Powered
-						</a>
-					</h3>
-					<div class="meta	form-group">
-						This is a test meta description, This is a test meta description, This is a test meta description, This is a test meta description.
+		<%	mp.content.getContentList({type: 'blog'}, function(contentList) {	%>
+				<article class="col-md-3	form-group">
+					<div class="entry">
+						<div class="image-base">
+							<img src="http://hyphen-ated.com/images/portfolio/logo_10gen_mongodb1.png" alt="" width="100%" class="thumb" />
+						</div>
+						<div class="info-base">
+							<h3 class="section-heading">
+								<a href="#" title="My First Blog Post">
+									MongoDB Powered
+								</a>
+							</h3>
+							<div class="meta	form-group">
+								This is a test meta description, This is a test meta description, This is a test meta description, This is a test meta description.
+							</div>
+							<a href="#" title="My First Blog Post"><i class="glyphicon glyphicon-share-alt"></i> View Full</a>
+						</div>
 					</div>
-					<a href="#" title="My First Blog Post"><i class="glyphicon glyphicon-share-alt"></i> View Full</a>
-				</div>
-			</div>
-		</article>
-		
-		<article class="col-md-3	form-group">
-			<div class="entry">
-				<div class="image-base">
-					<img src="http://4.bp.blogspot.com/-o6R8TeZ3LNs/Uqt0ArsVMMI/AAAAAAAAAWI/VqxS6WYhRpI/s1600/AngularJS-framework.png" alt="" width="100%" class="thumb" />
-				</div>
-				<div class="info-base">
-					<h3 class="section-heading">
-						<a href="#" title="My First Blog Post">
-							AngularJS Contollers
-						</a>
-					</h3>
-					<div class="meta	form-group">
-						This is a test meta description, This is a test meta description, This is a test meta description, This is a test meta description.
-					</div>
-					<a href="#" title="My First Blog Post"><i class="glyphicon glyphicon-share-alt"></i> View Full</a>
-				</div>
-			</div>
-		</article>
-		
-		<article class="col-md-3	form-group">
-			<div class="entry">
-				<div class="image-base">
-					<img src="http://static.crazyws.fr/resources/blog/2012/05/nodejs.png" alt="" width="100%" class="thumb" />
-				</div>
-				<div class="info-base">
-					<h3 class="section-heading">
-						<a href="#" title="My First Blog Post">
-							NodeJS Async I/O
-						</a>
-					</h3>
-					<div class="meta	form-group">
-						This is a test meta description, This is a test meta description, This is a test meta description, This is a test meta description.
-					</div>
-					<a href="#" title="My First Blog Post"><i class="glyphicon glyphicon-share-alt"></i> View Full</a>
-				</div>
-			</div>
-		</article>
-		
-		<article class="col-md-3	form-group">
-			<div class="entry">
-				<div class="image-base">
-					<img src="http://arrayvelocity.com/wp-content/uploads/2014/02/html5-css3-technology-300x200.png" alt="" width="100%" class="thumb" />
-				</div>
-				<div class="info-base">
-					<h3 class="section-heading">
-						<a href="#" title="My First Blog Post">
-							100% Responsive
-						</a>
-					</h3>
-					<div class="meta	form-group">
-						This is a test meta description, This is a test meta description, This is a test meta description, This is a test meta description.
-					</div>
-					<a href="#" title="My First Blog Post"><i class="glyphicon glyphicon-share-alt"></i> View Full</a>
-				</div>
-			</div>
-		</article>
+				</article>
+		<%	});	%>
 		<div class="clearfix"></div>
 	</section>
 </section>

@@ -74,29 +74,15 @@ module.exports = function(app, express) {
 					
 					var themeConfigObj = require(ROOT_PATH + '/library/config').loadThemeSettings(siteSettings.theme);
 					
-					//	stylesheets html
-					var stylesheets = '';
-					if(themeConfigObj.stylesheets) {
-						themeConfigObj.stylesheets.forEach(function(fileInfo) {
-							stylesheets += '<link rel="stylesheet" type="text/css" href="'+fileInfo.file+'" />';
-						});
-					}
-					
-					//	scripts html
-					var scripts = '';
-					if(themeConfigObj.scripts) {
-						themeConfigObj.scripts.forEach(function(fileInfo) {
-							scripts += '<script type="text/javascript" src="'+fileInfo.file+'"></script>';
-						});
-					}
-					
 					/**
 					 * append required varriables to the template.
 					 */
 					httpResponse.locals = {
 						httpReq: httpRequest,
-						stylesheets: stylesheets,
-						scripts: scripts,
+						stylesheets: '',
+						scripts: '',
+						siteHeader: '',
+						siteFooter: '',
 						isLoggedin: httpRequest.session.loggedin,
 						mp: mpObj,
 						globalLocals: siteConfigObj,
@@ -108,7 +94,7 @@ module.exports = function(app, express) {
 					/**
 					 * add conditional stylesheets
 					 */
-					mpObj.EventEmitter.on("mp:stylesheet", function(stylesheetList) {
+					mpObj.EventEmitter.on("MP:STYLESHEET", function(stylesheetList) {
 						var stylesheets = httpResponse.locals.stylesheets;
 						stylesheetList.forEach(function(fileInfo) {
 							stylesheets += '<link rel="stylesheet" type="text/css" href="'+fileInfo.file+'" />';
@@ -120,19 +106,19 @@ module.exports = function(app, express) {
 					/**
 					 * add conditional javascripts
 					 */
-					mpObj.EventEmitter.on("mp:script", function(scriptList) {
+					mpObj.EventEmitter.on("MP:SCRIPT", function(scriptList) {
 						var scripts = httpResponse.locals.scripts;
 						scriptList.forEach(function(fileInfo) {
 							scripts += '<script type="text/javascript" src="'+fileInfo.file+'"></script>';
 						});
 						
-						httpResponse.locals.stylesheets = scripts;
+						httpResponse.locals.scripts = scripts;
 					});
 					
 					/**
 					 * add opengraph data to template vars
 					 */
-					mpObj.EventEmitter.on("mp:opengraph", function(ogData) {
+					mpObj.EventEmitter.on("MP:OPENGRAPH", function(ogData) {
 						//	console.log(httpRequest.url + '=> great...');
 						if(ogData) {
 							httpResponse.locals.opengraph = require(ROOT_PATH + '/library/template').getOpengraphHTML(ogData);
@@ -142,7 +128,7 @@ module.exports = function(app, express) {
 					/**
 					 * add opengraph data to template vars
 					 */
-					mpObj.EventEmitter.on("mp:seometa", function(seometaData) {
+					mpObj.EventEmitter.on("MP:SEOMETA", function(seometaData) {
 						if(seometaData) {
 							httpResponse.locals.seometa = require(ROOT_PATH + '/library/template').getSeoMetaHTML(seometaData);
 						}
@@ -151,7 +137,7 @@ module.exports = function(app, express) {
 					/**
 					 * update pagetitle as per requirements
 					 */
-					mpObj.EventEmitter.on("mp:pagetitle", function(titleStr) {
+					mpObj.EventEmitter.on("MP:PAGETITLE", function(titleStr) {
 						if(titleStr) {
 							httpResponse.locals.pagetitle = titleStr;
 						}
@@ -160,16 +146,31 @@ module.exports = function(app, express) {
 					/**
 					 * add mpHeader data to template vars
 					 */
-					mpObj.EventEmitter.on("mp:header", function(seometaData) {
-						//	in process
+					mpObj.EventEmitter.on("MP:HEADER", function(str) {
+						if(str) {
+							httpResponse.locals.siteHeader += str;
+						}
 					});
 					
 					/**
 					 * add mpFooter data to template vars
 					 */
-					mpObj.EventEmitter.on("mp:footer", function(seometaData) {
-						//	in process
+					mpObj.EventEmitter.on("MP:FOOTER", function(str) {
+						if(str) {
+							httpResponse.locals.siteFooter += str;
+						}
 					});
+					
+					
+					//	include stylesheets
+					if(themeConfigObj.stylesheets) {
+						mpObj.EventEmitter.emit('MP:STYLESHEET', themeConfigObj.stylesheets);
+					}
+					
+					//	include scripts
+					if(themeConfigObj.scripts) {
+						mpObj.EventEmitter.emit('MP:SCRIPT', themeConfigObj.scripts);
+					}
 					
 					/**
 					 * if request URL is admin then append Admin Sidebar menu.

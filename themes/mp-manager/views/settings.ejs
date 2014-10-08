@@ -56,6 +56,17 @@
 		<div class="clearfix"></div>
 	</div>
 	
+	<div class="form-group">
+		<label class="col-md-3">Activation Required for New Users</label>
+		<div class="col-md-6">
+			<select name="activationRequired" class="form-control">
+				<option value="1" <%=	(locals.settings.activationRequired && 1 == locals.settings.activationRequired)?'selected':''	%>>Yes</option>
+				<option value="0" <%=	(locals.settings.activationRequired || 0 == locals.settings.activationRequired)?'selected':''	%>>No</option>
+			</select>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
 	<h4 class="section-heading	col-md-12">SMTP Settings</h4>
 	<div class="form-group">
 		<label class="col-md-3">Host</label>
