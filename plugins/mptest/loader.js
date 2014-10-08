@@ -7,6 +7,15 @@ module.exports = function(app) {
 	app.use(function (httpRequest, httpResponse, next) {
 		mpObj.emit('MP:FOOTER', '<center>MPTEST Plugin loaded successfully.</center>');
 		
+		/**
+		 * handle custom post login actions
+		 */
+		EventEmitter.on('MP:LOGIN', function(userInfo) {
+			console.log('Execute: MP:LOGIN');
+			console.log(userInfo);
+			httpResponse.redirect('/dashboard');
+		});
+		
 		next();
 	});
 	

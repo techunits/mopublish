@@ -27,21 +27,33 @@ module.exports = function(app) {
 	}).post('/mp-manager/register', function(httpRequest, httpResponse) {
 		if(1 == siteConfigObj.allowUserRegistration) {
 			var userObj = require(ROOT_PATH + '/library/user');
-			userObj.signin({
+			userObj.signup({
 				email: httpRequest.body.email,
 				password: httpRequest.body.password
 			}, function(userInfo) {
-				httpRequest.session.loggedin = true;
-				httpRequest.session.userId = userInfo._id;
-				httpResponse.redirect('/mp-manager');
+				httpResponse.redirect('/mp-manager/login');
 			}, function(err) {
-				httpResponse.redirect('/mp-manager/login?msgcode=INVALID_CREDENTIAL');
+				httpResponse.redirect('/mp-manager/register?msgcode=SERVER_BUSY');
 			});
 		}
 		else {
 			httpResponse.redirect('/404?msgcode=REGISTRATION_NOT_ALLOWED');
 		}
 	});
+	
+	/*app.get('/mp-manager/registernext', function(httpRequest, httpResponse) {
+		var userObj = require(ROOT_PATH + '/library/user-new');
+		
+		userObj.on('MP:REGISTERED', function(userInfo) {
+			console.log('Nice concept!!! ');
+		});
+		
+		userObj.register({
+			email: 'test@mopublish.com',
+			password: '******',
+			repassword: '******'
+		});
+	});*/
 	
 	
 	/**
@@ -56,6 +68,11 @@ module.exports = function(app) {
 		}, function(userInfo) {
 			httpRequest.session.loggedin = true;
 			httpRequest.session.userId = userInfo._id;
+			
+			/**
+			 * Emit Successful Login Event: MP:LOGIN
+			 */
+			EventEmitter.emit('MP:LOGIN', userInfo);
 			httpResponse.redirect('/mp-manager');
 		}, function(err) {
 			httpResponse.redirect('/mp-manager/login?msgcode=INVALID_CREDENTIAL');
@@ -261,6 +278,10 @@ module.exports = function(app) {
 		    {
 		    	key: 'allowUserRegistration',
 		    	value: httpRequest.body.allowUserRegistration
+		    },
+		    {
+		    	key: 'activationRequired',
+		    	value: httpRequest.body.activationRequired
 		    },
 		    {
 		    	key: 'smtp',
