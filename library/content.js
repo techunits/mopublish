@@ -1,5 +1,4 @@
 var db = require('../library/db');
-var utilObj = require('../library/util');
 var helperObj = require('../library/helper');
 
 var contentStatusListGlobal = {

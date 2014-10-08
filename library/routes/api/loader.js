@@ -1,4 +1,3 @@
-var utilObj = require(ROOT_PATH + '/library/util');
 var helperObj = require(ROOT_PATH + '/library/helper');
 
 module.exports = function(app) {
