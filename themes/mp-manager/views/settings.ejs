@@ -61,7 +61,7 @@
 		<div class="col-md-6">
 			<select name="activationRequired" class="form-control">
 				<option value="1" <%=	(locals.settings.activationRequired && 1 == locals.settings.activationRequired)?'selected':''	%>>Yes</option>
-				<option value="0" <%=	(locals.settings.activationRequired || 0 == locals.settings.activationRequired)?'selected':''	%>>No</option>
+				<option value="0" <%=	(!locals.settings.activationRequired || 0 == locals.settings.activationRequired)?'selected':''	%>>No</option>
 			</select>
 		</div>
 		<div class="clearfix"></div>

@@ -221,17 +221,6 @@ module.exports = function(app, express) {
 	});
 	
 	/**
-     * dynamic route handlers: core
-     */
-    fs.readdirSync(ROOT_PATH + '/library/routes').forEach(function(coreDirectory) {
-		var route = ROOT_PATH + '/library/routes/' + coreDirectory + '/loader.js';
-		if(fs.existsSync(route)) {
-			console.log('Loading Routes: ' + route);
-			require(route)(app);
-    	}
-    });
-	
-	/**
      * dynamic route handlers: plugins
      */
     fs.readdirSync(ROOT_PATH + '/plugins').forEach(function(pluginDir) {
@@ -242,6 +231,19 @@ module.exports = function(app, express) {
         	}
         	require(route)(app);
         }
+    });
+	
+	/**
+     * dynamic route handlers: core
+     */
+    fs.readdirSync(ROOT_PATH + '/library/routes').forEach(function(coreDirectory) {
+		var route = ROOT_PATH + '/library/routes/' + coreDirectory + '/loader.js';
+		if(fs.existsSync(route)) {
+			if(true === appConfigObj.debug) {
+				console.log('Loading Routes: ' + route);
+			}
+			require(route)(app);
+    	}
     });
     
     /**

@@ -43,17 +43,30 @@ exports.UserModel = UserModel;
  * user signup functionality
  */
 exports.signup = function(params, success, failed) {
-	var userModelObj = new UserModel({
-		email: params.email.toLowerCase(),
-		password: md5(params.password),
-		status: statusList.ACTIVE
-	});
-	userModelObj.save(function(err, docs) {
+	if(siteConfigObj.activationRequired && 1 == siteConfigObj.activationRequired) {
+		var userModelObj = new UserModel({
+			email: params.email.toLowerCase(),
+			password: md5(params.password),
+			activationKey: md5(utilObj.randomGenerator(50)),
+			status: statusList.INACTIVE
+		});
+	}
+	else {
+		var userModelObj = new UserModel({
+			email: params.email.toLowerCase(),
+			password: md5(params.password),
+			status: statusList.ACTIVE
+		});
+	}
+	
+	userModelObj.save(function(err, docInfo) {
 		if(err) {
+			console.log(err);
 			failed(err);
 		}
 		else {
-			success(docs);
+			//	TODO: Send Activation / Welcome email
+			success(docInfo);
 		}
 	});
 };
@@ -64,7 +77,8 @@ exports.signup = function(params, success, failed) {
 exports.signin = function(params, success, failed) {
 	UserModel.findOne({
 		email: params.email.toLowerCase(),
-		password: md5(params.password)
+		password: md5(params.password),
+		status: statusList.ACTIVE
 	}, function(err, itemInfo) {		
 		if(itemInfo) {
 			success(itemInfo);
