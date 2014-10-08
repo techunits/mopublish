@@ -1,0 +1,3 @@
+module.exports = function(app) {
+	//	TODO: To be planned.
+};
