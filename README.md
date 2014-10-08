@@ -41,7 +41,7 @@ Mopublish has been tested successfully on the following PaaS platforms (using fr
 
 Mopublish has been equipped with many Events and Actions into it's core, which provides developers a greater advantage to write plugins on top of it.
 
-**You can emit following events to update respective functions:**
+**You can emit following events to update respective functions: ( using .emit() )**
 
 Action/Event  | Description
 ------------- | -----------------
@@ -53,9 +53,12 @@ MP:SEOMETA    | To update SEO meta title, keywords & description, as per require
 MP:OPENGRAPH  | To update Opengraph tags as per requirement. Supports opengraph tags: (http://ogp.me/)
 MP:FOOTER     | To add extra tags & texts to the footer section.
 
-**Also you can bind to following events to modify the default flow of the system**
+**Also you can bind to following events to modify the default flow of the system: ( using .on() )**
 
-* **MP:LOGIN** To add extra functionality or special redirection once user is loggedin.
+Action/Event  | Description
+------------- | -----------------
+MP:LOGIN      | To add extra functionality or special redirection once user is loggedin.
+
 
 #### Note from Auhtor
 
