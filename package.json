@@ -1,7 +1,7 @@
 {
-  "name": "MopublishJS",
-  "version": "0.0.1",
-  "description": "MEAN Stack CMS",
+  "name": "Mopublish",
+  "version": "1.0.2",
+  "description": "Mopublish is an innovative nodejs cms build on top of MEAN stack i.e. MongoDB - noSql Database, ExpressJs, AngularJs & NodeJS.",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
@@ -29,10 +29,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@heroku.com:mopublish.git"
+    "url": "https://github.com/techunits/mopublish.git"
   },
   "keywords": [
-    "content management system"
+    "content management system", "mean stack", "MongoDB - noSql Database", "ExpressJs cms", "nodejs CRM"
   ],
   "author": "Team Techunits",
   "license": "MIT"
