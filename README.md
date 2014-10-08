@@ -43,13 +43,15 @@ Mopublish has been equipped with many Events and Actions into it's core, which p
 
 **You can emit following events to update respective functions:**
 
-* **MP:HEADER** To add extra tags & texts to the header section.
-* **MP:STYLESHEET** Load stylesheets.
-* **MP:SCRIPT** Load scripts.
-* **MP:PAGETITLE** Update page title based on page & pluigns.
-* **MP:SEOMETA** To update SEO meta title, keywords & description, as per requirement.
-* **MP:OPENGRAPH** To update Opengraph tags as per requirement. Supports opengraph tags: (http://ogp.me/)
-* **MP:FOOTER** To add extra tags & texts to the footer section.
+Action/Event  | Description
+------------- | -----------------
+MP:HEADER     | To add extra tags & texts to the header section.
+MP:STYLESHEET | Load stylesheets.
+MP:SCRIPT     | Load scripts.
+MP:PAGETITLE  | Update page title based on page & pluigns.
+MP:SEOMETA    | To update SEO meta title, keywords & description, as per requirement.
+MP:OPENGRAPH  | To update Opengraph tags as per requirement. Supports opengraph tags: (http://ogp.me/)
+MP:FOOTER     | To add extra tags & texts to the footer section.
 
 **Also you can bind to following events to modify the default flow of the system**
 
