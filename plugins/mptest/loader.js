@@ -1,11 +1,11 @@
-mpObj = new require(ROOT_PATH + '/library/mopublish');
+mpObj = require(ROOT_PATH + '/library/mopublish');
 
 module.exports = function(app) {
 	/**
 	 * add test event for footer
 	 */
 	app.use(function (httpRequest, httpResponse, next) {
-		mpObj.EventEmitter.emit('MP:FOOTER', '<center>MPTEST Plugin loaded successfully.</center>');
+		mpObj.emit('MP:FOOTER', '<center>MPTEST Plugin loaded successfully.</center>');
 		
 		next();
 	});
@@ -17,17 +17,17 @@ module.exports = function(app) {
     
     app.get('/mptest/dev', function(httpRequest, httpResponse) {
     	//	emit event to update Opengraph data to custom
-    	mpObj.EventEmitter.emit('MP:OPENGRAPH', {
+    	mpObj.emit('MP:OPENGRAPH', {
     		title: 'Test Opengraph title'
     	});
     	
     	//	emit event to update SEO meta data to custom
-    	mpObj.EventEmitter.emit('MP:SEOMETA', {
+    	mpObj.emit('MP:SEOMETA', {
     		title: 'Test META title'
     	});
     	
     	//	emit event to update Opengraph data to custom
-    	mpObj.EventEmitter.emit('MP:PAGETITLE', 'Test Opengraph Title 123');
+    	mpObj.emit('MP:PAGETITLE', 'Test Opengraph Title 123');
     	
         httpResponse.render(ROOT_PATH + '/plugins/mptest/views/test.ejs');
     });

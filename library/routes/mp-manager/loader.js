@@ -1,4 +1,3 @@
-var utilObj = require(ROOT_PATH + '/library/util');
 var helperObj = require(ROOT_PATH + '/library/helper');
 
 module.exports = function(app) {
@@ -469,7 +468,7 @@ module.exports = function(app) {
 	 * installer configurations
 	 */
 	app.get('/mp-manager/installer', function(httpRequest, httpResponse) {
-		utilObj.isSystemInstalled(function() {
+		helperObj.isSystemInstalled(function() {
 			httpResponse.end('Sorry!!! Can\'t re-run installer. System is already installed.');
 		}, function() {
 			httpResponse.render('installer');

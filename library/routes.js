@@ -1,6 +1,6 @@
 var fs = require('fs');
 var url = require('url');
-mpObj = new require(ROOT_PATH + '/library/mopublish');
+mpObj = require(ROOT_PATH + '/library/mopublish');
 var multer  = require('multer');
 
 /**
@@ -69,7 +69,7 @@ module.exports = function(app, express) {
 			
 			//	check whether system is installed and set the global parameter.
 			if('/mp-manager/installer' != httpRequest.url) {
-				mpObj.util.isSystemInstalled(function() {
+				mpObj.helper.isSystemInstalled(function() {
 					//	app.set('installed', true);
 					
 					var themeConfigObj = require(ROOT_PATH + '/library/config').loadThemeSettings(siteSettings.theme);
@@ -94,7 +94,7 @@ module.exports = function(app, express) {
 					/**
 					 * add conditional stylesheets
 					 */
-					mpObj.EventEmitter.on("MP:STYLESHEET", function(stylesheetList) {
+					mpObj.on("MP:STYLESHEET", function(stylesheetList) {
 						var stylesheets = httpResponse.locals.stylesheets;
 						stylesheetList.forEach(function(fileInfo) {
 							stylesheets += '<link rel="stylesheet" type="text/css" href="'+fileInfo.file+'" />';
@@ -106,7 +106,7 @@ module.exports = function(app, express) {
 					/**
 					 * add conditional javascripts
 					 */
-					mpObj.EventEmitter.on("MP:SCRIPT", function(scriptList) {
+					mpObj.on("MP:SCRIPT", function(scriptList) {
 						var scripts = httpResponse.locals.scripts;
 						scriptList.forEach(function(fileInfo) {
 							scripts += '<script type="text/javascript" src="'+fileInfo.file+'"></script>';
@@ -118,7 +118,7 @@ module.exports = function(app, express) {
 					/**
 					 * add opengraph data to template vars
 					 */
-					mpObj.EventEmitter.on("MP:OPENGRAPH", function(ogData) {
+					mpObj.on("MP:OPENGRAPH", function(ogData) {
 						//	console.log(httpRequest.url + '=> great...');
 						if(ogData) {
 							httpResponse.locals.opengraph = require(ROOT_PATH + '/library/template').getOpengraphHTML(ogData);
@@ -128,7 +128,7 @@ module.exports = function(app, express) {
 					/**
 					 * add opengraph data to template vars
 					 */
-					mpObj.EventEmitter.on("MP:SEOMETA", function(seometaData) {
+					mpObj.on("MP:SEOMETA", function(seometaData) {
 						if(seometaData) {
 							httpResponse.locals.seometa = require(ROOT_PATH + '/library/template').getSeoMetaHTML(seometaData);
 						}
@@ -137,7 +137,7 @@ module.exports = function(app, express) {
 					/**
 					 * update pagetitle as per requirements
 					 */
-					mpObj.EventEmitter.on("MP:PAGETITLE", function(titleStr) {
+					mpObj.on("MP:PAGETITLE", function(titleStr) {
 						if(titleStr) {
 							httpResponse.locals.pagetitle = titleStr;
 						}
@@ -146,7 +146,7 @@ module.exports = function(app, express) {
 					/**
 					 * add mpHeader data to template vars
 					 */
-					mpObj.EventEmitter.on("MP:HEADER", function(str) {
+					mpObj.on("MP:HEADER", function(str) {
 						if(str) {
 							httpResponse.locals.siteHeader += str;
 						}
@@ -155,7 +155,7 @@ module.exports = function(app, express) {
 					/**
 					 * add mpFooter data to template vars
 					 */
-					mpObj.EventEmitter.on("MP:FOOTER", function(str) {
+					mpObj.on("MP:FOOTER", function(str) {
 						console.log(str);
 						if(str) {
 							httpResponse.locals.siteFooter += str;
@@ -165,12 +165,12 @@ module.exports = function(app, express) {
 					
 					//	include stylesheets
 					if(themeConfigObj.stylesheets) {
-						mpObj.EventEmitter.emit('MP:STYLESHEET', themeConfigObj.stylesheets);
+						mpObj.emit('MP:STYLESHEET', themeConfigObj.stylesheets);
 					}
 					
 					//	include scripts
 					if(themeConfigObj.scripts) {
-						mpObj.EventEmitter.emit('MP:SCRIPT', themeConfigObj.scripts);
+						mpObj.emit('MP:SCRIPT', themeConfigObj.scripts);
 					}
 					
 					/**
@@ -256,105 +256,69 @@ module.exports = function(app, express) {
 			}
 		});
 		
-		var contentValidator = require(ROOT_PATH + '/library/validator');
-		/**
-		  *	Check whether SLUG is a TAXONOMY.
-		 */
-		contentValidator.isTaxonomy(urlParts[0], function(taxInfo) {
-			//	TRUE
-			httpResponse.render('taxonomy', {
-				info: taxInfo
-			});
-		}, function() {
-			
-			/**
-			  *	Check whether SLUG is a PAGE.
-			 */
-			contentValidator.isPage(urlParts[0], 
-				function(itemInfo) {
-					require(ROOT_PATH + '/library/content').getContentBy('slug', urlParts[0], 'page', function(itemInfo) {
-			    		/**
-						 * event runs 
-						 */
-						mpObj.EventEmitter.emit("mp:single", itemInfo);
-						
-						//	update page title
-				    	mpObj.EventEmitter.emit("mp:pagetitle", require(ROOT_PATH + '/library/template').getPageTitle(itemInfo.info.title));
-						
-				    	//	update opengraph if exists
-				    	if(itemInfo.meta.opengraph)
-				    		mpObj.EventEmitter.emit("mp:opengraph", itemInfo.meta.opengraph);
-						
-				    	//	update SEO meta tags if exists
-				    	if(itemInfo.meta.seometa)
-				    		mpObj.EventEmitter.emit("mp:seometa", itemInfo.meta.seometa);
-				    	
-			    		
-						httpResponse.render('page', itemInfo);
-					}, function() {});
-				}, 
-				function() {
-					/**
-					  *	Check whether SLUG is a content type.
-					 */
-					contentValidator.isContentType(urlParts[0], 
-						function(typeInfo) {
-							var contentObj = require(ROOT_PATH + '/library/content');
-							
-							//	check whether Content type archive requested
-							if(1 == urlParts.length) {
-								contentObj.getContentList({
-									type: urlParts[0]
-								}, function(contentList) {
-									httpResponse.render('archive', {
-										info: {
-											title: typeInfo.title,
-											description: typeInfo.description
-										},
-										contents: contentList
-									});
-								});
-							}
-							
-							//	check whether single content requested
-							else {
-								contentObj.getContentBy('slug', urlParts[1], urlParts[0], function(itemInfo) {
-									//	console.log(itemInfo);
-									/**
-									 * event runs 
-									 */
-									mpObj.EventEmitter.emit("mp:single", itemInfo);
-									
-									//	update page title
-							    	mpObj.EventEmitter.emit("mp:pagetitle", require(ROOT_PATH + '/library/template').getPageTitle(itemInfo.info.title));
-									
-							    	//	update opengraph if exists
-							    	if(itemInfo.meta.opengraph)
-							    		mpObj.EventEmitter.emit("mp:opengraph", itemInfo.meta.opengraph);
-									
-							    	//	update SEO meta tags if exists
-							    	if(itemInfo.meta.seometa)
-							    		mpObj.EventEmitter.emit("mp:seometa", itemInfo.meta.seometa);
-							    	
-									httpResponse.render(urlParts[0], {
-										info: itemInfo
-									}, function(err, html) {
-										if(err)
-											console.log(err);
-										httpResponse.end(html);
-									});
-								}, function() {
-									httpResponse.redirect('/404');
-								});
-							}
-						}, 
-						function() {
-							httpResponse.redirect('/404');
-						}
-					);
-				}
-			);
+		var cmsHandler = require(ROOT_PATH + '/library/cmsHandler');
+		
+		//	handle 404 pages
+		cmsHandler.on('MP:_TYPE_404', function() {
+			httpResponse.redirect('/404');
 		});
+		
+		//	handle single page
+		cmsHandler.on('MP:_TYPE_PAGE', function(itemInfo) {
+			require(ROOT_PATH + '/library/content').getContentBy('slug', itemInfo.slug, itemInfo.type, function(itemInfo) {
+				/**
+				 * event runs 
+				 */
+				mpObj.emit("MP:SINGLE", itemInfo);
+				
+				//	update page title
+		    	mpObj.emit("MP:PAGETITLE", require(ROOT_PATH + '/library/template').getPageTitle(itemInfo.info.title));
+				
+		    	//	update opengraph if exists
+		    	if(itemInfo.meta.opengraph)
+		    		mpObj.emit("MP:OPENGRAPH", itemInfo.meta.opengraph);
+				
+		    	//	update SEO meta tags if exists
+		    	if(itemInfo.meta.seometa)
+		    		mpObj.emit("MP:SEOMETA", itemInfo.meta.seometa);
+		    	
+	    		
+				httpResponse.render('page', itemInfo);
+			}, function() {});
+		});
+		
+		//	handle single content pages
+		cmsHandler.on('MP:_TYPE_CONTENT_SINGLE', function(itemInfo) {
+			/**
+			 * event runs 
+			 */
+			mpObj.emit("MP:SINGLE", itemInfo);
+			
+			//	update page title
+	    	mpObj.emit("MP:PAGETITLE", require(ROOT_PATH + '/library/template').getPageTitle(itemInfo.info.title));
+			
+	    	//	update opengraph if exists
+	    	if(itemInfo.meta.opengraph)
+	    		mpObj.emit("MP:OPENGRAPH", itemInfo.meta.opengraph);
+			
+	    	//	update SEO meta tags if exists
+	    	if(itemInfo.meta.seometa)
+	    		mpObj.emit("MP:SEOMETA", itemInfo.meta.seometa);
+	    	
+			httpResponse.render('single', itemInfo);
+		});
+		
+		//	handle content archives
+		cmsHandler.on('MP:_TYPE_CONTENT_ARCHIVE', function() {
+			httpResponse.end('!!!	Content Archive: Coming Soon	!!!');
+		});
+		
+		//	handle taxonomy archive
+		cmsHandler.on('MP:_TYPE_TAXONOMY', function() {
+			httpResponse.end('!!!	Taxonomy Archive: Coming Soon	!!!');
+		});
+		
+		cmsHandler.triggerPage(urlParts);
 	});
 };
 

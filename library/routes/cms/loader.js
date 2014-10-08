@@ -1,7 +1,3 @@
-var url = require('url');
-var utilObj = require(ROOT_PATH + '/library/util');
-var helperObj = require(ROOT_PATH + '/library/helper');
-
 module.exports = function(app) {	
 	app.get('/', function(httpRequest, httpResponse) {
 		//	httpResponse.end('home');
