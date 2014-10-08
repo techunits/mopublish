@@ -83,12 +83,12 @@ module.exports = function(app, express) {
 						scripts: '',
 						siteHeader: '',
 						siteFooter: '',
-						isLoggedin: httpRequest.session.loggedin,
-						mp: mpObj,
-						globalLocals: siteConfigObj,
 						opengraph: require(ROOT_PATH + '/library/template').getOpengraphHTML(siteConfigObj.opengraph),
 						seometa: require(ROOT_PATH + '/library/template').getSeoMetaHTML(siteConfigObj.seometa),
-						pagetitle: require(ROOT_PATH + '/library/template').getPageTitle()
+						pagetitle: require(ROOT_PATH + '/library/template').getPageTitle(),
+						isLoggedin: httpRequest.session.loggedin,
+						mp: mpObj,
+						globalLocals: siteConfigObj
 				    };
 					
 					/**
@@ -156,6 +156,7 @@ module.exports = function(app, express) {
 					 * add mpFooter data to template vars
 					 */
 					mpObj.EventEmitter.on("MP:FOOTER", function(str) {
+						console.log(str);
 						if(str) {
 							httpResponse.locals.siteFooter += str;
 						}
