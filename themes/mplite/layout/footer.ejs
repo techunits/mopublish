@@ -1,4 +1,4 @@
-<section class="container	bg-blue-bottom">
+<section class="container	bg-blue-bottom	form-group">
 	<form method="post" action="/newsletter/register">
 		<div class="col-sm-12	col-md-4	row	form-group	section-heading">
 			Subscribe to our weekly Newsletter
@@ -18,6 +18,16 @@
 		<div class="clearfix"></div>
 	</form>
 </section>
+
+<section class="container	text-right">
+	<%	globalLocals.socialMedia.forEach(function(smInfo)	{	%>
+		<a href="<%=	smInfo.url	%>" title="<%=	smInfo.name	%>">
+			<img src="/assets/mplite/images/social/<%=	smInfo.name.replace(' ', '-')	%>.png" alt="" width="32" />
+		</a>
+		&nbsp;
+	<%	});	%>
+</section>
+<div class="clearfix"></div>
 
 <footer>
 	<div class="container">
@@ -45,6 +55,4 @@
 		</div>
         <div class="clearfix"></div>
 	</div>
-	
-	<%-	mp.template.getFooter()	%>
 </footer>
