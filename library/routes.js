@@ -1,6 +1,6 @@
 var fs = require('fs');
 var url = require('url');
-mpObj = require(ROOT_PATH + '/library/mopublish');
+var mpObj = require(ROOT_PATH + '/library/mopublish');
 var multer  = require('multer');
 
 /**
