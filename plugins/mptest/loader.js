@@ -10,7 +10,7 @@ module.exports = function(app) {
 		/**
 		 * handle custom post login actions
 		 */
-		EventEmitter.on('MP:LOGIN', function(userInfo) {
+		mpObj.on('MP:LOGIN', function(userInfo) {
 			console.log('Execute: MP:LOGIN');
 			console.log(userInfo);
 			httpResponse.redirect('/dashboard');

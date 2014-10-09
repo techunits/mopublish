@@ -66,9 +66,28 @@ exports.signup = function(params, success, failed) {
 		}
 		else {
 			//	TODO: Send Activation / Welcome email
+			
+			if(siteConfigObj.activationRequired && 1 == siteConfigObj.activationRequired) {
+				
+			}
+			else {
+				
+			}
+			
 			success(docInfo);
 		}
 	});
+};
+
+//	send welcome email
+var sendWelcomeEmail = function() {
+	
+};
+
+
+//send welcome email
+var sendActivationEmail = function() {
+	
 };
 
 /**
