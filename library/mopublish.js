@@ -3,7 +3,7 @@ var events = require('events');
 
 //	setup event emitter
 var MP = function() {
-	events.EventEmitter.call(this);
+	//	events.EventEmitter.call(this);
 		
 	this.content = require(ROOT_PATH + '/library/content');
 	

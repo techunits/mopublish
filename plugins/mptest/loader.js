@@ -20,6 +20,7 @@ module.exports = function(app) {
 	});
 	
     app.get('/mptest', function(httpRequest, httpResponse) {
+    	mpObj.emit('MP:FOOTER', '<p>MPTEST Plugin loaded successfully.</p>');
         httpResponse.end('Welcome to Mopublish test plugin page....');
     });
     

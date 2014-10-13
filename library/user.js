@@ -1,4 +1,4 @@
-var utilObj = require(ROOT_PATH + '/library/util');
+var helperObj = require(ROOT_PATH + '/library/helper');
 var db = require(ROOT_PATH + '/library/db');
 var md5 = require('MD5');
 
@@ -47,7 +47,7 @@ exports.signup = function(params, success, failed) {
 		var userModelObj = new UserModel({
 			email: params.email.toLowerCase(),
 			password: md5(params.password),
-			activationKey: md5(utilObj.randomGenerator(50)),
+			activationKey: md5(helperObj.randomGenerator(50)),
 			status: statusList.INACTIVE
 		});
 	}
@@ -120,7 +120,7 @@ exports.generatePasswordToken = function(email, success, failed) {
 			console.log(err);
 		
 		if(itemInfo) {
-			itemInfo.activationKey = md5(utilObj.randomGenerator(50));
+			itemInfo.activationKey = md5(helperObj.randomGenerator(50));
 			itemInfo.save(function(err, docInfo) {
 				success(docInfo);
 			});

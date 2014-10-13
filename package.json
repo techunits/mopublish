@@ -4,7 +4,7 @@
   "description": "Mopublish is an innovative nodejs cms build on top of MEAN stack i.e. MongoDB - noSql Database, ExpressJs, AngularJs & NodeJS.",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js --nocluster"
   },
   "dependencies": {
 	"express": "4.9.5",
