@@ -40,6 +40,25 @@ var UserModel = db.mongooseObj.model('users', new db.mongooseObj.Schema({
 exports.UserModel = UserModel;
 
 /**
+ * Model: User
+ */
+var UserRoleModel = db.mongooseObj.model('userroles', new db.mongooseObj.Schema({
+	userId	: { 
+		type: String, 
+		'default': null
+	},
+    role		: { 
+		type: String, 
+		'default': 'subscriber'
+	},
+    created		: {
+    	type: Date,
+    	'default': Date.now()
+    }
+}));
+exports.UserRoleModel = UserRoleModel;
+
+/**
  * user signup functionality
  */
 exports.signup = function(params, success, failed) {

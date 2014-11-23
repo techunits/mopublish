@@ -1,4 +1,4 @@
-var helperObj = require(ROOT_PATH + '/library/helper');
+var mpObj = require(ROOT_PATH + '/library/mopublish');
 
 module.exports = function(app) {
 	app.get('/mp-manager', function(httpRequest, httpResponse) {
@@ -72,7 +72,7 @@ module.exports = function(app) {
 			/**
 			 * Emit Successful Login Event: MP:LOGIN
 			 */
-			EventEmitter.emit('MP:LOGIN', userInfo);
+			mpObj.emit('MP:LOGIN', userInfo);
 			httpResponse.redirect('/mp-manager');
 		}, function(err) {
 			httpResponse.redirect('/mp-manager/login?msgcode=INVALID_CREDENTIAL');
@@ -489,7 +489,7 @@ module.exports = function(app) {
 	 * installer configurations
 	 */
 	app.get('/mp-manager/installer', function(httpRequest, httpResponse) {
-		helperObj.isSystemInstalled(function() {
+		mpObj.helper.isSystemInstalled(function() {
 			httpResponse.end('Sorry!!! Can\'t re-run installer. System is already installed.');
 		}, function() {
 			httpResponse.render('installer');

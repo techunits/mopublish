@@ -11,9 +11,8 @@ module.exports = function(app) {
 		 * handle custom post login actions
 		 */
 		mpObj.on('MP:LOGIN', function(userInfo) {
-			console.log('Execute: MP:LOGIN');
-			console.log(userInfo);
-			httpResponse.redirect('/dashboard');
+			console.log('Execute: MP:LOGIN event flow from plugin.');
+			//	console.log(userInfo);
 		});
 		
 		next();

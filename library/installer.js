@@ -1,69 +1,130 @@
 var helperObj = require('../library/helper');
-var utilObj = require('../library/util');
+var utilObj = require('../library/helper');
 var contentObj = require('../library/content');
 var md5 = require('MD5');
+var async = require('async');
 
 var nullCallback = function() {};
 
 exports.saveBasicDetials = function(params, success, failed) {
-	//	save site name / title
-	new require('../library/settings').SettingsModel({
-		key: 'sitename',
-		value: params.sitename,
-	}).save(function(err, docInfo) {
-		if(err)
+	async.waterfall([
+	             function(callback) {
+	            	 	console.log('Sitename: ' + params.sitename);
+	            	 	
+	            	 	//	save site name / title
+	            		new require('../library/settings').SettingsModel({
+	            			key: 'sitename',
+	            			value: params.sitename,
+	            		}).save(function(err, docInfo) {
+	            			if(err)
+	            				console.log(err);
+	            			
+	            			callback();
+	            		});
+	             },
+	             function(callback) {
+	            	 console.log('Admin Email: ' + params.email);
+	            	 
+	            	 	//	save site webmaster email
+	            		new require('../library/settings').SettingsModel({
+	            			key: 'email',
+	            			value: params.email,
+	            		}).save(function(err, docInfo) {
+	            			if(err)
+	            				console.log(err);
+	            			
+	            			callback();
+	            		});
+	             },
+	             function(callback) {
+	            	 	console.log('Admin User: ' + params.email);
+	            	 	
+						//	signup super admin user
+						var userObj = require('../library/user').UserModel({
+							email: params.email,
+							password: md5(params.password),
+							status: 1
+						});
+						userObj.save(function(err, userInfo) {
+							if(err)
+								console.log(err);
+							
+							//	load api settings
+							if(userInfo) {
+								var userId = userInfo._id;
+								loadDefaultRESTAPISettings(userId);
+								callback(null, userId);
+							}
+						});
+	             },
+	             function(userId, callback) {
+	            	console.log('Saving user roles(admin) for: ' + userId);
+	            	//	set super admin user roles
+					var roleObj = require('../library/user').UserRoleModel({
+						userId: userId,
+						role: 'admin'
+					});
+					roleObj.save(function(err, roleInfo) {
+						if(err)
+							console.log(err);
+						else
+							callback(null, userId);
+					});
+	             },
+	             function(userId, callback) {
+	            	 	console.log('Loading content types...');
+	            	 	
+	            	 	//	load default content types
+	            		loadDefaultContentTypes();
+	            		callback(null, userId);
+	             },
+	             function(userId, callback) {
+	            	 	console.log('Loading default contents...');
+	            	 
+	            	 	//	load default contents
+	            		loadDefaultContents(userId);
+	            		callback();
+	             },
+	             function(callback) {
+	            		console.log('Loading default taxonomies...');
+	            		
+	            	 	//	load default taxonomies
+	            		loadDefaultTaxonomies();
+	            		callback();
+	             },
+	             function(callback) {
+	            		console.log('Loading default taxonomy terms...');
+	            		
+	            	 	//	load default taxonomy terms
+	            		loadDefaultTaxonomyTerms();
+	            		callback();
+	             },
+	             function(callback) {
+	            		console.log('Loading default settings...');
+	            		
+	            	 	//	load more default settings
+	            		loadDefaultSettings();
+	            		callback();
+	             }
+	], function(err, results) {
+		if(err) {
 			console.log(err);
-	});
-	
-	//	save site webmaster email
-	new require('../library/settings').SettingsModel({
-		key: 'email',
-		value: params.email,
-	}).save(function(err, docInfo) {
-		if(err)
-			console.log(err);
-	});
-		
-		
-	//	signup super admin user
-	var userObj = require('../library/user').UserModel({
-		email: params.email,
-		password: md5(params.password),
-		status: 1
-	});
-	userObj.save(function(err, userInfo) {
-		if(err)
-			console.log(err);
-		
-		//	load api settings
-		if(userInfo)
-			loadDefaultRESTAPISettings(userInfo._id);
-	});
-	
-	//	load default content types
-	loadDefaultContentTypes();
-		
-	//	load default contents
-	loadDefaultContents();
-	
-	//	load default taxonomies
-	loadDefaultTaxonomies();
-	
-	//	load default taxonomy terms
-	loadDefaultTaxonomyTerms();
-
-	//	load more default settings
-	loadDefaultSettings();
-	
-	//	save status as installed
-	new require('../library/settings').SettingsModel({
-		key: 'installed',
-		value: true
-	}).save(function(err, docInfo) {
-		if(err)
-			failed(docInfo);
-		else 
-			success();
+			failed();
+		}
+		else {
+			//		save status as installed
+			new require('../library/settings').SettingsModel({
+				key: 'installed',
+				value: true
+			}).save(function(err, docInfo) {
+				if(err)
+					failed(docInfo);
+				else {
+					console.log('Installation Successful.');
+					success();
+				}
+			});
+		}
 	});
 };
 
@@ -97,7 +158,7 @@ var loadDefaultContentTypes = function(callback) {
 /**
  * load default contents
  */
-var loadDefaultContents = function(callback) {
+var loadDefaultContents = function(userId, callback) {
 	//	load default pages
 	var contentList = [
 	                   {
@@ -106,7 +167,7 @@ var loadDefaultContents = function(callback) {
 		           			slug: helperObj.sanetizeTitle('About Us'),
 		           			description: 'Welcome to Mopublish About Us Page. Please add contents as per your requirements here.',
 		           			excerpt: 'Welcome to Mopublish About Us Page.',
-		           			userId: 1,
+		           			userId: userId,
 		           			parentId: false,
 		           			status: contentObj.statusList.PUBLISH
 	                   },
@@ -116,7 +177,7 @@ var loadDefaultContents = function(callback) {
 		           			slug: helperObj.sanetizeTitle('Privacy Policy'),
 		           			description: 'Welcome to Mopublish Privacy Policy Page. Please add contents as per your requirements here.',
 		           			excerpt: 'Welcome to Mopublish Privacy Policy Page.',
-		           			userId: 1,
+		           			userId: userId,
 		           			parentId: false,
 		           			status: contentObj.statusList.PUBLISH
 	                   },
@@ -126,7 +187,7 @@ var loadDefaultContents = function(callback) {
 		           			slug: helperObj.sanetizeTitle('Terms of Service'),
 		           			description: 'Welcome to Mopublish Terms of Service Page. Please add contents as per your requirements here.',
 		           			excerpt: 'Welcome to Mopublish Terms of Service Page.',
-		           			userId: 1,
+		           			userId: userId,
 		           			parentId: false,
 		           			status: contentObj.statusList.PUBLISH
 	                   },
@@ -136,7 +197,7 @@ var loadDefaultContents = function(callback) {
 		           			slug: helperObj.sanetizeTitle('Contact Us'),
 		           			description: 'Welcome to Mopublish About Us Page. Please add contents as per your requirements here.',
 		           			excerpt: 'Welcome to Mopublish About Us Page.',
-		           			userId: 1,
+		           			userId: userId,
 		           			parentId: false,
 		           			status: contentObj.statusList.PUBLISH
 	                   },
@@ -146,7 +207,7 @@ var loadDefaultContents = function(callback) {
 		           			slug: helperObj.sanetizeTitle('Welcome to Mopublish First Post'),
 		           			description: 'This is first post on Mopublish CMS. Hope you will have great time and nice growth in business with Mopublish. Have a nice journey...',
 		           			excerpt: 'This is first post on Mopublish CMS.',
-		           			userId: 1,
+		           			userId: userId,
 		           			parentId: false,
 		           			status: contentObj.statusList.PUBLISH
 	                   }
