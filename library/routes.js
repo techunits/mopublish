@@ -51,78 +51,6 @@ module.exports = function(app, express) {
 		dest: ROOT_PATH + '/media/' + new Date().getFullYear() + '/' + new Date().getMonth() + '/' + new Date().getDate() + '/'
 	}));
 	
-	
-	/**
-	 * add mpHeader data to template vars
-	 */
-	mpObj.on("MP:HEADER", function(str) {
-		if(str) {
-			templateLocals.siteHeader += str;
-		}
-	});
-	
-	/**
-	 * add mpFooter data to template vars
-	 */
-	mpObj.on("MP:FOOTER", function(str) {
-		console.log(str);
-		if(str) {
-			templateLocals.siteFooter += str;
-		}
-	});
-	
-	/**
-	 * update pagetitle as per requirements
-	 */
-	mpObj.on("MP:PAGETITLE", function(titleStr) {
-		if(titleStr) {
-			templateLocals.pagetitle = titleStr;
-		}
-	});
-	
-	/**
-	 * add conditional stylesheets
-	 */
-	mpObj.on("MP:STYLESHEET", function(stylesheetList) {
-		var stylesheets = templateLocals.stylesheets;
-		stylesheetList.forEach(function(fileInfo) {
-			stylesheets += '<link rel="stylesheet" type="text/css" href="'+fileInfo.file+'" />';
-		});
-		
-		templateLocals.stylesheets = stylesheets;
-	});
-	
-	/**
-	 * add conditional javascripts
-	 */
-	mpObj.on("MP:SCRIPT", function(scriptList) {
-		var scripts = templateLocals.scripts;
-		scriptList.forEach(function(fileInfo) {
-			scripts += '<script type="text/javascript" src="'+fileInfo.file+'"></script>';
-		});
-		
-		templateLocals.scripts = scripts;
-	});
-	
-	/**
-	 * add opengraph data to template vars
-	 */
-	mpObj.on("MP:OPENGRAPH", function(ogData) {
-		//	console.log(httpRequest.url + '=> great...');
-		if(ogData) {
-			templateLocals.opengraph = require(ROOT_PATH + '/library/template').getOpengraphHTML(ogData);
-		}
-	});
-	
-	/**
-	 * add opengraph data to template vars
-	 */
-	mpObj.on("MP:SEOMETA", function(seometaData) {
-		if(seometaData) {
-			templateLocals.seometa = require(ROOT_PATH + '/library/template').getSeoMetaHTML(seometaData);
-		}
-	});
-	
 	/**
 	 * load global values & configurations
 	 */
@@ -145,24 +73,96 @@ module.exports = function(app, express) {
 				mpObj.helper.isSystemInstalled(function() {
 					//	app.set('installed', true);
 					
-					var themeConfigObj = require(ROOT_PATH + '/library/config').loadThemeSettings(siteSettings.theme);
+var themeConfigObj = require(ROOT_PATH + '/library/config').loadThemeSettings(siteSettings.theme);
 					
 					/**
 					 * append required varriables to the template.
-					 
+					 */
 					httpResponse.locals = {
 						httpReq: httpRequest,
 						stylesheets: '',
 						scripts: '',
 						siteHeader: '',
 						siteFooter: '',
-						opengraph: ,
-						seometa: ,
-						pagetitle: 
-						isLoggedin: ,
+						opengraph: require(ROOT_PATH + '/library/template').getOpengraphHTML(siteConfigObj.opengraph),
+						seometa: require(ROOT_PATH + '/library/template').getSeoMetaHTML(siteConfigObj.seometa),
+						pagetitle: require(ROOT_PATH + '/library/template').getPageTitle(),
+						isLoggedin: httpRequest.session.loggedin,
 						mp: mpObj,
 						globalLocals: siteConfigObj
-				    };*/
+				    };
+					
+					/**
+					 * add conditional stylesheets
+					 */
+					mpObj.on("MP:STYLESHEET", function(stylesheetList) {
+						var stylesheets = httpResponse.locals.stylesheets;
+						stylesheetList.forEach(function(fileInfo) {
+							stylesheets += '<link rel="stylesheet" type="text/css" href="'+fileInfo.file+'" />';
+						});
+						
+						httpResponse.locals.stylesheets = stylesheets;
+					});
+					
+					/**
+					 * add conditional javascripts
+					 */
+					mpObj.on("MP:SCRIPT", function(scriptList) {
+						var scripts = httpResponse.locals.scripts;
+						scriptList.forEach(function(fileInfo) {
+							scripts += '<script type="text/javascript" src="'+fileInfo.file+'"></script>';
+						});
+						
+						httpResponse.locals.scripts = scripts;
+					});
+					
+					/**
+					 * add opengraph data to template vars
+					 */
+					mpObj.on("MP:OPENGRAPH", function(ogData) {
+						//	console.log(httpRequest.url + '=> great...');
+						if(ogData) {
+							httpResponse.locals.opengraph = require(ROOT_PATH + '/library/template').getOpengraphHTML(ogData);
+						}
+					});
+					
+					/**
+					 * add opengraph data to template vars
+					 */
+					mpObj.on("MP:SEOMETA", function(seometaData) {
+						if(seometaData) {
+							httpResponse.locals.seometa = require(ROOT_PATH + '/library/template').getSeoMetaHTML(seometaData);
+						}
+					});
+					
+					/**
+					 * update pagetitle as per requirements
+					 */
+					mpObj.on("MP:PAGETITLE", function(titleStr) {
+						if(titleStr) {
+							httpResponse.locals.pagetitle = titleStr;
+						}
+					});
+					
+					/**
+					 * add mpHeader data to template vars
+					 */
+					mpObj.on("MP:HEADER", function(str) {
+						if(str) {
+							httpResponse.locals.siteHeader += str;
+						}
+					});
+					
+					/**
+					 * add mpFooter data to template vars
+					 */
+					mpObj.on("MP:FOOTER", function(str) {
+						console.log(str);
+						if(str) {
+							httpResponse.locals.siteFooter += str;
+						}
+					});
+					
 					
 					//	include stylesheets
 					if(themeConfigObj.stylesheets) {
@@ -173,23 +173,6 @@ module.exports = function(app, express) {
 					if(themeConfigObj.scripts) {
 						mpObj.emit('MP:SCRIPT', themeConfigObj.scripts);
 					}
-					
-					//	Event page title
-					mpObj.emit("MP:PAGETITLE", require(ROOT_PATH + '/library/template').getPageTitle());
-					
-					//	Event SEO Meta
-					mpObj.emit("MP:SEOMETA", siteConfigObj.seometa);
-					
-					//	Event Opengraph
-					mpObj.emit("MP:OPENGRAPH", siteConfigObj.opengraph);
-					//	console.log('times')
-					
-					//	console.log(templateLocals);
-					
-					httpResponse.locals = templateLocals;
-					httpResponse.locals.mp = mpObj;
-					httpResponse.locals.isLoggedin = httpRequest.session.loggedin;
-					httpResponse.locals.globalLocals = siteConfigObj;
 					
 					/**
 					 * if request URL is admin then append Admin Sidebar menu.

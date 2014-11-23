@@ -1,0 +1,33 @@
+<section class="content-list	row">
+	<h1 class="section-heading">Users</h1>
+	<div class="form-group	archive">
+		<a href="<%=	httpReq.url	%>">All</a>
+		&nbsp;&nbsp;|&nbsp;&nbsp;
+		<a href="/mp-manager/users">Administrator</a>
+		&nbsp;&nbsp;|&nbsp;&nbsp;
+		<a href="/mp-manager/users/">Subscribers</a>
+	</div>
+	<ul class="entry">
+		<li class="heading">
+			<div class="col-md-6">Title</div>
+			<div class="col-md-6">Created On</div>
+			<div class="clearfix"></div>
+		</li>
+		<%	locals.users.forEach(function(userInfo) {	%>
+			<li>
+				<div class="col-md-6">
+					<div class="form-group"><%=	userInfo.email	%></div>
+					<div class="action">
+						<a href="/mp-manager/update-profile?uid=<%=	userInfo._id	%>" title="Update Profile">Edit</a>
+						&nbsp;|&nbsp;
+						<a href="/mp-manager/remove-profile?uid=<%=	userInfo._id	%>" title="Remove Profile" class="removeItem">Remove</a>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<%=	userInfo.created	%>
+				</div>
+				<div class="clearfix"></div>
+			</li>
+		<%	});	%>
+	</ul>
+</section>

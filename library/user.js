@@ -175,3 +175,12 @@ exports.resetPassword = function(params, success, failed) {
 		}
 	});
 };
+
+exports.getUserList = function(params, success) {
+	UserModel.find({}, function(err, users) {
+		if(err)
+			console.log();
+		
+		success(users);
+	});
+};

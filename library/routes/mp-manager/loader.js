@@ -242,6 +242,27 @@ module.exports = function(app) {
 	});
 	
 	/**
+	 * Menu Handler: Users -> All Users
+	 */
+	app.get('/mp-manager/users', function(httpRequest, httpResponse) {
+		if(true === httpRequest.session.loggedin) {
+			require(ROOT_PATH + '/library/user').getUserList({}, function(userList) {
+				httpResponse.render('users', {
+					locals: {
+						users: userList
+					}
+				});
+			}, function(err, html) {
+				console.log(err);
+			});
+		}
+		else {
+			httpResponse.redirect('/mp-manager/login?msgcode=SESSION_EXPIRED');
+		}
+	});
+	
+	
+	/**
 	 * Menu Handler: Settings -> General
 	 */
 	app.get('/mp-manager/settings', function(httpRequest, httpResponse) {
