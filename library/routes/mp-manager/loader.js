@@ -22,6 +22,7 @@ module.exports = function(app) {
 			httpResponse.render('register');
 		} 
 		else {
+			mpObj.logger.info('Registration not allowed from site settings.');
 			httpResponse.redirect('/404?msgcode=REGISTRATION_NOT_ALLOWED');
 		}
 	}).post('/mp-manager/register', function(httpRequest, httpResponse) {
@@ -31,12 +32,15 @@ module.exports = function(app) {
 				email: httpRequest.body.email,
 				password: httpRequest.body.password
 			}, function(userInfo) {
+				mpObj.logger.debug('New User Signup: ' + httpRequest.body.email);
 				httpResponse.redirect('/mp-manager/login');
 			}, function(err) {
+				mpObj.logger.error(err);
 				httpResponse.redirect('/mp-manager/register?msgcode=SERVER_BUSY');
 			});
 		}
 		else {
+			mpObj.logger.info('Registration not allowed from site settings.');
 			httpResponse.redirect('/404?msgcode=REGISTRATION_NOT_ALLOWED');
 		}
 	});
@@ -378,6 +382,8 @@ module.exports = function(app) {
 		    	}
 		    }
 		], function(settingsList) {
+			mpObj.logger.debug('Settings updated...');
+			
 			//	reload page
 			httpResponse.redirect(httpRequest.url);
 		});
@@ -487,6 +493,10 @@ module.exports = function(app) {
 				description: httpRequest.body.description,
 				hierarchical: (0 == httpRequest.body.hierarchical)?false:true
 			}).save(function(err, docInfo) {
+				if(err)
+					mpObj.logger.error(err);
+				
+				mpObj.logger.debug('Content Type Added: ' + httpRequest.body.slug);
 				httpResponse.redirect(httpRequest.url);
 			});
 		}

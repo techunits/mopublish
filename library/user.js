@@ -1,4 +1,5 @@
 var helperObj = require(ROOT_PATH + '/library/helper');
+var loggerObj = require(ROOT_PATH + '/library/logger');
 var db = require(ROOT_PATH + '/library/db');
 var md5 = require('MD5');
 
@@ -62,6 +63,23 @@ exports.UserRoleModel = UserRoleModel;
  * user signup functionality
  */
 exports.signup = function(params, success, failed) {
+	UserModel.findOne({
+		email: params.email.toLowerCase()
+	}, function(err, itemInfo) {
+		if(err)
+			loggerObj.error(err);
+		
+		if(! itemInfo) {
+			__signup(params, success, failed);
+		}
+		else {
+			loggerObj.error('Duplicate email signup: ' + params.email.toLowerCase());
+			failed();
+		}
+	});
+};
+
+var __signup = function(params, success, failed) {
 	if(siteConfigObj.activationRequired && 1 == siteConfigObj.activationRequired) {
 		var userModelObj = new UserModel({
 			email: params.email.toLowerCase(),
@@ -85,12 +103,9 @@ exports.signup = function(params, success, failed) {
 		}
 		else {
 			//	TODO: Send Activation / Welcome email
-			
 			if(siteConfigObj.activationRequired && 1 == siteConfigObj.activationRequired) {
-				
-			}
-			else {
-				
+				loggerObj.debug('Sending Welcome Email...');
+				loggerObj.debug('Sent');
 			}
 			
 			success(docInfo);
