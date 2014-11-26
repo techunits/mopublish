@@ -66,15 +66,19 @@ module.exports = function(app) {
 			email: httpRequest.body.email,
 			password: httpRequest.body.password
 		}, function(userInfo) {
+			mpObj.logger.debug('Login Successful');
 			httpRequest.session.loggedin = true;
 			httpRequest.session.userId = userInfo._id;
 			
 			/**
 			 * Emit Successful Login Event: MP:LOGIN
 			 */
+			mpObj.logger.debug('Emit Event: MP:LOGIN');
 			mpObj.emit('MP:LOGIN', userInfo);
+			
 			httpResponse.redirect('/mp-manager');
 		}, function(err) {
+			mpObj.logger.debug('Invalid Credentials.');
 			httpResponse.redirect('/mp-manager/login?msgcode=INVALID_CREDENTIAL');
 		});
 	});
@@ -88,8 +92,36 @@ module.exports = function(app) {
 	}).post('/mp-manager/login/lost-password', function(httpRequest, httpResponse) {
 		if('' != httpRequest.body.email) {
 			require(ROOT_PATH + '/library/user').generatePasswordToken(httpRequest.body.email, function(userInfo) {
-				console.log(userInfo);
-				httpResponse.redirect('/mp-manager/login/lost-password?msgcode=SUCCESS');
+				var resetUrl = 'http://localhost:5000/mp-manager/login/reset-password?'+
+				    				'token='+userInfo.activationKey+'&'+
+				    				'id='+userInfo._id;
+				
+				mpObj.logger.debug('Reset URL: ' + resetUrl);
+				mpObj.logger.debug('Sending email to: ' + userInfo.email);
+				
+				//	send notification email
+				var mailTransporter = require(ROOT_PATH + '/library/mailer').transporter;
+				mailTransporter.sendMail({
+				    from: 'Mopublish <no-reply@mopublish.com>',
+				    to: userInfo.email,
+				    subject: 'Mopublish - Forgot Password Request',
+				    text: 'Please reset your password by clicking following link: ',
+				    html: 	'<p><b>Dear User,</b></p>'+
+				    		'<p>Please click on following link to reset password:</p>'+
+				    		'<p>'+
+				    			'<a href="'+resetUrl+'">'+resetUrl+'</a>'+
+				    		'</p>'
+				}, function(error) {
+					if(error) {
+						mpObj.logger.debug('Email sending failed.');
+						mpObj.logger.error(error);
+					}
+					else {
+						mpObj.logger.debug('Email sent.');
+					}
+					
+					httpResponse.redirect('/mp-manager/login/lost-password?msgcode=SUCCESS');
+				});
 			}, function() {
 				httpResponse.redirect('/mp-manager/login/lost-password?msgcode=NO_EMAIL');
 			});	
@@ -104,6 +136,8 @@ module.exports = function(app) {
 	 */
 	app.get('/mp-manager/login/reset-password', function(httpRequest, httpResponse) {
 		if(httpRequest.query.token && '' != httpRequest.query.token && httpRequest.query.id && '' != httpRequest.query.id) {
+			mpObj.logger.debug('Request Token: ' + httpRequest.query.token);
+			
 			httpResponse.render('reset-password', {
 				locals: {
 					token: httpRequest.query.token,
@@ -129,12 +163,15 @@ module.exports = function(app) {
 				token: httpRequest.body.token,
 				password: httpRequest.body.password
 			}, function(userInfo) {
+				mpObj.logger.debug('Reset Password Successful. Redirect to login page...');
 				httpResponse.redirect('/mp-manager/login');
 			}, function() {
+				mpObj.logger.error('Token Expired or Data mismatch: ' + httpRequest.body.token);
 				httpResponse.redirect('/mp-manager/login/lost-password?msgcode=TOKEN_EXPIRED');
 			});
 		}
 		else {
+			mpObj.logger.error('Data mismatch while data mismatch...');
 			httpResponse.redirect('/mp-manager/login/lost-password?msgcode=TOKEN_EXPIRED');
 		}
 	});
@@ -143,6 +180,7 @@ module.exports = function(app) {
 	 * Super Admin Logout
 	 */
 	app.get('/mp-manager/logout', function(httpRequest, httpResponse) {
+		mpObj.logger.debug('Logout from Session. Redirect back to login...');
 		httpRequest.session.destroy();
 		httpResponse.redirect('/mp-manager/login');
 	});
@@ -169,7 +207,7 @@ module.exports = function(app) {
 		if(true === httpRequest.session.loggedin) {
 			if(httpRequest.query.cid) {
 				require(ROOT_PATH + '/library/content').getContentBy('_id', httpRequest.query.cid, httpRequest.query.type, function (docInfo) {
-					console.log(docInfo);
+					mpObj.logger.debug('Update Content Entry: ' + httpRequest.query.type + '::' + docInfo);
 					httpResponse.render('update-content', {
 						locals: {
 							cid:  httpRequest.query.cid,
@@ -184,10 +222,13 @@ module.exports = function(app) {
 				contentModelObj.type = httpRequest.query.type;
 				contentModelObj.status = contentObj.statusList.INITIATE;
 				contentModelObj.save(function(err, docInfo) {
-					if(err)
-						console.log(err);
-					else
+					if(err) {
+						mpObj.logger.error(err);
+					}
+					else {
+						mpObj.logger.debug('New Content Entry: ' + httpRequest.query.type + '::' + docInfo._id);
 						httpResponse.redirect(httpRequest.url + '&cid='+docInfo._id);
+					}
 				});
 			}
 		}
@@ -261,6 +302,26 @@ module.exports = function(app) {
 		}
 	});
 	
+	/**
+	 * Menu Handler: User -> All Users -> Remove
+	 */
+	app.get('/mp-manager/remove-profile', function(httpRequest, httpResponse) {
+		require(ROOT_PATH + '/library/user').remove({
+			uid: httpRequest.query.uid
+		}, function() {
+			httpResponse.redirect('/mp-manager/contents?type='+httpRequest.query.type);
+		});
+	});
+	
+	/**
+	 * Menu Handler: User -> All Users -> Add / Update
+	 */
+	app.get('/mp-manager/update-profile', function(httpRequest, httpResponse) {
+		console.log('add / Update User');
+	}).post('/mp-manager/update-profile', function(httpRequest, httpResponse) {
+		console.log(httpRequest.body);
+		httpResponse.redirect('/mp-manager/users');
+	});
 	
 	/**
 	 * Menu Handler: Settings -> General

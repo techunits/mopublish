@@ -10,6 +10,8 @@ var MP = function() {
 	this.helper = require(ROOT_PATH + '/library/helper');
 	
 	this.template = require(ROOT_PATH + '/library/template');
+	
+	this.logger = require(ROOT_PATH + '/library/logger');
 };
 util.inherits(MP, events.EventEmitter);
 module.exports = new MP();

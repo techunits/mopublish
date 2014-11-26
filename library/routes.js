@@ -228,9 +228,7 @@ var themeConfigObj = require(ROOT_PATH + '/library/config').loadThemeSettings(si
     fs.readdirSync(ROOT_PATH + '/plugins').forEach(function(pluginDir) {
         var route = ROOT_PATH + '/plugins/' + pluginDir + '/loader.js';
         if(fs.existsSync(route)) {
-        	if(true === appConfigObj.debug) {
-        		console.log('Loading Routes: ' + route);
-        	}
+        	mpObj.logger.info('Loading Route: ' + route);
         	require(route)(app);
         }
     });
@@ -241,9 +239,7 @@ var themeConfigObj = require(ROOT_PATH + '/library/config').loadThemeSettings(si
     fs.readdirSync(ROOT_PATH + '/library/routes').forEach(function(coreDirectory) {
 		var route = ROOT_PATH + '/library/routes/' + coreDirectory + '/loader.js';
 		if(fs.existsSync(route)) {
-			if(true === appConfigObj.debug) {
-				console.log('Loading Routes: ' + route);
-			}
+			mpObj.logger.info('Loading Route: ' + route);
 			require(route)(app);
     	}
     });

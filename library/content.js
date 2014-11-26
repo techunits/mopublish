@@ -1,5 +1,6 @@
 var db = require('../library/db');
 var helperObj = require('../library/helper');
+var loggerObj = require('../library/logger');
 
 var contentStatusListGlobal = {
 	'DRAFT': 0,
@@ -147,7 +148,7 @@ var getContentList = function(params, callback) {
 		}
 	}, function(err, docs) {
 		if(err) {
-			console.log(err);
+			loggerObj.error(err);
 			callback([]);
 		}
 		else {
@@ -167,10 +168,10 @@ var getContentBy = function(field, value, contentType, success, failed) {
 	query[field] = value;
 	ContentModel.findOne(query, function(err, docInfo) {
 		if(err) {
-			console.log(err);
-			failed();
+			loggerObj.error(err);
+			failed(err);
 		}
-		else if(docInfo) {
+		else {
 			//	fetch content meta info
 			getMetaInfoList(docInfo._id, function(metaInfo) {
 				
@@ -184,9 +185,6 @@ var getContentBy = function(field, value, contentType, success, failed) {
 				});
 			});
 		}
-		else {
-			failed();
-		}
 	});
 };
 exports.getContentBy = getContentBy;
@@ -199,8 +197,9 @@ var getMetaInfo = function(field, cid, callback) {
 		cid: cid,
 		key: field
 	}, function(err, docInfo) {
-		if(err)
-			console.log(err);
+		if(err) {
+			loggerObj.error(err);
+		}
 		
 		callback(docInfo);
 	});
@@ -214,8 +213,9 @@ var getMetaInfoList = function(cid, callback) {
 	ContentMetaModel.find({
 		cid: cid
 	}, function(err, docList) {
-		if(err)
-			console.log(err);
+		if(err) {
+			loggerObj.error(err);
+		}
 		
 		var finalMetaList = {};
 		docList.forEach(function(docInfo) {
@@ -236,8 +236,8 @@ var getAttachmentList = function(parentCID, callback) {
 		type: 'attachment',
 		status: contentStatusListGlobal.INHERIT
 	}, function(err, docList) {
-		if(err)
-			console.log(err);
+		if(err) 
+			loggerObj.error(err);
 	
 		if(0 == docList.length) {
 			callback([]);
@@ -284,7 +284,7 @@ var updateContent = function(params, userId, success, failed) {
 		coordinates: [(params.lat)?parseFloat(params.lat):0.0, (params.lng)?parseFloat(params.lng):0.0]
 	}, function(err, docInfo) {
 		if(err) {
-			console.log(err);
+			loggerObj.error(err);
 			failed(err);
 		}
 		else

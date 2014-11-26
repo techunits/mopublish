@@ -5,13 +5,13 @@ module.exports = function(app) {
 	 * add test event for footer
 	 */
 	app.use(function (httpRequest, httpResponse, next) {
-		mpObj.emit('MP:FOOTER', '<center>MPTEST Plugin loaded successfully.</center>');
+		//	mpObj.emit('MP:FOOTER', '<center>MPTEST Plugin loaded successfully.</center>');
 		
 		/**
 		 * handle custom post login actions
 		 */
 		mpObj.on('MP:LOGIN', function(userInfo) {
-			console.log('Execute: MP:LOGIN event flow from plugin.');
+			//	console.log('Execute: MP:LOGIN event flow from plugin.');
 			//	console.log(userInfo);
 		});
 		

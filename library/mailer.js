@@ -1,11 +1,11 @@
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 
-if('ssl' == siteConfigObj.smtp.mode.toLower()) {
+if('ssl' == appConfigObj.smtp.mode) {
 	var securedFlag = true;
 	var ignoreTLSFlag = true;
 }
-else if('tls' == siteConfigObj.smtp.mode.toLower()) {
+else if('tls' == appConfigObj.smtp.mode) {
 	var securedFlag = true;
 	var ignoreTLSFlag = false;
 }
@@ -14,15 +14,25 @@ else {
 	var ignoreTLSFlag = true;
 }
 
-// create reusable transporter object using SMTP transport
-var transporter = nodemailer.createTransport(smtpTransport({
-    host: siteConfigObj.smtp.host,
-    port: siteConfigObj.smtp.port,
-    secure: securedFlag,
-    ignoreTLS: ignoreTLSFlag,
-    auth: {
-        user: siteConfigObj.smtp.auth.username,
-        pass: siteConfigObj.smtp.auth.password
-    }
-}));
+//	create reusable transporter object using SMTP transport
+if('' != appConfigObj.smtp.auth.username && '' != appConfigObj.smtp.auth.password) {
+	var transporter = nodemailer.createTransport(smtpTransport({
+	    host: appConfigObj.smtp.host,
+	    port: appConfigObj.smtp.port,
+	    secure: securedFlag,
+	    ignoreTLS: ignoreTLSFlag,
+	    auth: {
+	        user: appConfigObj.smtp.auth.username,
+	        pass: appConfigObj.smtp.auth.password
+	    }
+	}), {debug: true});
+}
+else {
+	var transporter = nodemailer.createTransport(smtpTransport({
+	    host: appConfigObj.smtp.host,
+	    port: appConfigObj.smtp.port,
+	    secure: securedFlag,
+	    ignoreTLS: ignoreTLSFlag
+	}));
+}
 exports.transporter = transporter;
