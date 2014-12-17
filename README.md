@@ -1,4 +1,4 @@
-mopublish (alpha)
+mopublish (beta)
 =========
 
 *Version: 1.0.2*
