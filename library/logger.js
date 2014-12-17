@@ -1,5 +1,6 @@
 exports.debug = function(str) {
-	console.log('DEBUG: ' + "\t" + new Date() + "\t" + str);
+	if(true === appConfigObj.debug)
+		console.log('DEBUG: ' + "\t" + new Date() + "\t" + str);
 };
 
 exports.info = function(str) {
@@ -7,5 +8,5 @@ exports.info = function(str) {
 };
 
 exports.error = function(str) {
-	console.log('ERROR: ' + "\t" + new Date() + "\t" + str);
+	console.log("\033[31m" + 'ERROR: ' + "\t" + new Date() + "\t" + str + "\033[0m");
 };

@@ -8,7 +8,6 @@ var getPageTitle = function(pagename) {
 	toReplace.forEach(function(exp) {
 		switch(exp) {
 			case '{{PAGENAME}}':
-				//	console.log(pagename);
 				if(pagename)
 					titlePattern = titlePattern.replace(exp, pagename);
 				else

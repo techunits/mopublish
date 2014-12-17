@@ -368,21 +368,9 @@ module.exports = function(app) {
 		    {
 		    	key: 'activationRequired',
 		    	value: httpRequest.body.activationRequired
-		    },
-		    {
-		    	key: 'smtp',
-		    	value: {
-		    		host: httpRequest.body.smtpHost,
-		    		port: httpRequest.body.smtpPort,
-		    		mode: httpRequest.body.smtpMode,
-		    		auth: {
-		    			username: httpRequest.body.smtpUsername,
-		    			password: httpRequest.body.smtpPassword
-		    		}
-		    	}
 		    }
 		], function(settingsList) {
-			mpObj.logger.debug('Settings updated...');
+			mpObj.logger.debug('Settings updated.');
 			
 			//	reload page
 			httpResponse.redirect(httpRequest.url);

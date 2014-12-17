@@ -1,6 +1,7 @@
 var fs = require('fs');
 var url = require('url');
 var mpObj = require(ROOT_PATH + '/library/mopublish');
+var logger = require(ROOT_PATH + '/library/logger');
 var multer  = require('multer');
 var templateLocals = {};
 
@@ -71,9 +72,7 @@ module.exports = function(app, express) {
 			//	check whether system is installed and set the global parameter.
 			if('/mp-manager/installer' != httpRequest.url) {
 				mpObj.helper.isSystemInstalled(function() {
-					//	app.set('installed', true);
-					
-var themeConfigObj = require(ROOT_PATH + '/library/config').loadThemeSettings(siteSettings.theme);
+					var themeConfigObj = require(ROOT_PATH + '/library/config').loadThemeSettings(siteSettings.theme);
 					
 					/**
 					 * append required varriables to the template.
@@ -205,7 +204,7 @@ var themeConfigObj = require(ROOT_PATH + '/library/config').loadThemeSettings(si
 				},
 				function() {
 						app.set('installed', false);
-						console.log('Sorry! No valid installation found...');
+						logger.error('Sorry! No valid installation found. Trying installer...');
 						httpResponse.redirect('/mp-manager/installer');
 				});
 			}
