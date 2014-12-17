@@ -121,16 +121,20 @@
 			
 			<div class="form-group	widget-base">
 				<h3 class="section-heading">GeoLocation</h3>
-				<div class="gmap-base" id="gmap">
-					
+				<div class="gmap-base">
+					<div class="field">
+						<input type="text" ng-click="onKeyUp($event)" ng-model="searchterm" placeholder="Search Destination..." />
+						<img ng-click="searchLocation($event)" src="/assets/mp-manager/images/find.png" height="24" />
+					</div>
+					<div id="map-canvas"></div>
 				</div>
-				<div class="col-md-12	form-group">
+				<div class="col-md-6	form-group">
 					<label>Latitude</label>
-					<input type="text" name="lat" placeholder="0.0" value="<%=	(locals.content.info.coordinates)?locals.content.info.coordinates[0]:''	%>" class="form-control" />
+					<input type="text" name="lat" ng-model="lat" placeholder="0.0" readonly="readonly" value="<%=	(locals.content.info.coordinates)?locals.content.info.coordinates[0]:''	%>" class="form-control" />
 				</div>
-				<div class="col-md-12	form-group">
+				<div class="col-md-6	form-group">
 					<label>Longitude</label>
-					<input type="text" name="lng" placeholder="0.0" value="<%=	(locals.content.info.coordinates)?locals.content.info.coordinates[1]:''	%>" class="form-control" />
+					<input type="text" name="lng" ng-model="lng" placeholder="0.0" readonly="readonly" value="<%=	(locals.content.info.coordinates)?locals.content.info.coordinates[1]:''	%>" class="form-control" />
 				</div>
 				<div class="clearfix"></div>
 			</div>

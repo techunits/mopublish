@@ -19,7 +19,7 @@ ul, ol, li {
 	color: #75B822	!important;
 }
 
-a:hover {	
+a:hover {
 	color:#75B822	!important;
 	text-decoration: none;
 }
@@ -177,6 +177,26 @@ form	label.error	{
 }
 .update-content	.mediaAttachments	a	{
 	font-size: 90%;
+}
+.update-content	.gmap-base	{
+	border: 1px solid #DADADA;
+	padding: 2px;
+	margin-bottom: 10px;
+}
+.update-content	.gmap-base	#map-canvas	{
+	height: 200px;
+	width: 100%;
+}
+.update-content	.gmap-base	.field	{
+	background: #fff;
+	border-radius: 4px 4px 0px 0px;
+	padding: 3px 0px 3px 5px;
+}
+.update-content	.gmap-base	.field	input[type="text"]	{
+	width: 85%;
+	float: left;
+	border: 0 none;
+	padding: 2px 5px;
 }
 
 /*	theme list	*/
