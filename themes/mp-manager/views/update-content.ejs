@@ -29,14 +29,15 @@
 			<div class="form-group	widget-base">
 				<h3 class="section-heading">Upload &amp; Attach Media</h3>
 				<div class="col-md-12	form-group">
-					<input type="file" name="attachments" multiple />
-					<br />
-					<div id="mediaAttachments">
+					<p>
+						<input type="file" name="attachments" multiple />
+					</p>
+					<div id="mediaAttachments" class="mediaAttachments">
 						<%	locals.content.attachments.forEach(function(attachmentInfo)	{	%>
 							<div class="col-md-4	form-group">
-								<img src="/media<%=	attachmentInfo.path	%>" alt="<%=	attachmentInfo.title	%>" width="100%" />
+								<img src="/media<%=	attachmentInfo.path	%>" alt="<%=	attachmentInfo.title	%>" height="120" width="120" />
 								<div class="img-actions">
-									<h4><%=	attachmentInfo.title	%></h4>
+									<h6><%=	attachmentInfo.title	%></h6>
 									<a href="/mp-manager/remove-attachment/<%=	attachmentInfo.title	%>">
 										<i class="glyphicon glyphicon-remove-sign"></i> Remove
 									</a>
@@ -120,6 +121,9 @@
 			
 			<div class="form-group	widget-base">
 				<h3 class="section-heading">GeoLocation</h3>
+				<div class="gmap-base" id="gmap">
+					
+				</div>
 				<div class="col-md-12	form-group">
 					<label>Latitude</label>
 					<input type="text" name="lat" placeholder="0.0" value="<%=	(locals.content.info.coordinates)?locals.content.info.coordinates[0]:''	%>" class="form-control" />

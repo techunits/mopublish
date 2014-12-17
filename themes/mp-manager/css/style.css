@@ -167,6 +167,17 @@ form	label.error	{
 	padding-top: 5px;
 	color: #777;
 }
+.update-content	.mediaAttachments	{
+	text-align: center;
+}
+.update-content	.mediaAttachments	h6	{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.update-content	.mediaAttachments	a	{
+	font-size: 90%;
+}
 
 /*	theme list	*/
 .theme-item	.inner	{

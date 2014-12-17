@@ -52,6 +52,10 @@ mpmgrApp.controller('UpdateContent', function() {
 			$('form[name="updateContent"]	textarea[name="ogDescription"]').val($(this).val());
 		}
 	});
+	
+	
+	//	gmap handlers
+	
 });
 
 mpmgrApp.controller('ContentTypeSettings', function() {
