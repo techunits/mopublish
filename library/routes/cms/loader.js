@@ -1,6 +1,5 @@
 module.exports = function(app) {	
 	app.get('/', function(httpRequest, httpResponse) {
-		//	httpResponse.end('home');
 		httpResponse.render('home');
 	});
 	

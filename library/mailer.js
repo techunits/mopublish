@@ -42,7 +42,6 @@ var getTransporter = function() {
 		return transporter;
 	}
 };
-exports.getTransporter = getTransporter;
 
 var sendEmail = function(params, callback) {
 	var mailOptions = {

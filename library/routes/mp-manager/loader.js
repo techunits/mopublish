@@ -45,21 +45,6 @@ module.exports = function(app) {
 		}
 	});
 	
-	/*app.get('/mp-manager/registernext', function(httpRequest, httpResponse) {
-		var userObj = require(ROOT_PATH + '/library/user-new');
-		
-		userObj.on('MP:REGISTERED', function(userInfo) {
-			console.log('Nice concept!!! ');
-		});
-		
-		userObj.register({
-			email: 'test@mopublish.com',
-			password: '******',
-			repassword: '******'
-		});
-	});*/
-	
-	
 	/**
 	 * Account Login
 	 */
@@ -104,26 +89,16 @@ module.exports = function(app) {
 				mpObj.logger.debug('Sending email to: ' + userInfo.email);
 				
 				//	send notification email
-				var mailTransporter = require(ROOT_PATH + '/library/mailer').transporter;
-				mailTransporter.sendMail({
-				    from: 'Mopublish <no-reply@mopublish.com>',
-				    to: userInfo.email,
+				mpObj.mailer.sendEmail({
+				    toEmail: userInfo.email,
 				    subject: 'Mopublish - Forgot Password Request',
-				    text: 'Please reset your password by clicking following link: ',
-				    html: 	'<p><b>Dear User,</b></p>'+
+				    textContent: 'Please reset your password by clicking following link: ',
+				    htmlContent: 	'<p><b>Dear user,</b></p>'+
 				    		'<p>Please click on following link to reset password:</p>'+
 				    		'<p>'+
-				    			'<a href="'+resetUrl+'">'+resetUrl+'</a>'+
+				    			'<a href="' + resetUrl + '" title="Reset password">' + resetUrl + '</a>'+
 				    		'</p>'
 				}, function(error) {
-					if(error) {
-						mpObj.logger.debug('Email sending failed.');
-						mpObj.logger.error(error);
-					}
-					else {
-						mpObj.logger.debug('Email sent.');
-					}
-					
 					httpResponse.redirect('/mp-manager/login/lost-password?msgcode=SUCCESS');
 				});
 			}, function() {

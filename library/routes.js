@@ -1,10 +1,7 @@
 var fs = require('fs');
 var url = require('url');
 var mpObj = require(ROOT_PATH + '/library/mopublish');
-var logger = require(ROOT_PATH + '/library/logger');
 var multer  = require('multer');
-var templateLocals = {};
-
 
 /**
  * load global settings from config file
@@ -204,7 +201,7 @@ module.exports = function(app, express) {
 				},
 				function() {
 						app.set('installed', false);
-						logger.error('Sorry! No valid installation found. Trying installer...');
+						mpObj.logger.error('Sorry! No valid installation found. Trying installer...');
 						httpResponse.redirect('/mp-manager/installer');
 				});
 			}
