@@ -1,6 +1,6 @@
 var db = require('../library/db');
 var helperObj = require('../library/helper');
-var loggerObj = require('../library/logger');
+var loggerObj = require('elogger');
 
 var contentStatusListGlobal = {
 	'DRAFT': 0,
