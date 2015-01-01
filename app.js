@@ -57,7 +57,5 @@ else {
 //	Listen for dying workers and replace with new.
 cluster.on('exit', function (worker) {
     console.log('Worker ' + worker.id + ' died :(');
-    if(process.argv.indexOf('--nocluster') == -1) {
-    	cluster.fork();
-    }
+	cluster.fork();
 });

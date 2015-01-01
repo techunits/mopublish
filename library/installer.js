@@ -1,7 +1,7 @@
 var helperObj = require('../library/helper');
 var utilObj = require('../library/helper');
 var contentObj = require('../library/content');
-var logger = require(ROOT_PATH + '/library/logger');
+var logger = require('elogger');
 var mailer = require(ROOT_PATH + '/library/mailer');
 var md5 = require('MD5');
 var async = require('async');
