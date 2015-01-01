@@ -1,7 +1,7 @@
 mopublish (beta)
 =========
 
-*Version: 1.0.2*
+*Version: 1.0.3*
 
 Mopublish is an innovative nodejs cms build on top of MEAN stack i.e. MongoDB - noSql Database, ExpressJs, AngularJs & NodeJS. Besides those Bootstrap framework has been used to provide 100% responsive mobile friendly admin panel.
 
