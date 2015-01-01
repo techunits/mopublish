@@ -11,7 +11,7 @@ var MP = function() {
 	
 	this.template = require(ROOT_PATH + '/library/template');
 	
-	this.logger = require(ROOT_PATH + '/library/logger');
+	this.logger = require('elogger');
 	
 	this.mailer = require(ROOT_PATH + '/library/mailer');
 };

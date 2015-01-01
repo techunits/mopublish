@@ -1,5 +1,5 @@
 var helperObj = require(ROOT_PATH + '/library/helper');
-var loggerObj = require(ROOT_PATH + '/library/logger');
+var loggerObj = require('elogger');
 var db = require(ROOT_PATH + '/library/db');
 var md5 = require('MD5');
 

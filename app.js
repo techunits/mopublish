@@ -16,8 +16,8 @@ if (cluster.isMaster) {
 	}
 }
 else {
+    require('pkginfo')(module);
 	var appConfigObj = require('./library/config').loadConfig();
-	
 	
 	//	required express configurations
 	var express = require('express'),
@@ -25,20 +25,21 @@ else {
 		expressLayouts = require('express-ejs-layouts');
 	
 	var app = express();
-	
 	app.set('port', (process.env.PORT || appConfigObj.port));
 	app.set('view engine', 'ejs');
 	
-	if(true === appConfigObj.debug) {
-		var logger = require('morgan');
-		app.use(logger());
-	}
-	
+	//	enable required middlewares
 	app.use(bodyParser.urlencoded({
 		extended: true
 	}));
 	app.use(bodyParser.json());
 	app.use(expressLayouts);
+	
+	//	enable morgan resource logging if debug is turned on
+	if(true === appConfigObj.debug) {
+		var elogger = require('elogger');
+		app.use(elogger('common'));
+	}
 	
 	/**
 	 * dynamically load all required routes
@@ -49,13 +50,12 @@ else {
 	 * start node Express Server
 	 */
 	app.listen(app.get('port'), function() {
-		console.log("Mopublish is running at localhost:" + app.get('port'));
+		console.log("%s@%s is running at http://localhost:%s", module.exports.name, module.exports.version, app.get('port'));
 	});
 }
-
 
 //	Listen for dying workers and replace with new.
 cluster.on('exit', function (worker) {
     console.log('Worker ' + worker.id + ' died :(');
-    cluster.fork();
+	cluster.fork();
 });

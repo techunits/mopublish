@@ -1,4 +1,4 @@
-var logger = require(ROOT_PATH + '/library/logger');
+var logger = require('elogger');
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 
