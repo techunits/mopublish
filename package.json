@@ -1,6 +1,6 @@
 {
   "name": "Mopublish",
-  "version": "1.0.3",
+  "version": "1.0.2",
   "description": "Mopublish is an innovative nodejs cms build on top of MEAN stack i.e. MongoDB - noSql Database, ExpressJs, AngularJs & NodeJS.",
   "main": "app.js",
   "scripts": {
