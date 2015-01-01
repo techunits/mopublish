@@ -28,6 +28,7 @@ else {
 	app.set('port', (process.env.PORT || appConfigObj.port));
 	app.set('view engine', 'ejs');
 	
+	//	enable required middlewares
 	app.use(bodyParser.urlencoded({
 		extended: true
 	}));
@@ -49,13 +50,14 @@ else {
 	 * start node Express Server
 	 */
 	app.listen(app.get('port'), function() {
-		console.log("%s@%s is running at localhost:%s", module.exports.name, module.exports.version, app.get('port'));
+		console.log("%s@%s is running at http://localhost:%s", module.exports.name, module.exports.version, app.get('port'));
 	});
 }
-
 
 //	Listen for dying workers and replace with new.
 cluster.on('exit', function (worker) {
     console.log('Worker ' + worker.id + ' died :(');
-    cluster.fork();
+    if(process.argv.indexOf('--nocluster') == -1) {
+    	cluster.fork();
+    }
 });
