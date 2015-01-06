@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Mopublish : Mopublish - Innovative &amp; Flexible NodeJS CMS (MEAN)">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Mopublish</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/techunits/mopublish">View on GitHub</a>
+
+          <h1 id="project_title">Mopublish</h1>
+          <h2 id="project_tagline">Mopublish - Innovative &amp; Flexible NodeJS CMS (MEAN)</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/techunits/mopublish/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/techunits/mopublish/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p><em>Version: 1.0.3</em></p>
+
+<p>Mopublish is an innovative nodejs cms build on top of MEAN stack i.e. MongoDB - noSql Database, ExpressJs, AngularJs &amp; NodeJS. Besides those Bootstrap framework has been used to provide 100% responsive mobile friendly admin panel.</p>
+
+<p>Our goal is to create an NodeJS &amp; MongoDB based CMS which can be compared with popular PHP based flexible cms. To achieve our target we have plans to include following features to the system:</p>
+
+<ul>
+<li>Actions &amp; Filters Support</li>
+<li>Secure Session Management</li>
+<li>Built-in HTTP &amp; HTTPS Support</li>
+<li>Secured REST API Support</li>
+<li>Email Support (Local SMTP &amp; 3rd Party SMTP)</li>
+<li>Built-in Contact Form Support</li>
+<li>Built-in custom Taxonomy &amp; Content types</li>
+<li>Built-in Localization Support</li>
+</ul>
+
+<p>Please note, Monpublish is in active testing be our developers to provide a extremely stable version. Few of our live usecases as follows:</p>
+
+<ul>
+<li><a href="http://www.techunits.com">http://www.techunits.com</a></li>
+<li><a href="http://www.mopublish.com">http://www.mopublish.com</a></li>
+<li><a href="http://rate-exchange.herokuapp.com">http://rate-exchange.herokuapp.com</a></li>
+</ul>
+
+<h3>
+<a id="mopublish-tests" class="anchor" href="#mopublish-tests" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mopublish Tests</h3>
+
+<p>Mopublish has been tested successfully on the following PaaS platforms (using free/trial accounts):</p>
+
+<ul>
+<li><a href="http://www.heroku.com/">Heroku</a></li>
+<li><a href="https://openshift.redhat.com/app/">OpenShift</a></li>
+<li><a href="https://modulus.io/">Modulus</a></li>
+<li><a href="http://www.appfog.com/">AppFog</a></li>
+<li><a href="http://nodejitsu.com/">Nodejitsu</a></li>
+<li><a href="http://www.windowsazure.com/">Windows Azure</a></li>
+<li><a href="https://aws.amazon.com/">Amazon Web Services - AWS</a></li>
+</ul>
+
+<h3>
+<a id="events--hooks" class="anchor" href="#events--hooks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Events &amp; Hooks</h3>
+
+<p>Mopublish has been equipped with many Events and Actions into it's core, which provides developers a greater advantage to write plugins on top of it.</p>
+
+<p><strong>You can emit following events to update respective functions: ( using .emit() )</strong></p>
+
+<table>
+<thead>
+<tr>
+<th>Action/Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MP:HEADER</td>
+<td>To add extra tags &amp; texts to the header section.</td>
+</tr>
+<tr>
+<td>MP:STYLESHEET</td>
+<td>Load stylesheets.</td>
+</tr>
+<tr>
+<td>MP:SCRIPT</td>
+<td>Load scripts.</td>
+</tr>
+<tr>
+<td>MP:PAGETITLE</td>
+<td>Update page title based on page &amp; pluigns.</td>
+</tr>
+<tr>
+<td>MP:SEOMETA</td>
+<td>To update SEO meta title, keywords &amp; description, as per requirement.</td>
+</tr>
+<tr>
+<td>MP:OPENGRAPH</td>
+<td>To update Opengraph tags as per requirement. Supports opengraph tags: (<a href="http://ogp.me/">http://ogp.me/</a>)</td>
+</tr>
+<tr>
+<td>MP:FOOTER</td>
+<td>To add extra tags &amp; texts to the footer section.</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Also you can bind to following events to modify the default flow of the system: ( using .on() )</strong></p>
+
+<table>
+<thead>
+<tr>
+<th>Action/Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MP:LOGIN</td>
+<td>To add extra functionality or special redirection once user is loggedin.</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="note-from-auhtor" class="anchor" href="#note-from-auhtor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Note from Auhtor</h4>
+
+<p><strong>Mopublish</strong> is a Content Management System inspired by Drupal &amp; Wordpress, so we have tried our best to match it's features and usubility to those php based CMS as much as possible.
+We will always keep up the work to add more advanced features to enrich the product. Hope you will like it!!!</p>
+
+<h4>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h4>
+
+<p><strong>Mopublish</strong> is licensed under <a href="https://github.com/techunits/mopublish/blob/master/LICENSE">MIT license</a>, so you are free to use it as you like.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Mopublish maintained by <a href="https://github.com/techunits">techunits</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
